@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
 use App\Models\Admin\Setting;
 use App\Models\Admin\Slider;
@@ -443,18 +444,17 @@ class PagesController extends Controller
 
         public function studentregistrationform(Request $request){
             // dd($request);
-            return $request;
+//            return $request;
             // $amount =
 
             $validated = $request->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'country_code' => 'required',
-                'phone' => 'required',
                 'joining_reason' => 'required',
                 'refered_code' => 'required',
                  'image' => 'required',
-                'whatsapp_number' => 'required|min:11|unique:students',
+                'whatsapp_number' => 'required|unique:students',
                  'email' => 'required|unique:students',
                 'password' => 'required|min:6',
                 'payment_method' => 'required',
@@ -463,6 +463,23 @@ class PagesController extends Controller
                 'payment_amount' => 'required',
                 // 'password_confirmation' => 'required|same:password'
             ]);
+
+            $image = $request->file('image');
+            if($image){
+                $currentDate = Carbon::now()->toDateString();
+                //dd($image->getClientOriginalExtension());
+
+                $imageName = $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists('assets/images/uploads/students')) {
+                    mkdir('assets/images/uploads/students', 0777, true);
+                }
+
+                $image->move(public_path('assets/images/uploads/students'), $imageName);
+                // $image->move(base_path().'/assets/images/uploads/students', $imageName);
+
+                $target_image = $imageName;
+            }
 
             $student = Student::create([
                 'first_name' => $request->first_name,
@@ -476,10 +493,18 @@ class PagesController extends Controller
                 'refer_code'=>rand(10000,99999),
                 'refered_code'=>$request->refered_code,
                 'country_code'=>$request->country_code,
-                'status' => $request->status,
                 'address' => $request->address,
                 'status'=> 0,
+                'joining_reason'=>$request->joining_reason,
+                'payment_method'=>$request->payment_method,
+                'payment_amount'=>$request->payment_amount,
+                'payment_number'=>$request->payment_number,
+                'transaction_id'=>$request->transaction_id,
+                'image' => $target_image
             ]);
+
+
+
             session::put('Rcomment', $student->refer_code);
             session::put('thankyouId', $student->id);
             $register_bonus = Student::where('refer_code', $request->refered_code)->first();
@@ -498,6 +523,9 @@ class PagesController extends Controller
                 ]);
             }
 
+            $phone = $student->country_code.$student->phone;
+            $message = 'Dear '.$student->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$student->refer_code.'. Please wait for the confirmation.' .' Regards - FX WWIITS.';
+            SmsUtility::sendSMS($phone, $message);
 
             Toastr::success('student Registration successfully!', 'Please Wait For Admin Approval', ["positionClass" => "toast-top-right"]);
 
@@ -517,7 +545,7 @@ class PagesController extends Controller
 
                     Toastr::success('Login Successfully', 'Login', ["positionClass" => "toast-top-right"]);
                     //return redirect('student-enroll-courses');
-                    return redirect()->route('profile-settings');
+                    return redirect()->route('student.dashboard');
                 } else {
                     Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
                     return back()->with('message', 'Please use valid password');

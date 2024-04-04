@@ -191,10 +191,12 @@
     <section>
         <div class="row">
             <div class="col-12 col-md-5">
-                <div class="nav-background ">
+                <div class="nav-background h-100">
                     <div class="">
-                        <a href="{{ route('home') }}"><img class="img-fluid p-5 " src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="logo" style="width: 86%!important;margin-left: -148px;"></a>                    </div>
-                    <h3 class="text-light fw-medium p-4">There is an opportunity to earn <br> from the first day of learning the course</h3>
+                        <a href="{{ route('home') }}">
+{{--                            <img class="img-fluid p-5 " src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="logo" style="width: 86%!important;margin-left: -148px;">--}}
+                        </a>                    </div>
+                    <h3 class="text-light fw-medium p-4" style="padding-top: 200px !important; ">There is an opportunity to earn <br> from the first day of learning the Forex</h3>
                     <div class="">
                         <img src="{{ asset('frontend') }}/images/log.png" alt="hero" class="img-fluid w-75 m-5 ">
                     </div>
@@ -212,7 +214,7 @@
         </ul>
     </div>
 @endif
-                    <form method="POST" action="{{ route('student-registration-form') }}">
+                    <form method="POST" action="{{ route('student-registration-form') }}" enctype="multipart/form-data">
                         @csrf
                         <h5 class="text-color fw-medium mb-1">Create an Account</h5>
                         <p class="text-primary">Already have an account? <a class="text-danger" href="{{ route('student.signin') }}">Sign In</a></p>
@@ -241,7 +243,7 @@
                                     <select class="form-control" name="country_code" required>
                                         <option value>Select Code</option>
                                         <option value="+1">Australia(+1)</option>
-                                        <option value="+88">Bangladesh(+88)</option>
+                                        <option value="+880">Bangladesh(+880)</option>
                                         <option value="+1">Canada(+1)</option>
                                         <option value="+91">India(+91)</option>
                                         <option value="+92">Pakistan(+92)</option>
@@ -360,11 +362,11 @@
                                                     <label for="recipient-name" class="col-form-label">Payment Method: <span class="text-danger">*</span></label>
                                                     <select name="payment_method" id="" class="form-control">
                                                         <option value="">Select</option>
-                                                        <option value="">Bkash</option>
-                                                        <option value="">Rocket</option>
-                                                        <option value="">Nagad</option>
-                                                        <option value="">Upay</option>
-                                                        <option value="">Bank Transfer</option>
+                                                        <option value="bkash">Bkash</option>
+                                                        <option value="rocket">Rocket</option>
+                                                        <option value="nagad">Nagad</option>
+                                                        <option value="upay">Upay</option>
+                                                        <option value="bank_transfer">Bank Transfer</option>
 
                                                     </select>
                                                 </div>

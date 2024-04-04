@@ -174,6 +174,9 @@
                                 <div class="my-2">
                                     <p><span class="font-bold"> Login ID:</span> {{ $thankyou->phone }}</p>
                                 </div>
+                                <div class="my-2">
+                                    <p><span class="font-bold"> Referral Code:</span> {{ $thankyou->refer_code }}</p>
+                                </div>
 
                                 {{-- <div class="my-2">
                                     <p><span class="font-bold"> Password:</span> {{ $thankyou->password }}</p>
