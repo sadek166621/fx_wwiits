@@ -1,0 +1,54 @@
+.nav-background {
+    background: linear-gradient(to right, #10aedf, #72AF41);
+}
+
+.pri-btn {
+    text-decoration: none;
+    background: var(--theme-color);
+    color: #FFFFFF;
+    padding: 10px 30px;
+    border-radius: 5px;
+}.pri-btn:hover {
+    color: var(--theme-color) !important;
+    background-color: var(--white-color);
+}
+
+.banner {
+    background-image: url(/images/banner-1.jpg) !important;
+    background-repeat: no-repeat;
+    height: 700px;
+}
+
+.banner1 {
+    background-image: url(/images/banner-2.jpg) !important;
+    background-repeat: no-repeat;
+    height: 700px;
+}
+
+.card-pos {
+    margin-top: -100px !important;
+
+}
+
+.customer-background {
+    background: linear-gradient(to right, #10aedf, #72AF41);
+}
+
+.text-color {
+    color: #003366 !important;
+}
+
+/* .dash-background {
+    height: 1650px;
+    background: linear-gradient(to right, #0033cc 0%, #009933 100%);
+} */
+
+/* .dash-text {
+    padding-top: 650px;
+} */
+
+@media only screen and (max-width: 600px) {
+    .dash-text {
+        padding-top: 10px;
+    }
+}
