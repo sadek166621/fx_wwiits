@@ -41,10 +41,37 @@
                                     <div class="student-profile-left-part">
 
                                         <h6>{{ $student->first_name }} {{ $student->last_name }}</h6>
-                                        <p class="px-5 py-4">You're a Student </p>
+                                        <p class="px-5 py-4">Joined as @if ($student->joining_reason == 1)
+                                            Forex Training and Affiliation
+                                            @else
+                                            Forex Training and Job
+                                        @endif</p>
                                         <ul class="list-unstyled">
-                                            <li><a href="#"
-                                                    class="font-medium font-15 text-decoration-none active">Profile</a></li>
+                                            <li>
+                                                <a href="#"
+                                                    class="font-medium font-15 text-decoration-none active">Package
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="font-medium font-15 text-decoration-none active">Deposit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="font-medium font-15 text-decoration-none active">Profile
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="font-medium font-15 text-decoration-none active">Training
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="font-medium font-15 text-decoration-none active">Blog
+                                                </a>
+                                            </li>
                                             <li><a href="{{ route('reference') }}"
                                                     class="font-medium font-15 text-decoration-none ">Reference</a></li>
                                             <li><a href="{{ route('passbook') }}"
@@ -94,7 +121,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="author-info">
-                                                        <p class="font-medium font-15 color-heading">Student ID: {{ $student->refer_code }}
+                                                        <p class="font-medium font-15 color-heading">Member ID: {{ $student->refer_code }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -103,19 +130,31 @@
 
                                             <div class="row">
 
-                                                <div class="col-md-6 mb-30">
-                                                    <h5>Balance: {{ $student->bonus}}৳</h5>
+                                                <div class="col-md-3 mb-30">
+                                                    <h5>My wallet: {{ $student->bonus}}৳</h5>
                                                 </div>
-                                                <div class="col-md-6 mb-30">
-
-                                                    <label class="font-medium font-15 color-heading">First Name</label>
-                                                    <p>{{ $student->first_name }}</p>
+                                                <div class="col-md-3 mb-30">
+                                                    <h5>Profit: {{ $student->bonus}}৳</h5>
                                                 </div>
-                                                <div class="col-md-6 mb-30">
-                                                    <label class="font-medium font-15 color-heading">Last Name</label>
-                                                    <p>{{ $student->last_name }}</p>
+                                                <div class="col-md-3 mb-30">
+                                                    <h5>Affiliate Balance: {{ $student->bonus}}৳</h5>
+                                                </div>
+                                                <div class="col-md-3 mb-30">
+                                                    <h5>Internal Transfer: {{ $student->bonus}}৳</h5>
                                                 </div>
                                             </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-30">
+
+                                                        <label class="font-medium font-15 color-heading">First Name</label>
+                                                        <p>{{ $student->first_name }}</p>
+                                                    </div>
+                                                    <div class="col-md-6 mb-30">
+                                                        <label class="font-medium font-15 color-heading">Last Name</label>
+                                                        <p>{{ $student->last_name }}</p>
+                                                    </div>
+                                                </div>
+
 
                                             <div class="row">
                                                 <div class="col-md-12 mb-30">
