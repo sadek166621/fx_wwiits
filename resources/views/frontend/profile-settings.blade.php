@@ -48,12 +48,12 @@
                                         @endif</p>
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a href="#"
+                                                <a href="{{route('deposit-packages')}}"
                                                     class="font-medium font-15 text-decoration-none active">Package
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#"
+                                                <a href="{{route('deposit.list')}}"
                                                     class="font-medium font-15 text-decoration-none active">Deposit
                                                 </a>
                                             </li>

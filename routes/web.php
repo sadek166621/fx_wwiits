@@ -26,6 +26,7 @@ Use App\Http\Controllers\AppAuthController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\DepositController;
 
 // CUSTOMER PANEl ROUTES
 Route::get('/register', [AppAuthController::class, 'register'])->name('register');
@@ -308,7 +309,11 @@ Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
 Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
 Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
 Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
+Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
 
+
+Route::post('/deposit/add', [DepositController::class,'store'])->name('deposit.add');
+Route::get('/deposit/list', [DepositController::class,'index'])->name('deposit.list');
 
 
 Route::post('/add-schedule', [PagesController::class,'addschedule'])->name('add.schedule');

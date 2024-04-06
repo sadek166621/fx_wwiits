@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Package;
 use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
 use App\Models\Admin\Setting;
@@ -481,6 +482,17 @@ class PagesController extends Controller
                 $target_image = $imageName;
             }
 
+            $referal_code = Student::where('refer_code', $request->refered_code)->first();
+            if($referal_code){
+                $referal_code->update([
+                    'bonus'=> $referal_code->bonus + $request->bonus_amount,
+                ]);
+            }
+            else{
+                Toastr::error('error', 'Invalid Referred Code!', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
+
             $student = Student::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -516,15 +528,10 @@ class PagesController extends Controller
                 ]);
             }
 
-            $referal_code = Student::where('refer_code', $request->refered_code)->first();
-            if($referal_code){
-                $referal_code->update([
-                    'bonus'=> $referal_code->bonus + $request->bonus_amount,
-                ]);
-            }
+
 
             $phone = $student->country_code.$student->phone;
-            $message = 'Dear '.$student->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$student->refer_code.'. Please wait for the confirmation.' .' Regards - FX WWIITS.';
+            $message = 'Dear '.$student->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$student->refer_code.'. Please wait for the confirmation.' .'%0a Regards - FX WWIITS.';
             SmsUtility::sendSMS($phone, $message);
 
             Toastr::success('student Registration successfully!', 'Please Wait For Admin Approval', ["positionClass" => "toast-top-right"]);
@@ -871,6 +878,13 @@ class PagesController extends Controller
         }
 
         return back();
+      }
+
+      public function depositPackage()
+      {
+          $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+          $data['items'] = Package::where('status', 1)->latest()->get();
+          return view('frontend.deposit-package', $data);
       }
 
 }

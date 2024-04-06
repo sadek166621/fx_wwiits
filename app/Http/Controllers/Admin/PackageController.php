@@ -44,6 +44,7 @@ class PackageController extends Controller
             'usa_amount'    => 'required',
             'profit'        => 'required',
             'bd_amount'     => 'required',
+            'maturity_time' => 'required'
         ]);
 
         if (!$request->status || $request->status == NULL) {
@@ -53,12 +54,14 @@ class PackageController extends Controller
         }
 
         Package::create([
-            'package_name'  => $request->package_name,
-            'package_type'  => $request->package_type,
-            'usa_amount'    => $request->usa_amount,
-            'profit'        => $request->profit,
-            'bd_amount'     => $request->bd_amount,
-            'status'        => $request->status,
+            'package_name'          => $request->package_name,
+            'package_type'          => $request->package_type,
+            'usa_amount'            => $request->usa_amount,
+            'profit'                => $request->profit,
+            'bd_amount'             => $request->bd_amount,
+            'status'                => $request->status,
+            'maturity_time'         => $request->maturity_time,
+            'minimum_withdraw_time' => $request->minimum_withdraw_time
         ]);
 
         return redirect()->route('admin.package.list');

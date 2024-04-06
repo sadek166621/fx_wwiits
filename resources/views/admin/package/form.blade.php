@@ -54,6 +54,14 @@
                     <label for="exampleInputEmail1">Profit</label>
                     <input type="text" name="profit" class="form-control" id="profit" placeholder="" @isset($item) value="{{ $item->profit }}" @else value="{{old('profit')}}" @endisset readonly>
                 </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Maturity Time (Days)</label>
+                    <input type="number" name="maturity_time" class="form-control" id="" placeholder="" @isset($item) value="{{ $item->maturity_time }}" @else value="{{old('maturity_time')}}" @endisset>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Minimum Withdrawal Time (Days)</label>
+                    <input type="number" name="minimum_withdraw_time" class="form-control" id="" placeholder="" @isset($item) value="{{ $item->minimum_withdraw_time }}" @else value="{{old('minimum_withdraw_time')}}" @endisset >
+                </div>
               <div class="form-check">
                 <input type="checkbox" name="status" class="form-check-input" id="exampleCheck1" @isset($item) @if($item->status == 1) checked @endif @else checked @endisset>
                 <label class="form-check-label" for="exampleCheck1">Active</label>
