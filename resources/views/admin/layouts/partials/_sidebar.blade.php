@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
       <img src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Guru Digital IT</span>
+      <span class="brand-text font-weight-light">{{ getSetting()->site_name }}</span>
     </a>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
