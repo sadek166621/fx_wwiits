@@ -99,23 +99,30 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ( $items as $key=>$item )
-                                                <tr>
+                                                @if(count($items) > 0)
+                                                    @foreach ( $items as $key=>$item )
+                                                        <tr>
 
-                                                    <th scope="row">{{ $key+1 }}</th>
-                                                    <th>{{ $item->package_name }}</th>
-                                                    <td><span id="usa_amount{{$key}}">{{ $item->usa_amount }}</span>$</td>
-                                                    <td>
-                                                        <form action="{{route('deposit.add')}}" method="post" onsubmit="return checkBalance({{$key}})">
-                                                            @csrf
-                                                            <input type="hidden" name="package_id" value="{{$item->id}}">
-                                                            <input type="hidden" name="amount" value="{{$item->usa_amount}}">
-                                                            <button type="submit" class="btn btn-primary">Deposit</button>
-                                                        </form>
+                                                            <th scope="row">{{ $key+1 }}</th>
+                                                            <th>{{ $item->package_name }}</th>
+                                                            <td><span id="usa_amount{{$key}}">{{ $item->usa_amount }}</span>$</td>
+                                                            <td>
+                                                                <form action="{{route('deposit.add')}}" method="post" onsubmit="return checkBalance({{$key}})">
+                                                                    @csrf
+                                                                    <input type="hidden" name="package_id" value="{{$item->id}}">
+                                                                    <input type="hidden" name="amount" value="{{$item->usa_amount}}">
+                                                                    <button type="submit" class="btn btn-primary">Deposit</button>
+                                                                </form>
 
-                                                    </td>
-                                                </tr>
-                                                @endforeach
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="4" class="text-center"> <strong class="text-danger">No Deposit Package Available</strong></td>
+                                                    </tr>
+                                                @endif
+
 
                                             </tbody>
                                         </table>
@@ -138,7 +145,7 @@
         function checkBalance(rowId) {
 
             var balance = Number($('#balance').val());
-            var deposit_amount = Number($('#usa_amount'+rowId).val());
+            var deposit_amount = Number($('#usa_amount'+rowId).text());
                 if(balance > deposit_amount){
                     return true;
                 }

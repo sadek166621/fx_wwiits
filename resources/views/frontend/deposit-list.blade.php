@@ -100,22 +100,29 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ( $items as $key=>$item )
-                                                <tr>
+                                                @if(count($items)>0)
+                                                    @foreach ( $items as $key=>$item )
+                                                        <tr>
 
-                                                    <th scope="row">{{ $key+1 }}</th>
-                                                    <td>{{date('Y-m-d', strtotime($item->created_at))}}</td>
-                                                    <td>{{ $item->package->package_name ?? '' }}</td>
-                                                    @php $origin = date_create($item->created_at);
-$target = date_create(date('Y-m-d'));
-$interval = date_diff($origin, $target);
-@endphp
-                                                    <td><span id="usa_amount{{$key}}">{{ $item->amount }}</span>$</td>
-                                                    <td>
-{{$interval->format('%a')*$item->package->profit}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
+                                                            <th scope="row">{{ $key+1 }}</th>
+                                                            <td>{{date('Y-m-d', strtotime($item->created_at))}}</td>
+                                                            <td>{{ $item->package->package_name ?? '' }}</td>
+                                                            @php
+                                                                $origin = date_create($item->created_at);
+                                                                $target = date_create(date('Y-m-d'));
+                                                                $interval = date_diff($origin, $target);
+                                                            @endphp
+                                                            <td><span id="usa_amount{{$key}}">{{ $item->amount }}</span>$</td>
+                                                            <td>
+                                                                {{$interval->format('%a')*$item->package->profit}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="5" class="text-center"><strong class="text-danger">No Deposit Made</strong></td>
+                                                    </tr>
+                                                @endif
 
                                             </tbody>
                                         </table>

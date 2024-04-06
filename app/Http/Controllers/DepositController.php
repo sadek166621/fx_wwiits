@@ -7,6 +7,7 @@ use App\Models\Admin\Student;
 use App\Models\Deposit;
 use Illuminate\Http\Request;
 use Session;
+use Toastr;
 
 class DepositController extends Controller
 {
@@ -55,8 +56,8 @@ class DepositController extends Controller
             'amount' => $request->amount,
             'status' => 1
         ]);
-
-//        return redirect()->route('deposit.list');
+        Toastr::error('Amount Deposited Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
+        return redirect()->route('deposit.list');
     }
 
     /**

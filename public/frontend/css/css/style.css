@@ -868,7 +868,7 @@ button:focus {
     height: 100px;
     display: flex !important;
     transition: all ease .6s;
-    background: transparent;
+    background: linear-gradient(to right, #10aedf, #72AF41);
     padding: 21px 100px;
     align-items: center;
     width: 100%;
