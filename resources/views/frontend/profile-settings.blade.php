@@ -49,12 +49,12 @@
                                         <ul class="list-unstyled">
                                             <li>
                                                 <a href="{{route('deposit-packages')}}"
-                                                    class="font-medium font-15 text-decoration-none active">Package
+                                                    class="font-medium font-15 text-decoration-none ">Package
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{route('deposit.list')}}"
-                                                    class="font-medium font-15 text-decoration-none active">Deposit
+                                                    class="font-medium font-15 text-decoration-none ">Deposit
                                                 </a>
                                             </li>
                                             <li>
@@ -64,12 +64,12 @@
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                    class="font-medium font-15 text-decoration-none active">Training
+                                                    class="font-medium font-15 text-decoration-none ">Training
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                    class="font-medium font-15 text-decoration-none active">Blog
+                                                    class="font-medium font-15 text-decoration-none ">Blog
                                                 </a>
                                             </li>
                                             <li><a href="{{ route('reference') }}"

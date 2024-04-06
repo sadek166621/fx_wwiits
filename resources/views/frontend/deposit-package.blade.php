@@ -21,7 +21,7 @@
                                         <ol class="breadcrumb justify-content-center">
                                             <li class="breadcrumb-item font-14"><a
                                                   class="text-decoration-none"  href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item font-14 active" aria-current="page">PassBook
+                                            <li class="breadcrumb-item font-14 active" aria-current="page">Deposit Package
                                             </li>
                                         </ol>
                                     </nav>
@@ -55,22 +55,22 @@
                                             </li>
                                             <li>
                                                 <a href="{{route('deposit.list')}}"
-                                                   class="font-medium font-15 text-decoration-none active">Deposit
+                                                   class="font-medium font-15 text-decoration-none">Deposit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('profile-settings') }}"
+                                                   class="font-medium font-15 text-decoration-none ">Profile
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                   class="font-medium font-15 text-decoration-none active">Profile
+                                                   class="font-medium font-15 text-decoration-none ">Training
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                   class="font-medium font-15 text-decoration-none active">Training
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                   class="font-medium font-15 text-decoration-none active">Blog
+                                                   class="font-medium font-15 text-decoration-none ">Blog
                                                 </a>
                                             </li>
                                             <li><a href="{{ route('reference') }}"
@@ -82,24 +82,13 @@
                                             <li><a href="{{ route('password-change') }}"
                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
                                         </ul>
-                                        <ul class="list-unstyled">
-                                            <li><a href="{{ route('profile-settings') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Profile</a></li>
-                                            <li><a href="{{ route('reference') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Reference</a></li>
-                                            <li><a href="{{ route('passbook') }}"
-                                                    class="font-medium font-15 text-decoration-none active">My Passbook</a></li>
-                                            <li><a href="{{ route('withdraw') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
-                                            <li><a href="{{ route('password-change') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
-                                        </ul>
+
                                     </div>
                                 </div>
                                 <!-- Student Profile Right part -->
                                 <div class="col-lg-9 p-0">
                                     <div class="student-profile-right-part">
-                                        <h6>My Passbook</h6>
+                                        <h6>My Packages</h6>
                                         <table class="table">
                                             <thead>
                                                 <tr>

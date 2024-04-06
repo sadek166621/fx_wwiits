@@ -184,7 +184,7 @@ class StudentController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'country_code'=>$request->country_code,
-            'image' => $image,
+            'image' => $target_image,
             'status' => $request->status,
             'address' => $request->address,
             ]);
