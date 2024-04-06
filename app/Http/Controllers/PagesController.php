@@ -59,7 +59,12 @@ class PagesController extends Controller
         $data['news'] = News::where('status', 1)->limit(5)->get();
         return view('frontend.index', $data);
     }
-
+    public function training(){
+        return view('frontend.training');
+    }
+    public function faq(){
+        return view('frontend.faq');
+    }
     // public function vicePrincipalMessage()
     // {
     //     $data['sliders'] = Slider::where('status', 1)->get();

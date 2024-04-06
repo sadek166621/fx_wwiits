@@ -514,5 +514,4 @@
 <!-- main -->
 <script src="{{asset('new-assets')}}/assets/js/main.js"></script>
 </body>
-
 </html>
