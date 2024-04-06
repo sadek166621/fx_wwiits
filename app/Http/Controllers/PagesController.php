@@ -545,7 +545,7 @@ class PagesController extends Controller
 
                     Toastr::success('Login Successfully', 'Login', ["positionClass" => "toast-top-right"]);
                     //return redirect('student-enroll-courses');
-                    return redirect()->route('student.dashboard');
+                    return redirect()->route('profile-settings');
                 } else {
                     Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
                     return back()->with('message', 'Please use valid password');
