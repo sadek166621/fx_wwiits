@@ -25,6 +25,7 @@ Use App\Http\Controllers\PagesController;
 Use App\Http\Controllers\AppAuthController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PackageController;
 
 // CUSTOMER PANEl ROUTES
 Route::get('/register', [AppAuthController::class, 'register'])->name('register');
@@ -183,6 +184,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/edit/{id}',[AssignedController::class,'edit'])->name('edit');
             Route::post('/update/{id}',[AssignedController::class, 'update'])->name('update');
             Route::get('/delete/{id}',[AssignedController::class, 'destroy'])->name('delete');
+        });
+
+        Route::group(['as' => 'package.', 'prefix' => 'package'], function () {
+            Route::get('/list',[PackageController::class, 'index'])->name('list');
+            Route::get('/add',[PackageController::class, 'create'])->name('add');
+            Route::post('/submit',[PackageController::class, 'store'])->name('store');
+            Route::get('/edit/{id}',[PackageController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[PackageController::class, 'update'])->name('update');
+            Route::get('/delete/{id}',[PackageController::class, 'destroy'])->name('delete');
         });
 
         //category

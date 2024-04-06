@@ -1,6 +1,6 @@
 <header class="nav-background">
     <!-- Nav Bar Start -->
-    <section class="menu-section-area ">
+    <section class="menu-section-area " >
       <nav class="navbar sticky-header navbar-expand-lg nav-background fixed-top px-md-5" id="mainNav">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ route('home') }}"><img class="header-logo" src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="Logo"
@@ -10,7 +10,7 @@
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="main-menu-collapse collapse navbar-collapse" id="navbarSupportedContent" sty>
+          <div class="main-menu-collapse collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item dropdown">
                 <a class="text-decoration-none fw-semibold text-light m-3 hover" href="#" role="button"

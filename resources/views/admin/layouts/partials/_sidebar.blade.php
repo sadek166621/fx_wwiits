@@ -162,6 +162,7 @@
               </p>
             </a>
           </li> --}}
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
@@ -185,6 +186,14 @@
               </li>
             </ul>
           </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.package.list') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>
+                        Packages
+                    </p>
+                </a>
+            </li>
           <li class="nav-item">
             <a href="{{ route('admin.assigned.list') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
