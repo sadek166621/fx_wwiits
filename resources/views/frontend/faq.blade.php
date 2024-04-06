@@ -54,7 +54,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link " href="{{route('about')}}">About
+                                        <a class="nav-link active" href="{{route('about')}}">About
                                             <div class="mr-hover-effect"></div>
                                         </a>
                                     </li>
@@ -74,7 +74,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="{{route('contact')}}">Contact
+                                        <a class="nav-link" href="{{route('contact')}}">Contact
                                             <div class="mr-hover-effect"></div>
                                         </a>
                                     </li>
@@ -99,8 +99,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
-						<h4 class="title">
-							Contact
+						<h4 class="title extra-padding">
+							FAQ
 						</h4>
 						<ul class="breadcrumb-list">
 							<li>
@@ -113,7 +113,7 @@
 								<span><i class="fas fa-chevron-right"></i> </span>
 							</li>
 							<li>
-								<a href="contact.html">Contact</a>
+								<a href="faq.html">FAQ</a>
 							</li>
 						</ul>
 					</div>
@@ -122,14 +122,15 @@
 		</section>
 		<!-- Breadcrumb Area End -->
 
-		<!-- Contact Area Start -->
-		<section class="contact">
+		<!-- Faq Area Start -->
+		<section class="faq-area2">
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class="col-lg-8 col-md-10">
 						<div class="section-heading">
-							<h2 class="title">
-								Get in Touch
+							<h2 class="title  extra-padding">
+								Frequently Asked
+								Qestions
 							</h2>
 							<p class="text">
 								We use the latest technologies and tools in order to create a better code that not only
@@ -139,8 +140,168 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-8">
-						<div class="contact-form-wrapper">
+					<div class="col-lg-6">
+						<div class="content">
+							<div class="accordion" id="tour-faq2">
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title" data-toggle="collapse" data-target="#collapseOne"
+											aria-expanded="true" aria-controls="collapseOne">
+											<i class="far fa-file-pdf"></i> Which license do I need?
+										</h4>
+									</div>
+
+									<div id="collapseOne" class="collapse show" data-parent="#tour-faq2">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapseTwo"
+											aria-expanded="false" aria-controls="collapseTwo">
+											<i class="fas fa-unlock-alt"></i> How do I get access to a App ?
+										</h4>
+									</div>
+									<div id="collapseTwo" class="collapse" data-parent="#tour-faq2">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapseThree"
+											aria-expanded="false" aria-controls="collapseThree">
+											<i class="far fa-credit-card"></i> How do I see previous orders?
+										</h4>
+									</div>
+									<div id="collapseThree" class="collapse" data-parent="#tour-faq2">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapseFour"
+											aria-expanded="false" aria-controls="collapseFour">
+											<i class="fas fa-money-bill-wave"></i> it is refundable?
+										</h4>
+									</div>
+									<div id="collapseFour" class="collapse" data-parent="#tour-faq2">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="content">
+							<div class="accordion" id="tour-faq3">
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title" data-toggle="collapse" data-target="#collapse5"
+											aria-expanded="true" aria-controls="collapse5">
+											<i class="far fa-file-pdf"></i> Which license do I need?
+										</h4>
+									</div>
+
+									<div id="collapse5" class="collapse show" data-parent="#tour-faq3">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapse6"
+											aria-expanded="false" aria-controls="collapse6">
+											<i class="fas fa-unlock-alt"></i> How do I get access to a App ?
+										</h4>
+									</div>
+									<div id="collapse6" class="collapse" data-parent="#tour-faq3">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapse7"
+											aria-expanded="false" aria-controls="collapse7">
+											<i class="far fa-credit-card"></i> How do I see previous orders?
+										</h4>
+									</div>
+									<div id="collapse7" class="collapse" data-parent="#tour-faq3">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+								<div class="single-accordion">
+									<div class="accordion-header">
+										<h4 class="title collapsed" data-toggle="collapse" data-target="#collapse8"
+											aria-expanded="false" aria-controls="collapse8">
+											<i class="fas fa-money-bill-wave"></i> it is refundable?
+										</h4>
+									</div>
+									<div id="collapse8" class="collapse" data-parent="#tour-faq3">
+										<div class="accordion-body">
+											Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+											richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+											dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+											tempor
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Faq Area End -->
+
+		<!-- Contact Area Start -->
+		<section class="contact">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10">
+						<div class="section-heading">
+							<h2 class="title">
+								Feel Free To Ask
+							</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-8 mx-auto">
+						<div class="contact-form">
 							<form>
 								<div class="row">
 									<div class="col-lg-6">
@@ -186,38 +347,6 @@
 									</div>
 								</div>
 							</form>
-						</div>
-					</div>
-					<div class="col-lg-4 d-flex">
-						<div class="address-area">
-							<h4 class="title">
-								Contact Information
-							</h4>
-							<ul class="address-list">
-								<li>
-									<p>
-										<i class="fas fa-map-marker-alt"></i> 28 Green Tower, Street Name New York City,
-										USA
-									</p>
-								</li>
-								<li>
-									<p>
-										<i class="fas fa-phone"></i> +77 0123456789
-									</p>
-								</li>
-								<li>
-									<p>
-										<i class="far fa-envelope"></i>
-										contact@lendbo.com
-									</p>
-								</li>
-								<li>
-									<p>
-										<i class="fas fa-globe-americas"></i>
-										www.softio.com
-									</p>
-								</li>
-							</ul>
 						</div>
 					</div>
 				</div>

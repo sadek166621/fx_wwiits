@@ -69,12 +69,12 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('faq')}}">FAQ
+                                        <a class="nav-link active" href="{{route('faq')}}">FAQ
                                             <div class="mr-hover-effect"></div>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="{{route('contact')}}">Contact
+                                        <a class="nav-link" href="{{route('contact')}}">Contact
                                             <div class="mr-hover-effect"></div>
                                         </a>
                                     </li>
@@ -92,15 +92,15 @@
     </header>
 	<!--Header Area Start-->
 
-	<!-- Main Area Start -->
+	<!-- Main Area Start-->
 	<main>
 		<!-- Breadcrumb Area Start -->
 		<section class="breadcrumb-area">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
-						<h4 class="title">
-							Contact
+						<h4 class="title extra-padding">
+							Training
 						</h4>
 						<ul class="breadcrumb-list">
 							<li>
@@ -113,7 +113,7 @@
 								<span><i class="fas fa-chevron-right"></i> </span>
 							</li>
 							<li>
-								<a href="contact.html">Contact</a>
+								<a href="training.html">Training</a>
 							</li>
 						</ul>
 					</div>
@@ -122,110 +122,271 @@
 		</section>
 		<!-- Breadcrumb Area End -->
 
-		<!-- Contact Area Start -->
-		<section class="contact">
+		<!-- Blog Page Grid Area Start -->
+		<section class="blog-page single-blog-area">
 			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-8 col-md-10">
-						<div class="section-heading">
-							<h2 class="title">
-								Get in Touch
-							</h2>
-							<p class="text">
-								We use the latest technologies and tools in order to create a better code that not only
-								works great, but it is easy easy to work with too.
-							</p>
+				<div class="row">
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img1.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Introduction To Financial Markets
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img2.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										How To Create a Forex Trading Plan
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img3.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Understanding Technical Analysis
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img4.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Fibonacci Theory
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img5.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Fibonacci Theory
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img6.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Understanding Technical Analysis
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img1.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										How To Create a Forex Trading Plan
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img2.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Introduction To Financial Markets
+									</h4>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="single-blog">
+							<div class="img">
+								<img src="{{asset('new-assets')}}/assets/images/blog/img3.png" alt="">
+							</div>
+							<div class="content">
+								<ul class="top-meta">
+									<li>
+										<p class="date">
+											21 Aug, 2019
+										</p>
+									</li>
+									<li>
+										<p class="post-by">
+											By, Admin
+										</p>
+									</li>
+								</ul>
+								<a href="training-details.html">
+									<h4 class="title">
+										Introduction To Financial Markets
+									</h4>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-8">
-						<div class="contact-form-wrapper">
-							<form>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="name">Name :</label>
-											<input type="text" class="input-field" id="name"
-												placeholder="Enter Your Name">
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="email">Email :</label>
-											<input type="text" class="input-field" id="email"
-												placeholder="Enter Your Email">
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="subjict">Subjict :</label>
-											<input type="text" class="input-field" id="subjict"
-												placeholder="Write Your Subjict">
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="phone">Phone :</label>
-											<input type="text" class="input-field" id="phone"
-												placeholder="Enter Your Phone No">
-										</div>
-									</div>
-									<div class="col-lg-12">
-										<div class="form-group button-area">
-											<label for="message">Message :</label>
-											<textarea id="message" class="input-field textarea"
-												placeholder="Write Your Message"></textarea>
-										</div>
-									</div>
-									<div class="col-lg-12">
-										<div class="form-group button-area">
-											<button type="submit" class="base-btn1">Send <i
-													class="fas fa-paper-plane"></i></button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="col-lg-4 d-flex">
-						<div class="address-area">
-							<h4 class="title">
-								Contact Information
-							</h4>
-							<ul class="address-list">
-								<li>
-									<p>
-										<i class="fas fa-map-marker-alt"></i> 28 Green Tower, Street Name New York City,
-										USA
-									</p>
+					<div class="col-12 d-flex justify-content-center">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Previous">
+										<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+									</a>
 								</li>
-								<li>
-									<p>
-										<i class="fas fa-phone"></i> +77 0123456789
-									</p>
-								</li>
-								<li>
-									<p>
-										<i class="far fa-envelope"></i>
-										contact@lendbo.com
-									</p>
-								</li>
-								<li>
-									<p>
-										<i class="fas fa-globe-americas"></i>
-										www.softio.com
-									</p>
+								<li class="page-item"><a class="page-link active" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Next">
+										<span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+									</a>
 								</li>
 							</ul>
-						</div>
+						</nav>
 					</div>
 				</div>
 			</div>
 		</section>
-		<!-- Contact Area End -->
+		<!-- Blog Page Grid Area End -->
 	</main>
-	<!-- Main Area End -->
+	<!-- Main Area End-->
 
 	<!-- Footer Area Start -->
 	<footer class="footer" id="footer">
