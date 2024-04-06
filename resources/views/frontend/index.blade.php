@@ -249,7 +249,7 @@
 
       <!--Header Area Start-->
       <header>
-          <div class="mainmenu-area" style="z-index: 9999">
+          <div class="mainmenu-area">
               <div class="container">
                   <div class="row">
                       <div class="col-lg-12">
@@ -258,59 +258,46 @@
                                   <img src="{{asset('new-assets')}}/assets/images/FX-logo.png" alt="">
                               </a>
                               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_menu"
-                                  aria-controls="main_menu" aria-expanded="false" aria-label="Toggle navigation">
+                                      aria-controls="main_menu" aria-expanded="false" aria-label="Toggle navigation">
                                   <span class="navbar-toggler-icon"></span>
                               </button>
                               <div class="collapse navbar-collapse fixed-height" id="main_menu">
                                   <ul class="navbar-nav ml-auto">
                                       <li class="nav-item">
-                                          <a class="nav-link active" href="index.html">Home
+                                          <a class="nav-link" href="{{route('home')}}">Home
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                       <li class="nav-item">
-                                          <a class="nav-link" href="#">About
+                                          <a class="nav-link active" href="{{route('about')}}">About
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                       <li class="nav-item">
-                                          <a class="nav-link" href="#">Deposit
+                                          <a class="nav-link" href="{{route('deposit')}}">Deposit
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                       <li class="nav-item">
-                                          <a class="nav-link" href="#">Training
-                                              <div class="mr-hover-effect"></div>
-                                          </a>
-                                      </li>
-                                      <!-- <li class="nav-item dropdown">
-                                                  <a class="nav-link dropdown-toggle" href="#blog-section" role="button"
-                                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                      Pages
-                                                      <div class="mr-hover-effect"></div>
-                                                  </a>
-                                                  <div class="dropdown-menu">
-                                                      <a class="dropdown-item" href="team.html">Investors</a>
-                                                      <a class="dropdown-item" href="faq.html">Faq</a>
-                                                      <a class="dropdown-item" href="signin.html">Login</a>
-                                                      <a class="dropdown-item" href="signup.html">Register</a>
-                                                      <a class="dropdown-item" href="forgot-pass.html">Forgot Password</a>
-                                                      <a class="dropdown-item" href="404.html">404</a>
-                                                  </div>
-                                              </li> -->
-                                      <li class="nav-item">
-                                          <a class="nav-link" href="#">FAQ
+                                          <a class="nav-link" href="{{route('training')}}">Training
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                       <li class="nav-item">
-                                          <a class="nav-link" href="#">Contact
+                                          <a class="nav-link" href="{{route('faq')}}">FAQ
+                                              <div class="mr-hover-effect"></div>
+                                          </a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a class="nav-link" href="{{route('contact')}}">Contact
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                   </ul>
-                                  <a href="{{ route('student.signin') }}" class="base-btn2"> Login</a>
-                                  <a href="{{ route('student.signup') }}" class="base-btn2"> Register</a>
+                                  <div class="nav-button">
+                                      <a href="{{ route('student.signin') }}" class="base-btn2"> Login</a>
+                                      <a href="{{ route('student.signup') }}" class="base-btn2"> Register</a>
+                                  </div>
                               </div>
                           </nav>
                       </div>

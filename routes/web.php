@@ -262,6 +262,9 @@ Route::get('/quran-reading-course-f-a', [PagesController::class, 'quranreadingco
 Route::get('/quranic-arabic-course-f-a', [PagesController::class, 'quranicarabiccoursefa'])->name('quranic-arabic-course-f-a');
 Route::get('/quran-memorization-course-f-a', [PagesController::class, 'quranmemorizationcoursefa'])->name('quran-memorization-course-f-a');
 Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+Route::get('/deposits', [PagesController::class, 'deposit'])->name('deposit');
+Route::get('/training', [PagesController::class, 'training'])->name('training');
+Route::get('/faq', [PagesController::class, 'faq'])->name('faq');
 Route::get('/Basics-of-Islam-Campus', [PagesController::class, 'BasicsofIslamCampus'])->name('Basics-of-Islam-Campus');
 Route::get('/Be-Part-of-Us', [PagesController::class, 'BePartofUs'])->name('Be-Part-of-Us');
 Route::get('/Donate-Us', [PagesController::class, 'DonateUs'])->name('Donate-Us');
