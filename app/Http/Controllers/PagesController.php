@@ -781,6 +781,9 @@ class PagesController extends Controller
       public function contact(){
         return view('frontend.contact');
       }
+    public function deposit(){
+        return view('frontend.deposit');
+    }
       public function support(){
         return view('frontend.support');
       }

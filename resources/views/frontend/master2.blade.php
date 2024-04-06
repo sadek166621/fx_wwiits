@@ -166,7 +166,7 @@
         <!-- Navigation -->
         <nav class="navbar sticky-header navbar-expand-lg" id="mainNav">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" style="height: 114px;width: 118px;" alt="Logo"
+                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" style="height: 80px;width: 80px;" alt="Logo"
                     ></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

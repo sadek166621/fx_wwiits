@@ -264,12 +264,12 @@
                               <div class="collapse navbar-collapse fixed-height" id="main_menu">
                                   <ul class="navbar-nav ml-auto">
                                       <li class="nav-item">
-                                          <a class="nav-link" href="{{route('home')}}">Home
+                                          <a class="nav-link active" href="{{route('home')}}">Home
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>
                                       <li class="nav-item">
-                                          <a class="nav-link active" href="{{route('about')}}">About
+                                          <a class="nav-link " href="{{route('about')}}">About
                                               <div class="mr-hover-effect"></div>
                                           </a>
                                       </li>

@@ -192,14 +192,14 @@
         <div class="row">
             <div class="col-12 col-md-5">
                 <div class="nav-background h-100">
-                    <div class="">
-                        <a href="{{ route('home') }}">
+{{--                    <div class="">--}}
+{{--                        <a href="{{ route('home') }}">--}}
 {{--                            <img class="img-fluid p-5 " src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="logo" style="width: 86%!important;margin-left: -148px;">--}}
-                        </a>                    </div>
-                    <h3 class="text-light fw-medium p-4" style="padding-top: 200px !important; ">There is an opportunity to earn <br> from the first day of learning the Forex</h3>
-                    <div class="">
-                        <img src="{{ asset('frontend') }}/images/log.png" alt="hero" class="img-fluid w-75 m-5 ">
-                    </div>
+{{--                        </a>                    </div>--}}
+{{--                    <h3 class="text-light fw-medium p-4" style="padding-top: 200px !important; ">There is an opportunity to earn <br> from the first day of learning the Forex</h3>--}}
+{{--                    <div class="">--}}
+{{--                        <img src="{{ asset('frontend') }}/images/log.png" alt="hero" class="img-fluid w-75 m-5 ">--}}
+{{--                    </div>--}}
                 </div>
             </div>
             <div class="col-12 col-md-7 p-5 p-md-0 d-flex justify-content-center align-items-center">
