@@ -249,7 +249,7 @@
 
       <!--Header Area Start-->
       <header>
-          <div class="mainmenu-area">
+          <div class="mainmenu-area" style="z-index: 9999">
               <div class="container">
                   <div class="row">
                       <div class="col-lg-12">
