@@ -440,8 +440,6 @@ class PagesController extends Controller
             return view('frontend.student-signup', compact('referal_bonus'));
         }
 
-
-
         public function refercodesignup($refer_code){
             $data['referal_bonus'] = DB::table('bonuses')->latest()->first();
             $data['refercode'] = Student::where('refer_code', $refer_code)->first();
@@ -461,12 +459,9 @@ class PagesController extends Controller
                 'refered_code' => 'required',
                  'image' => 'required',
                 'whatsapp_number' => 'required|unique:students',
-                 'email' => 'required|unique:students',
+                //  'email' => 'required|unique:students',
                 'password' => 'required|min:6',
-                'payment_method' => 'required',
-                'payment_number' => 'required',
-                'transaction_id' => 'required',
-                'payment_amount' => 'required',
+
                 // 'password_confirmation' => 'required|same:password'
             ]);
 
@@ -494,11 +489,56 @@ class PagesController extends Controller
                 ]);
             }
             else{
+
                 Toastr::error('error', 'Invalid Referred Code!', ["positionClass" => "toast-top-right"]);
                 return back();
             }
+            $currentTime = now();
+            $activationCodeLifetime = 24 * 60 * 60; // 24 hours in seconds
 
-            $student = Student::create([
+            $member = Student::where('activation_code', '=' , $request->reference_activation_code )->first();
+
+           if( $member->activation_code_generated_at ){
+            $activationCodeGeneratedTime = $member->activation_code_generated_at;
+            $timeDifference = $currentTime->diffInSeconds($activationCodeGeneratedTime);
+            if ($timeDifference <= $activationCodeLifetime) {
+                $members = Student::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'father_name' => $request->father_name,
+                    'mother_name' => $request->mother_name,
+                    'phone' => $request->whatsapp_number,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'refer_code'=>rand(10000,99999),
+                    'refered_code'=>$request->refered_code,
+                    'country_code'=>$request->country_code,
+                    'address' => $request->address,
+                    'status'=> 1,
+                    'reference_activation_code'=> $request->reference_activation_code,
+                    'joining_reason'=>$request->joining_reason,
+                    'code_user_id'=>$member->id,
+                    'payment_method'=>$request->payment_method,
+                    'payment_amount'=>$request->payment_amount,
+                    'payment_number'=>$request->payment_number,
+                    'transaction_id'=>$request->transaction_id,
+                    'image' => $target_image
+                ]);
+
+                $member->update([
+                    'activation_code'=> '' ,
+                ]);
+             }
+
+             else {
+
+                Toastr::error('error', 'Activation code has expired!', ["positionClass" => "toast-top-right"]);
+                return redirect()->back()->with('error', 'Activation code has expired.');
+            }
+           }
+           else{
+            $members = Student::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'father_name' => $request->father_name,
@@ -519,11 +559,12 @@ class PagesController extends Controller
                 'transaction_id'=>$request->transaction_id,
                 'image' => $target_image
             ]);
+           }
 
 
 
-            session::put('Rcomment', $student->refer_code);
-            session::put('thankyouId', $student->id);
+            session::put('Rcomment', $members->refer_code);
+            session::put('thankyouId', $members->id);
             $register_bonus = Student::where('refer_code', $request->refered_code)->first();
             if($register_bonus){
                 $passbook = Passbook::create([
@@ -535,8 +576,8 @@ class PagesController extends Controller
 
 
 
-            $phone = $student->country_code.$student->phone;
-            $message = 'Dear '.$student->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$student->refer_code.'. Please wait for the confirmation.' .'%0a Regards - FX WWIITS.';
+            $phone = $members->country_code.$members->phone;
+            $message = 'Dear '.$members->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$members->refer_code.'. Please wait for the confirmation.' .'%0a Regards - FX WWIITS.';
             SmsUtility::sendSMS($phone, $message);
 
             Toastr::success('student Registration successfully!', 'Please Wait For Admin Approval', ["positionClass" => "toast-top-right"]);
@@ -573,7 +614,32 @@ class PagesController extends Controller
             return back()->with('message', 'Please use valid email address');
         }
 
-}
+    }
+
+    public function activationcode(){
+
+        $member = Student::where('id', Session::get('StudentId'))->first();
+        $currentTime = now();
+        $setting = getSetting();
+        // dd($setting->reg_charge_tk);
+        if ($member  && $member->bonus >= $setting->reg_charge) {
+            $activationCode = rand(10000, 99999); // Generate the activation code
+                $member->update([
+                    'activation_code' => $activationCode,
+                    'bonus' => $member->bonus - $setting->reg_charge,
+                    'activation_code_generated_at' =>  $currentTime,
+                ]);
+                session()->flash('alert', 'Your activation code is: ' . $activationCode .  'The code will expire in 24 hours.');
+
+                // Session::put('activationCode',$activationCode );
+        }
+        else{
+            session()->flash('alert', 'Insufficient Balance to generate activation code.');
+        }
+
+        return redirect()->back();
+
+    }
 
     public function studentLogout(){
         Session::forget('StudentId');
@@ -747,6 +813,12 @@ class PagesController extends Controller
         $data['todayLeadsCount'] = Student::where('refered_code' , '=', $refer_code->refer_code )->whereDate('created_at', $today)->count();
 
         return view('frontend.reference', $data);
+      }
+
+      public function usedactivationcode(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['activations'] = Student::where( 'code_user_id', Session::get('StudentId'))->get();
+        return view('frontend.used-activation-code',$data);
       }
       public function passbook(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();

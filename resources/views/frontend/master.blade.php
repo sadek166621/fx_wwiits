@@ -1,4 +1,4 @@
-
+{{--
 <!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -327,4 +327,77 @@
   @stack('js')
 </body>
 
-</html>
+</html> --}}
+
+<!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title> FX WWIITS | Financial Deposit</title>
+      <!-- favicon -->
+      <link rel="shortcut icon" href="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" type="image/x-icon">
+      <!-- bootstrap -->
+      <link rel="stylesheet" href="{{asset('new-assets')}}/assets/css/bootstrap.min.css">
+      <!-- Plugin css -->
+      <link rel="stylesheet" href="{{asset('new-assets')}}/assets/css/plugin.css">
+      <!-- Flaticon -->
+      <link rel="stylesheet" href="{{asset('new-assets')}}/assets/css/flaticon.css">
+
+      <!-- stylesheet -->
+      <link rel="stylesheet" href="{{asset('new-assets')}}/assets/css/style.css">
+      <!-- responsive -->
+      <link rel="stylesheet" href="{{asset('new-assets')}}/assets/css/responsive.css">
+  </head>
+
+  <body>
+      <!-- preloader area start -->
+      <div class="preloader" id="preloader">
+          <div class="loader loader-1">
+              <div class="loader-outter"></div>
+              <div class="loader-inner"></div>
+          </div>
+      </div>
+      <!-- preloader area end -->
+
+      <!--Header Area Start-->
+     @include('frontend.include.header')
+      <!--Header Area Start-->
+
+      <!-- Body Area Start -->
+      @yield('content')
+      <!-- Body Area End -->
+
+      <!-- Footer Area Start -->
+      @include('frontend.include.footer')
+      <!-- Footer Area End -->
+
+      <!-- Back to Top Start -->
+      <div class="bottomtotop">
+          <i class="fas fa-chevron-right"></i>
+      </div>
+      <!-- Back to Top End -->
+
+      <!-- jquery -->
+      <script src="{{asset('new-assets')}}/assets/js/jquery.js"></script>
+      <!-- popper -->
+      <script src="{{asset('new-assets')}}/assets/js/popper.min.js"></script>
+      <!-- bootstrap -->
+      <script src="{{asset('new-assets')}}/assets/js/bootstrap.min.js"></script>
+      <!-- plugin js-->
+      <script src="{{asset('new-assets')}}/assets/js/plugin.js"></script>
+      <!-- main -->
+      <script src="{{asset('new-assets')}}/assets/js/main.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        {!! Toastr::message() !!}
+            @stack('js')
+  </body>
+
+  </html>
+

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\MoreController;
 use App\Http\Controllers\Admin\OnlineController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\ReferalbonusController;
+use App\Http\Controllers\Admin\ActivationController;
 use App\Http\Controllers\Admin\AssignedController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -178,6 +179,17 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/view/{id}',[ReferalbonusController::class, 'show'])->name('view');
 
         });
+
+        Route::group(['as' => 'activation.', 'prefix' => 'activation'], function () {
+            Route::get('/list',[ActivationController::class, 'index'])->name('list');
+            Route::get('/add',[ActivationController::class, 'create'])->name('add');
+            Route::post('/submit',[ActivationController::class, 'store'])->name('store');
+            Route::get('/edit/{id}',[ActivationController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[ActivationController::class, 'update'])->name('update');
+            Route::get('/delete/{id}',[ActivationController::class, 'destroy'])->name('delete');
+            Route::get('/view/{id}',[ActivationController::class, 'show'])->name('view');
+
+        });
         Route::group(['as' => 'assigned.', 'prefix' => 'assigned'], function () {
             Route::get('/list',[AssignedController::class, 'index'])->name('list');
             Route::get('/add',[AssignedController::class, 'create'])->name('add');
@@ -308,11 +320,13 @@ Route::get('/subadmin-schedule-logout', [PagesController::class,'subadminschedul
 Route::get('/student-enroll-courses', [PagesController::class,'studentenrollcourses'])->name('student-enroll-courses');
 
 Route::get('/reference', [PagesController::class,'reference'])->name('reference');
+Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
 Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
 Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
 Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
 Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
 Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
+Route::get('/activation-code', [PagesController::class,'activationcode'])->name('activation-code');
 
 
 Route::post('/deposit/add', [DepositController::class,'store'])->name('deposit.add');

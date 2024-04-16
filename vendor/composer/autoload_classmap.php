@@ -113,6 +113,7 @@ return array(
     'App\\Mail\\TicketCustomerReply' => $baseDir . '/app/Mail/TicketCustomerReply.php',
     'App\\Mail\\TicketMail' => $baseDir . '/app/Mail/TicketMail.php',
     'App\\Mail\\TicketMailFromFrontend' => $baseDir . '/app/Mail/TicketMailFromFrontend.php',
+    'App\\Models\\Activation' => $baseDir . '/app/Models/Activation.php',
     'App\\Models\\Admin\\Assigned' => $baseDir . '/app/Models/Admin/Assigned.php',
     'App\\Models\\Admin\\Becomeins' => $baseDir . '/app/Models/Admin/Becomeins.php',
     'App\\Models\\Admin\\Bonus' => $baseDir . '/app/Models/Admin/Bonus.php',

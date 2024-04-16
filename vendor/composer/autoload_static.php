@@ -682,6 +682,7 @@ class ComposerStaticInit81d0850e22ba2dd3f04ba0934ca2590d
         'App\\Mail\\TicketCustomerReply' => __DIR__ . '/../..' . '/app/Mail/TicketCustomerReply.php',
         'App\\Mail\\TicketMail' => __DIR__ . '/../..' . '/app/Mail/TicketMail.php',
         'App\\Mail\\TicketMailFromFrontend' => __DIR__ . '/../..' . '/app/Mail/TicketMailFromFrontend.php',
+        'App\\Models\\Activation' => __DIR__ . '/../..' . '/app/Models/Activation.php',
         'App\\Models\\Admin\\Assigned' => __DIR__ . '/../..' . '/app/Models/Admin/Assigned.php',
         'App\\Models\\Admin\\Becomeins' => __DIR__ . '/../..' . '/app/Models/Admin/Becomeins.php',
         'App\\Models\\Admin\\Bonus' => __DIR__ . '/../..' . '/app/Models/Admin/Bonus.php',

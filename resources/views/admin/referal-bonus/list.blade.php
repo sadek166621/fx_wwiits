@@ -33,7 +33,7 @@
                   @foreach ($bonus as $key => $bonus)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $bonus->amount }} Tk</td>
+                      <td>{{ $bonus->amount }} $</td>
                       <td>
                         @if ($bonus->status == 1)
                           <span class="badge bg-success">Active</span>

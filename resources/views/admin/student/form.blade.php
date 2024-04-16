@@ -5,7 +5,11 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Add New student</h1>
+        <h1>@isset($student)
+            Update Member
+            @else
+            Add New Member
+        @endisset</h1>
       </div>
 
     </div>

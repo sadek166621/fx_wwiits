@@ -1,4 +1,4 @@
-/*========	
+/*========
 
 Template Name:  FX WWIITS | Financial Investment
 Author: Sky Dream IT
@@ -6,7 +6,7 @@ Version: 1.0
 
 
 ======================
-Table of Css Content 
+Table of Css Content
 ==========*/
 /* Typography */
 /* Normalize  */
@@ -37,7 +37,7 @@ Table of Css Content
 /* Team Page Start */
 /* Signin Area Start */
 /* 404 Area Start */
-/* 
+/*
 =========================
 
 =============================
@@ -508,7 +508,7 @@ select:focus {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 9999;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   /* Chrome 10-25, Safari 5.1-6 */
   background: -webkit-moz-gradient(to bottom, #131333, #272763);

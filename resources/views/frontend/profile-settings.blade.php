@@ -28,7 +28,11 @@
             </div>
         </header>
         <!-- Page Header End -->
-
+        @if(session('alert'))
+            <script >
+                alert("{{ session('alert') }}");
+            </script>
+        @endif
         <!-- Student Profile Page Area Start -->
         <section class="student-profile-page">
             <div class="container">
@@ -58,7 +62,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#"
+                                                <a href=""
                                                     class="font-medium font-15 text-decoration-none active">Profile
                                                 </a>
                                             </li>
@@ -70,6 +74,11 @@
                                             <li>
                                                 <a href="#"
                                                     class="font-medium font-15 text-decoration-none ">Blog
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('used-activation-code') }}"
+                                                    class="font-medium font-15 text-decoration-none ">Used Activation Code
                                                 </a>
                                             </li>
                                             <li><a href="{{ route('reference') }}"
@@ -128,20 +137,25 @@
                                             </div>
 
 
-                                            <div class="row">
-
-                                                <div class="col-md-3 mb-30">
-                                                    <h5>My wallet: {{ $student->bonus}}৳</h5>
-                                                </div>
-                                                <div class="col-md-3 mb-30">
-                                                    <h5>Profit: {{ $student->bonus}}৳</h5>
-                                                </div>
-                                                <div class="col-md-3 mb-30">
-                                                    <h5>Affiliate Balance: {{ $student->bonus}}৳</h5>
-                                                </div>
-                                                <div class="col-md-3 mb-30">
-                                                    <h5>Internal Transfer: {{ $student->bonus}}৳</h5>
-                                                </div>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">My wallet</th>
+                                                            <th class="text-center">Profit</th>
+                                                            <th class="text-center">Affiliate Balance</th>
+                                                            <th class="text-center">Internal Transfer</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">${{ $student->bonus }}</td>
+                                                            <td class="text-center">${{ $student->bonus }}</td>
+                                                            <td class="text-center">${{ $student->bonus }}</td>
+                                                            <td class="text-center">${{ $student->bonus }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                                 <div class="row">
                                                     <div class="col-md-6 mb-30">
@@ -255,12 +269,16 @@
 
                                                 </div>
                                             </div>
-                                            <div class="col-12 mt-5">
+
                                                 <button type="submit"
                                                     class="theme-btn theme-button1 theme-button3 font-10 fw-bold fs-6"
-                                                    style="font-size:0.8rem !important ">Save</button>
-                                            </div>
+                                                    style="font-size:0.8rem !important ">Save
+                                                </button>
+
                                         </form>
+                                        <br>
+                                        <a href="{{ route('activation-code') }}" class="theme-btn theme-button1 theme-button3 font-10 fw-bold fs-6"
+                                        style="font-size:0.8rem !important; text-decoration: none "> Activation Code</a>
                                         <h6 class="mt-5">Your Referral Code</h6>
                                         <h4><strong>{{ $student->refer_code }}</strong></h4>
                                         <script>
@@ -286,10 +304,10 @@
                                             @csrf
                                             <h3 class="theme-btn theme-button1 theme-button3 font-15 fw-bold mt-4"
                                             onclick="myFunction()">Copy Link</h3>
-                                        <p>https://gurudigitalit.com/refer-code-sign-up/{{ $student->refer_code }}</p>
+                                        <p>http://127.0.0.1:8000/refer-code-sign-up/{{ $student->refer_code }}</p>
                                         <input type="hidden" class="referral_link"
                                             {{-- value="https://gurudigitalit.com/student-signup/{{ $student->refer_code }}"> --}}
-                                            value="https://gurudigitalit.com/refer-code-sign-up/{{ $student->refer_code }}">
+                                            value="http://127.0.0.1:8000/refer-code-sign-up/{{ $student->refer_code }}">
                                            </form>
                                         </h4>
                                     </div>

@@ -163,7 +163,7 @@
             </a>
           </li> --}}
 
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
               <p>
@@ -185,7 +185,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
             <li class="nav-item">
                 <a href="{{ route('admin.package.list') }}" class="nav-link">
                     <i class="nav-icon fas fa-tasks"></i>
@@ -194,14 +194,14 @@
                     </p>
                 </a>
             </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{ route('admin.assigned.list') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Assigned
               </p>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-item">
             <a href="{{ route('admin.referal-bonus.list') }}" class="nav-link">
               <i class="nav-icon fas fa-gift"></i>
@@ -211,10 +211,18 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('admin.activation.list') }}" class="nav-link">
+              <i class="nav-icon fas fa-toggle-on"></i>
+              <p>
+                Activation List
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('admin.student.list') }}" class="nav-link">
               <i class="nav-icon fas fa-user-graduate"></i>
               <p>
-               Student List
+               Member List
               </p>
             </a>
           </li>
@@ -222,26 +230,26 @@
             <a href="{{ route('admin.student.unactive') }}" class="nav-link">
               <i class="nav-icon fas fa-lock"></i>
               <p>
-                Inactive Student List
+                Inactive Member List
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{ route('admin.course.list') }}" class="nav-link">
               <i class="nav-icon fas fa-chalkboard"></i>
               <p>
                Courses
               </p>
             </a>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a href="{{ route('binstructor.list') }}" class="nav-link">
               <i class="nav-icon fas fa-chalkboard"></i>
               <p>
                Instructor Apply
               </p>
             </a>
-          </li>
+          </li> --}}
           {{-- <li class="nav-item">
             <a href="{{ route('admin.category.list') }}" class="nav-link">
               <i class="nav-icon fas fa-chalkboard"></i>
