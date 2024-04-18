@@ -113,8 +113,11 @@
                                                                 $interval = date_diff($origin, $target);
                                                             @endphp
                                                             <td><span id="usa_amount{{$key}}">{{ $item->amount }}</span>$</td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 {{$interval->format('%a')*$item->package->profit}}
+                                                            </td> --}}
+                                                            <td>
+                                                                {{ $item->profit_amount }}
                                                             </td>
                                                         </tr>
                                                     @endforeach

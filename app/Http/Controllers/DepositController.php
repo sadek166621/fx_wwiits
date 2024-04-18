@@ -54,9 +54,13 @@ class DepositController extends Controller
             'member_id' => $member->id,
             'package_id' => $request->package_id,
             'amount' => $request->amount,
+            'profit_amount' => $request->profit_amount,
             'status' => 1
         ]);
-        Toastr::error('Amount Deposited Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
+        $member->update([
+            'bonus'=> $member->bonus - $request->amount,
+        ]);
+        Toastr::success('Amount Deposited Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
         return redirect()->route('deposit.list');
     }
 

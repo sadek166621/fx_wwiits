@@ -26,6 +26,7 @@ use App\Models\Schedule;
 use App\Models\Division;
 use App\Models\District;
 use App\Models\Admin\Becomeins;
+use App\Models\Deposit;
 use Session;
 use DB;
 use Toastr;
@@ -485,7 +486,7 @@ class PagesController extends Controller
             $referal_code = Student::where('refer_code', $request->refered_code)->first();
             if($referal_code){
                 $referal_code->update([
-                    'bonus'=> $referal_code->bonus + $request->bonus_amount,
+                    'affiliate_balance'=> $referal_code->affiliate_balance + $request->bonus_amount,
                 ]);
             }
             else{
@@ -660,8 +661,176 @@ class PagesController extends Controller
       }
 
       public function profilesettings(){
+        $currentDate = Carbon::now();
+
+        $member = Student::where('id',Session::get('StudentId'))->first();
+
+        $deposit_member = Deposit::where('member_id', Session::get('StudentId'))->get();
+        $total_profit = 0;
+        if(count($deposit_member)> 1){
+
+            foreach($deposit_member as $deposit){
+                $lastEntryDate = $deposit->created_at;
+                $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+                if($differenceInDays > 0){
+                    $total_profit += $deposit->profit_amount * $differenceInDays;
+                }
+
+            }
+            $member->update([
+                'profit'=> $total_profit,
+             ]);
+        }
+        elseif(count($deposit_member) == 1){
+            $deposit_member = Deposit::where('member_id', Session::get('StudentId'))->first();
+            $lastEntryDate = $deposit_member->created_at;
+            $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+
+            if($differenceInDays > 0){
+                $member->update([
+                    'profit'=> $deposit_member->profit_amount * $differenceInDays,
+                 ]);
+            }
+        }
+
+        // dd($deposit_member);
+
+
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
         return view('frontend.profile-settings', $data);
+      }
+
+      public function balancetransfer(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        return view('frontend.balance-transfer',$data);
+      }
+
+
+      public function submitbalancetranfer(Request $request){
+        // dd($request);
+        $member = Student::where('id', Session::get('StudentId'))->first();
+
+        if (!$request->affiliate_balance || $request->affiliate_balance == NULL) {
+            $request->affiliate_balance = 0;
+        } else {
+            $request->affiliate_balance = 1;
+        }
+
+        if (!$request->profit || $request->profit == NULL) {
+            $request->profit = 0;
+        } else {
+            $request->profit = 1;
+        }
+
+        if (!$request->internal_transfer || $request->internal_transfer == NULL) {
+            $request->internal_transfer = 0;
+        } else {
+            $request->internal_transfer = 1;
+        }
+        // dd($request);
+        if($request->profit == 1){
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + $member->profit,
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->affiliate_balance == 1){
+            // dd($request);
+            $member->update([
+                'bonus'=>$member->bonus + $member->affiliate_balance,
+                'affiliate_balance'=>'0',
+            ]);
+        }
+
+        elseif($request->internal_transfer == 1){
+             dd($request);
+            $member->update([
+                'bonus'=>$member->bonus + $member->internal_transfer,
+                'internal_transfer'=>'0',
+            ]);
+        }
+
+        elseif($request->profit == 1 && $request->internal_transfer == 1){
+            //  dd($request);
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->internal_transfer) ,
+                'internal_transfer'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->affiliate_balance == 1){
+            // dd('ok');
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + $member->profit + $member->affiliate_balance ,
+                'affiliate_balance'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $member->update([
+                'bonus'=>$member->bonus + ($member->internal_transfer + $member->affiliate_balance) ,
+                'affiliate_balance'=>'0',
+                'internal_transfer'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->internal_transfer + $member->affiliate_balance) ,
+                'affiliate_balance'=>0,
+                'internal_transfer'=>0,
+                'profit'=> 0,
+            ]);
+        }
+
+        else{
+
+            if($request->member_id && $request->member_id != Null ){
+
+                $find = Student::where('refer_code', $request->member_id)->first();
+                    if($find){
+                        $find->update([
+                            'tranfer_balance'=>$find->tranfer_balance + $request->amount,
+                        ]);
+                       $updt = Student::where('id', Session::get('StudentId'))->first();
+                       $updt->update([
+                        'bonus'=>$updt->bonus - $request->amount,
+                       ]);
+                    }
+                    else{
+                        return back()->with('error', 'No Member ID Found');
+                    }
+
+            }
+
+
+        }
+
+        return back()->with('success','Successfully Transfer');
+
       }
 
       public function subadminsignin(){
@@ -779,7 +948,7 @@ class PagesController extends Controller
             'department_id' => $request->department_id,
         ]);
 
-        Toastr::success('Schedule Add Successfully!', 'Success', ["positionClass" => "toast-top-right"]);
+        Toastr::success('Schedule Added Successfully!', 'Success', ["positionClass" => "toast-top-right"]);
         return Back();
       }
 
@@ -965,6 +1134,12 @@ class PagesController extends Controller
           $data['student'] = Student::where('id', Session::get('StudentId'))->first();
           $data['items'] = Package::where('status', 1)->latest()->get();
           return view('frontend.deposit-package', $data);
+      }
+
+      public function depositdetails($id){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['item'] = Package::find($id);
+        return view('frontend.package-details-for-deposit',$data);
       }
 
 }

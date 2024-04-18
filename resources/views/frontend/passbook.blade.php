@@ -81,7 +81,7 @@
 
                                                     <th scope="row">{{ $key+1 }}</th>
                                                     <th>{{ $passbook->created_at }}</th>
-                                                    <td>{{ $passbook->amount }} Tk</td>
+                                                    <td>${{ $passbook->amount }}</td>
                                                     <td>{{ $passbook->comments }}</td>
                                                 </tr>
                                                 @endforeach

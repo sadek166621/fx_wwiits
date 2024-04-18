@@ -1,8 +1,6 @@
 @extends('frontend.master2')
 @section('content')
-
     <!-- Main Content Start-->
-
     <div class="bg-page">
         <!-- Page Header Start -->
         <header class="page-banner-header blank-page-banner-header gradient-bg position-relative">
@@ -21,7 +19,7 @@
                                         <ol class="breadcrumb justify-content-center">
                                             <li class="breadcrumb-item font-14"><a
                                                   class="text-decoration-none"  href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item font-14 active" aria-current="page">Deposit Package
+                                            <li class="breadcrumb-item font-14 active" aria-current="page"> Package Details
                                             </li>
                                         </ol>
                                     </nav>
@@ -88,48 +86,57 @@
                                 <!-- Student Profile Right part -->
                                 <div class="col-lg-9 p-0">
                                     <div class="student-profile-right-part">
-                                        <h6>My Packages</h6>
+                                        <h6>Package Details</h6>
                                         <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">SL</th>
-                                                    <th scope="col">Deposit Package</th>
-                                                    <th scope="col">Amount</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
                                             <tbody>
-                                                @if(count($items) > 0)
-                                                    @foreach ( $items as $key=>$item )
-                                                        <tr>
 
-                                                            <th scope="row">{{ $key+1 }}</th>
-                                                            <th>{{ $item->package_name }}</th>
-                                                            <td><span id="usa_amount{{$key}}">{{ $item->usa_amount }}</span>$</td>
-                                                            <td class="btn-group">
-                                                                <a class="btn btn-warning mx-2" style="border-radius: 7px;" href="{{ route('package.details',$item->id) }}">Details</a>
-
-                                                                <form action="{{route('deposit.add')}}" method="post" onsubmit="return checkBalance({{$key}})">
-                                                                    @csrf
-                                                                    <input type="hidden" name="package_id" value="{{$item->id}}">
-                                                                    <input type="hidden" name="amount" value="{{$item->usa_amount}}">
-                                                                    <input type="hidden" name="profit_amount" value="{{$item->profit}}">
-                                                                    <button type="submit" class="btn btn-primary">Deposit</button>
-                                                                </form>
-
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td colspan="4" class="text-center"> <strong class="text-danger">No Deposit Package Available</strong></td>
-                                                    </tr>
-                                                @endif
-
+                                                <tr>
+                                                    <th scope="row">Package Name</th>
+                                                    <td>{{ $item->package_name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Package Type</th>
+                                                    <td>
+                                                        <span id="usa_amount">
+                                                            Forex Deposit
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Deposit Amount (Dollars)</th>
+                                                    <td>
+                                                        <span id="usa_amount">
+                                                            ${{ $item->usa_amount }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Profit</th>
+                                                    <td>
+                                                        <span id="usa_amount">
+                                                            ${{ $item->profit }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Maturity Time (Days)</th>
+                                                    <td>
+                                                        <span id="usa_amount">
+                                                            {{ $item->maturity_time }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Minimum Withdrawal Time (Days)</th>
+                                                    <td>
+                                                        <span id="usa_amount">
+                                                            {{ $item->minimum_withdraw_time }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
 
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -143,22 +150,4 @@
     <!-- Main Content End-->
 
     @endsection
-@push('js')
-    <script>
-        function checkBalance(rowId) {
 
-            var balance = Number($('#balance').val());
-            var deposit_amount = Number($('#usa_amount'+rowId).text());
-                if(balance > deposit_amount){
-                    return true;
-                }
-                else{
-                    alert('You Do not Have Sufficient Balance To Deposit. Please Add Balance to Your Wallet!!'  );
-                    return false;
-                }
-        }
-
-
-
-    </script>
-@endpush

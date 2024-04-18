@@ -320,12 +320,15 @@ Route::get('/subadmin-schedule-logout', [PagesController::class,'subadminschedul
 Route::get('/student-enroll-courses', [PagesController::class,'studentenrollcourses'])->name('student-enroll-courses');
 
 Route::get('/reference', [PagesController::class,'reference'])->name('reference');
+Route::get('/balance-transfer', [PagesController::class,'balancetransfer'])->name('balance-transfer');
+Route::Post('/submit-balance-tranfer', [PagesController::class,'submitbalancetranfer'])->name('submit-balance-tranfer');
 Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
 Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
 Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
 Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
 Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
 Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
+Route::get('/package-details/{id}', [PagesController::class,'depositdetails'])->name('package.details');
 Route::get('/activation-code', [PagesController::class,'activationcode'])->name('activation-code');
 
 

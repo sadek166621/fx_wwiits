@@ -4633,7 +4633,7 @@ input[type="number"] {
 }
 .student-profile-left-part ul li a:hover, .student-profile-left-part ul li a.active {
     background-color: #F8F7FD;
-    /* color: var(--heading-color); */
+    color: var(--heading-color);
 }
 
 /* Student Profile Right css */

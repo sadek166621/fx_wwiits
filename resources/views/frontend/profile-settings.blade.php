@@ -81,6 +81,11 @@
                                                     class="font-medium font-15 text-decoration-none ">Used Activation Code
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="{{ route('balance-transfer') }}"
+                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
+                                                </a>
+                                            </li>
                                             <li><a href="{{ route('reference') }}"
                                                     class="font-medium font-15 text-decoration-none ">Reference</a></li>
                                             <li><a href="{{ route('passbook') }}"
@@ -150,9 +155,9 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="text-center">${{ $student->bonus }}</td>
-                                                            <td class="text-center">${{ $student->bonus }}</td>
-                                                            <td class="text-center">${{ $student->bonus }}</td>
-                                                            <td class="text-center">${{ $student->bonus }}</td>
+                                                            <td class="text-center">${{ $student->profit }}</td>
+                                                            <td class="text-center">${{ $student->affiliate_balance }}</td>
+                                                            <td class="text-center">${{ $student->tranfer_balance }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
