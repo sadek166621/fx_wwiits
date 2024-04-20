@@ -50,37 +50,47 @@
                                         <ul class="list-unstyled">
                                             <li>
                                                 <a href="{{route('deposit-packages')}}"
-                                                   class="font-medium font-15 text-decoration-none ">Package
+                                                    class="font-medium font-15 text-decoration-none ">Package
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{route('deposit.list')}}"
-                                                   class="font-medium font-15 text-decoration-none active">Deposit
+                                                    class="font-medium font-15 text-decoration-none active ">Deposit
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="{{ route('profile-settings') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Profile
+                                                    class="font-medium font-15 text-decoration-none ">Profile
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                   class="font-medium font-15 text-decoration-none ">Training
+                                                    class="font-medium font-15 text-decoration-none ">Training
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#"
-                                                   class="font-medium font-15 text-decoration-none ">Blog
+                                                    class="font-medium font-15 text-decoration-none ">Blog
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('used-activation-code') }}"
+                                                    class="font-medium font-15 text-decoration-none ">Used Activation Code
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('balance-transfer') }}"
+                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
                                                 </a>
                                             </li>
                                             <li><a href="{{ route('reference') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Reference</a></li>
+                                                    class="font-medium font-15 text-decoration-none ">Reference</a></li>
                                             <li><a href="{{ route('passbook') }}"
-                                                   class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
+                                                    class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
                                             <li><a href="{{ route('withdraw') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
+                                                    class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
                                             <li><a href="{{ route('password-change') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Change Password</a></li>
+                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
                                         </ul>
 
                                     </div>

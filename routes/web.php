@@ -325,6 +325,7 @@ Route::Post('/submit-balance-tranfer', [PagesController::class,'submitbalancetra
 Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
 Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
 Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
+Route::post('/submit-package-withdraw-request', [PagesController::class,'submitpackagewithdrawrequest'])->name('submit-package-withdraw-request');
 Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
 Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
 Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');

@@ -270,10 +270,25 @@
                                                             <label class="form-check-label"
                                                                 for="inlineRadio3">Others</label>
                                                         </div>
+
+
                                                     </div>
 
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-12 mb-30">
+                                                    <label class="font-medium font-15 color-heading">Withdrawal Option</label>
+                                                    <input  type="text" name="withdraw_option" value="{{ $student->withdraw_option }}"
+                                                        class="form-control" placeholder="Type Your Withdrawal Option">
+                                                </div>
+                                                <div class="col-md-12 mb-30">
+                                                    <label class="font-medium font-15 color-heading">Accounts Number</label>
+                                                    <input  type="text" name="account_number" value="{{ $student->account_number }}"
+                                                        class="form-control" placeholder="Type Your Accounts Number">
+                                                </div>
+                                            </div>
+
 
                                                 <button type="submit"
                                                     class="theme-btn theme-button1 theme-button3 font-10 fw-bold fs-6"

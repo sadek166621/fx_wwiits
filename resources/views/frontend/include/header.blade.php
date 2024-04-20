@@ -60,6 +60,10 @@
                                 <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
                                 @elseif ($route == 'passbook')
                                 <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'withdraw')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'password-change')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
                                 @else
                                 <a href="{{ route('profile-settings') }}" class="base-btn2"> My Dashboard</a>
                                 @endif

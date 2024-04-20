@@ -27,6 +27,7 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\Admin\Becomeins;
 use App\Models\Deposit;
+use App\Models\Withdrawreq;
 use Session;
 use DB;
 use Toastr;
@@ -728,7 +729,57 @@ class PagesController extends Controller
             $request->internal_transfer = 1;
         }
         // dd($request);
-        if($request->profit == 1){
+        if($request->profit == 1 && $request->internal_transfer == 1){
+            //  dd($request);
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance) ,
+                'tranfer_balance'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->affiliate_balance == 1){
+            // dd('ok');
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + $member->profit + $member->affiliate_balance ,
+                'affiliate_balance'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+
+        elseif($request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $member->update([
+                'bonus'=>$member->bonus + ($member->tranfer_balance + $member->affiliate_balance) ,
+                'affiliate_balance'=>'0',
+                'tranfer_balance'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance + $member->affiliate_balance) ,
+                'affiliate_balance'=>0,
+                'tranfer_balance'=>0,
+                'profit'=> 0,
+            ]);
+        }
+        elseif($request->profit == 1){
             $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
             foreach( $dates as $date){
                 $date->update([
@@ -749,60 +800,10 @@ class PagesController extends Controller
         }
 
         elseif($request->internal_transfer == 1){
-             dd($request);
-            $member->update([
-                'bonus'=>$member->bonus + $member->internal_transfer,
-                'internal_transfer'=>'0',
-            ]);
-        }
-
-        elseif($request->profit == 1 && $request->internal_transfer == 1){
             //  dd($request);
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
             $member->update([
-                'bonus'=>$member->bonus + ($member->profit + $member->internal_transfer) ,
-                'internal_transfer'=>'0',
-                'profit'=>'0',
-            ]);
-        }
-        elseif($request->profit == 1 && $request->affiliate_balance == 1){
-            // dd('ok');
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + $member->profit + $member->affiliate_balance ,
-                'affiliate_balance'=>'0',
-                'profit'=>'0',
-            ]);
-        }
-        elseif($request->internal_transfer == 1 && $request->affiliate_balance == 1){
-            $member->update([
-                'bonus'=>$member->bonus + ($member->internal_transfer + $member->affiliate_balance) ,
-                'affiliate_balance'=>'0',
-                'internal_transfer'=>'0',
-            ]);
-        }
-        elseif($request->profit == 1 && $request->internal_transfer == 1 && $request->affiliate_balance == 1){
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + ($member->profit + $member->internal_transfer + $member->affiliate_balance) ,
-                'affiliate_balance'=>0,
-                'internal_transfer'=>0,
-                'profit'=> 0,
+                'bonus'=>$member->bonus + $member->tranfer_balance,
+                'tranfer_balance'=>'0',
             ]);
         }
 
@@ -810,15 +811,21 @@ class PagesController extends Controller
 
             if($request->member_id && $request->member_id != Null ){
 
+                $updt = Student::where('id', Session::get('StudentId'))->first();
                 $find = Student::where('refer_code', $request->member_id)->first();
                     if($find){
-                        $find->update([
-                            'tranfer_balance'=>$find->tranfer_balance + $request->amount,
-                        ]);
-                       $updt = Student::where('id', Session::get('StudentId'))->first();
-                       $updt->update([
-                        'bonus'=>$updt->bonus - $request->amount,
-                       ]);
+                       if($updt->bonus >= $request->amount ){
+                            $find->update([
+                                'tranfer_balance'=>$find->tranfer_balance + $request->amount,
+                            ]);
+
+                            $updt->update([
+                                'bonus'=>$updt->bonus - $request->amount,
+                            ]);
+                       }
+                       else{
+                        return back()->with('error', 'Check Your Wallet Amount');
+                       }
                     }
                     else{
                         return back()->with('error', 'No Member ID Found');
@@ -878,6 +885,8 @@ class PagesController extends Controller
             'about_me'=> $request->about_me,
             'gender'=> $request->gender,
             'country_code'=>$request->country_code,
+            'withdraw_option'=>$request->withdraw_option,
+            'account_number'=>$request->account_number,
             'image' => $target_image,
             // 'status' => $request->status,
             'address' => $request->address,
@@ -995,10 +1004,33 @@ class PagesController extends Controller
 
         return view('frontend.passbook', $data);
       }
+
       public function withdraw(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['packages'] = Deposit::where('member_id', Session::get('StudentId'))->get();
         return view('frontend.withdraw',$data);
+      }
+      public function submitpackagewithdrawrequest(Request $request){
+        // dd($request);
+        $amount = Deposit::where('member_id', $request->member_id)->where('package_id',$request->packageId )->first();
+        // dd($amount);
+        if($amount->amount >= $request->amount ){
+            $withdraw = Withdrawreq::create([
+                'member_id'=> $request->member_id,
+                'package_id'=> $request->packageId,
+                'withdraw_option'=> $request->withdraw_option,
+                'account_number'=> $request->accounts_number,
+                'amount'=> $request->amount,
+                'package_name'=> $request->packageName,
+            ]);
+        }
+        else{
+            
+            return back()->with('error', 'Check Your Withdraw Request Amount');
+        }
+
+
       }
       public function passwordchange(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();

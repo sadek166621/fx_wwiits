@@ -78,6 +78,11 @@
                                                     class="font-medium font-15 text-decoration-none active ">Used Activation Code
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="{{ route('balance-transfer') }}"
+                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
+                                                </a>
+                                            </li>
                                             <li><a href="{{ route('reference') }}"
                                                     class="font-medium font-15 text-decoration-none ">Reference</a></li>
                                             <li><a href="{{ route('passbook') }}"
