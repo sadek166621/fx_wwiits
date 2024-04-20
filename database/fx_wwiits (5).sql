@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 03:33 PM
+-- Generation Time: Apr 20, 2024 at 04:48 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -316,6 +316,7 @@ CREATE TABLE `deposits` (
   `member_id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
+  `profit_amount` varchar(100) DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=>active, 2=>inactive',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -325,8 +326,8 @@ CREATE TABLE `deposits` (
 -- Dumping data for table `deposits`
 --
 
-INSERT INTO `deposits` (`id`, `member_id`, `package_id`, `amount`, `status`, `created_at`, `updated_at`) VALUES
-(1, 48, 1, '336.00', 1, '2024-04-06 07:04:34', '2024-04-06 07:04:34');
+INSERT INTO `deposits` (`id`, `member_id`, `package_id`, `amount`, `profit_amount`, `status`, `created_at`, `updated_at`) VALUES
+(8, 67, 2, '100.00', '17.00', 1, '2024-04-20 08:14:59', '2024-04-20 08:14:59');
 
 -- --------------------------------------------------------
 
@@ -517,7 +518,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (35, '2024_04_05_162034_create_packages_table', 22),
 (36, '2024_04_06_124032_create_deposits_table', 23),
 (37, '2024_04_06_124254_add_columns_to_packages_table', 24),
-(38, '2024_04_16_134937_create_activations_table', 25);
+(38, '2024_04_16_134937_create_activations_table', 25),
+(39, '2024_04_18_174347_create_transfers_table', 26),
+(40, '2024_04_20_191333_create_withdrawreqs_table', 27);
 
 -- --------------------------------------------------------
 
@@ -670,7 +673,7 @@ CREATE TABLE `packages` (
 --
 
 INSERT INTO `packages` (`id`, `package_name`, `package_type`, `description`, `usa_amount`, `bd_amount`, `maturity_time`, `minimum_withdraw_time`, `profit`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'test12', 1, NULL, '336.00', '33600.00', 730, NULL, '57.12', 1, '2024-04-06 04:37:51', '2024-04-06 04:40:15'),
+(1, 'test12', 1, NULL, '336.00', '33600.00', 730, 10, '57.12', 1, '2024-04-06 04:37:51', '2024-04-06 04:40:15'),
 (2, 'New package', 1, NULL, '100.00', '10000.00', 365, 90, '17.00', 1, '2024-04-06 08:17:24', '2024-04-06 08:17:24');
 
 -- --------------------------------------------------------
@@ -707,7 +710,9 @@ INSERT INTO `passbooks` (`id`, `student_id`, `amount`, `comments`, `created_at`,
 (33, '67', '100', 'Referral Bonus ID:64109', '2024-04-06 08:20:57', '2024-04-06 08:20:57'),
 (34, '67', '100', 'Referral Bonus ID:10295', '2024-04-15 14:18:58', '2024-04-15 14:18:58'),
 (35, '67', '10', 'Referral Bonus ID:27523', '2024-04-16 08:25:41', '2024-04-16 08:25:41'),
-(36, '67', '10', 'Referral Bonus ID:13677', '2024-04-16 09:27:40', '2024-04-16 09:27:40');
+(36, '67', '10', 'Referral Bonus ID:13677', '2024-04-16 09:27:40', '2024-04-16 09:27:40'),
+(37, '67', '10', 'Referral Bonus ID:90908', '2024-04-18 10:43:20', '2024-04-18 10:43:20'),
+(38, '67', '10', 'Referral Bonus ID:98135', '2024-04-18 13:36:57', '2024-04-18 13:36:57');
 
 -- --------------------------------------------------------
 
@@ -1018,8 +1023,13 @@ CREATE TABLE `students` (
   `payment_number` varchar(255) DEFAULT NULL,
   `transaction_id` varchar(255) DEFAULT NULL,
   `payment_amount` decimal(8,2) DEFAULT NULL,
+  `withdraw_option` varchar(100) DEFAULT NULL,
+  `account_number` varchar(100) DEFAULT NULL,
   `status` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '1=> Active, 0=>Inactive',
   `bonus` int(11) DEFAULT 0,
+  `profit` varchar(100) DEFAULT '0',
+  `affiliate_balance` varchar(100) DEFAULT '0',
+  `tranfer_balance` varchar(100) DEFAULT '0',
   `refer_code` varchar(100) DEFAULT NULL,
   `activation_code` varchar(100) DEFAULT NULL,
   `reference_activation_code` varchar(100) DEFAULT NULL,
@@ -1034,28 +1044,30 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `joining_reason`, `first_name`, `last_name`, `father_name`, `mother_name`, `phone`, `whatsapp_number`, `country_code`, `admission_year`, `email`, `password`, `image`, `address`, `country`, `state`, `city`, `postal_code`, `fb_link`, `about_me`, `gender`, `payment_method`, `payment_number`, `transaction_id`, `payment_amount`, `status`, `bonus`, `refer_code`, `activation_code`, `reference_activation_code`, `code_user_id`, `activation_code_generated_at`, `created_at`, `refered_code`, `updated_at`) VALUES
-(48, 0, 'sadek', 'sunny', NULL, NULL, '01799382933', '01799382933', NULL, NULL, 'admin@gmail.com', '$2y$10$mX7FTqxjObhN8UCzQdYF4.CGGbbX5EHsiqv1ESxTbVY75diB8RcDe', '2023-12-09-65747151a9b8d.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Male', '', '', '', '0.00', 1, 5002, '13307', NULL, NULL, NULL, NULL, '2023-12-09 12:46:55', NULL, '2024-01-27 17:32:43'),
-(49, 0, 'shuddho', 'istiak', NULL, NULL, '01478523698', '01478523698', NULL, NULL, 'shuddho@gmail.com', '$2y$10$/DyEgC25YXyNx9BH7gL1zei9EWRShqmifKXERcR44s6u9ym6p5I7G', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '32765', NULL, NULL, NULL, NULL, '2023-12-09 12:48:31', '13307', '2023-12-09 12:49:26'),
-(54, 0, 'nazmul', 'hossin', NULL, NULL, '01473652147', '01473652147', NULL, NULL, 'nazmul@gmail.com', '$2y$10$6Mxxy/e9WxYQyE6pKulBtOdRN61YgE4aHcUwCuQg.KGQxIaMUU852', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '74577', NULL, NULL, NULL, NULL, '2023-12-09 19:58:18', '13307', '2023-12-09 19:58:59'),
-(55, 0, 'Tanmoy', 'Biswas', NULL, NULL, '01303224030', '01783398398', NULL, NULL, 'tanmoybiswas2420@gmail.com', '$2y$10$vBB4JTUDeRjaw27PgRdzdeZP8lhWtoqjHzhVDuUWGs4d.6AqQlQRK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '53844', NULL, NULL, NULL, NULL, '2023-12-09 20:09:22', NULL, '2023-12-09 20:11:23'),
-(56, 0, 'Jahid', 'Hasan', NULL, NULL, '01745457430', '01745457430', NULL, NULL, 'jahid1523@gmail.com', '$2y$10$8M3VaUEyqMZe01A5fS7oxOL/xD3cG3TrcixaQ1PMRtAnNRSP.D1q.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 3, '72460', NULL, NULL, NULL, NULL, '2023-12-09 20:09:43', NULL, '2023-12-12 02:26:51'),
-(57, 0, 'rasel', 'khan', NULL, NULL, '01788987434', NULL, NULL, NULL, 'rjrasel7430@gmail.com', '$2y$10$49GczBhOu/hZ7kEfHPIIr.2S7qOpkG6hdPRfKRiQryxBpYDVrJkFW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 4, '39700', NULL, NULL, NULL, NULL, '2023-12-09 23:26:47', '72460', '2023-12-10 09:15:38'),
-(58, 0, 'Jahid', 'Hasan', NULL, NULL, '01743587272', '01743587272', '+88', NULL, 'gurudigitalit@gmail.com', '$2y$10$PzQysgGIMvBcVIA0liSIT.GGeAN5ZapNnBwfG5CoWPVB27lvtTm5a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 0, 0, '82788', NULL, NULL, NULL, NULL, '2023-12-09 23:33:38', '72460', '2023-12-09 23:33:38'),
-(59, 0, 'hasan', 'ali', NULL, NULL, '0888880528484584', '0127827848', '+88', NULL, 'rakhirasel7272@gmail.com', '$2y$10$A3If3YLh4tH9ofRPXYmO2.pgnzsnY1TlMXkatPq8U02.hU3wg..qG', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 0, 0, '91319', NULL, NULL, NULL, NULL, '2023-12-09 23:35:53', '39700', '2023-12-09 23:35:53'),
-(60, 0, 'Jahid', 'khan', NULL, NULL, '01745678635', NULL, '+88', NULL, 'rd@mail.com', '$2y$10$myQZmp/WSNH5cxrST0G5jertHtQweqateu3Vyr52kUZwzkzeGrmT6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 0, 0, '13715', NULL, NULL, NULL, NULL, '2023-12-10 07:45:51', '39700', '2023-12-10 07:45:51'),
-(61, 0, 'Sumon', 'Bangladesh', NULL, NULL, '01768660094', '01768660094', NULL, NULL, 'essumon7@gmail.com', '$2y$10$eWqeqt.9HhxZ33iCQY/RWeRgNRaxtvk5dtOrt8RsBF0d0J/cK0qaS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '21785', NULL, NULL, NULL, NULL, '2023-12-10 08:06:24', '39700', '2023-12-22 09:59:51'),
-(62, 0, 'Sumon', 'Bangladesh', NULL, NULL, '01780130905', '01768660094', NULL, NULL, 'sumon7@gmail.com', '$2y$10$bLBWl6v0IfFnguNiG6KSZutI0hMOyHTfKY4t.dLuk.Sby5pEMrpu2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '26488', NULL, NULL, NULL, NULL, '2023-12-10 09:15:38', '39700', '2023-12-10 09:19:01'),
-(63, 0, 'Rakhi', 'Khatun', NULL, NULL, '01724984459', '01724984459', NULL, NULL, 'rakhirasel@gmail.com', '$2y$10$Ya.DxVLFzniU1jrhtBhKJuulPFGmrWgvadgYfgALhMCIyIFsnZPke', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '43103', NULL, NULL, NULL, NULL, '2023-12-12 02:26:51', '72460', '2023-12-12 02:28:52'),
-(64, 0, 'Nawshad', 'Pervage', NULL, NULL, '01755352842', '01755352842', NULL, NULL, 'tushar@gmail.com', '$2y$10$Yg72LE9sgmlksGYCetqvoufwUmfIoazgiWf875uYBz4SC80FCbSEO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '45206', NULL, NULL, NULL, NULL, '2023-12-17 21:44:22', '1234', '2023-12-17 21:45:20'),
-(65, 0, 'Nawshad', 'Pervage', NULL, NULL, '01755352843', '01755352843', NULL, NULL, 'tushar1@gmail.com', '$2y$10$hHPS1/hvXdKvrBqq.41hgup5dT/EK2Rot9WPLRD7T4NqGKuZgw4dC', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 0, '86902', NULL, NULL, NULL, NULL, '2023-12-18 00:15:34', NULL, '2023-12-18 22:57:16'),
-(66, 0, 'imran', 'kkk', NULL, NULL, '01799382950', '01799382950', NULL, NULL, '10imran@gmail.com', '$2y$10$oPJ34g4BqLVXH79ad9SUzeNzsQTTkbivmssLKtuKwEm3Utxp0hr16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 5000, '23204', NULL, NULL, NULL, NULL, '2024-01-27 17:32:43', '13307', '2024-01-27 17:46:57'),
-(67, 0, 'nondo', 'k', NULL, NULL, '01478546326', '01478546325', NULL, NULL, 'nondo21@gmail.com', '$2y$10$l2/lny554NgZX.RokJSwZ.rQX4BDTSkgLZJc733.1wZ1gpc0JQFzm', '2024-04-15-661cd3001486c.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 1, 120, '59630', '452369', NULL, NULL, '2024-04-14 15:26:47', '2024-01-27 17:46:57', '23204', '2024-04-16 12:58:55'),
-(68, 1, 'Maruf', 'Hossain', NULL, NULL, '1620132641', '1620132642', NULL, NULL, 'turjo@yahoo.com', '$2y$10$RmmrjFOnmjOlABgfdgYIGe/HrgS/C37j5ZVMvvW7F8GqySM8QGu8G', '2024-04-06-66110bcd8535d.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0122345467', 'dghj585', '10.00', 1, 0, '22009', NULL, NULL, NULL, NULL, '2024-04-04 11:07:47', '1234', '2024-04-06 08:46:05'),
-(69, 1, 'Maruf', 'H', NULL, NULL, '1799382935', '1799382934', NULL, NULL, 'rony@gmail.com', '$2y$10$KSYFkMNsprmLFMXwUhrhGeaxWJWXY1RgPepXxrlsXVchjztVtjbM.', '2024-04-06-661105e9be136.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0122345467', 'dghj585', '10.00', 1, 0, '64109', NULL, NULL, NULL, NULL, '2024-04-06 08:20:57', '59630', '2024-04-15 06:28:51'),
-(70, 2, 'a', 'b', NULL, NULL, '1941440184', '1941440184', '+880', NULL, 'aaa23@gmail.com', '$2y$10$KwD1Uh8O9djwJ3nnioPfu.SUOHu3WJJTW.XOjUAXJMrbO4B7MP0wi', '2024-04-15-661d29d01f397.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '35430', NULL, '17180', '67', NULL, '2024-04-15 13:21:20', '59630', '2024-04-15 13:21:20'),
-(71, 1, 'b', 'c', NULL, NULL, '1318993210', '1318993210', '+880', NULL, 'qwe123@gmail.com', '$2y$10$I2BaaYUcIPfo5aO4F7n1p.lLxs0JLPmoFYzKE/H6cC7XkJ4hODaCm', '2024-04-15-661d37526180f.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '10295', NULL, '13189', '67', NULL, '2024-04-15 14:18:58', '59630', '2024-04-15 14:18:58'),
-(73, 1, 'aa', 'rr', NULL, NULL, '1458965412', '1458965412', '+880', NULL, 'sunny741258@gmail.com', '$2y$10$7W1uG.YlbG2mLQ4gLICLUOhhS3XX4LafTSWkHC7L64pG3ltH8vtxi', '2024-04-16-661e448cbd389.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '13677', NULL, '80249', '67', NULL, '2024-04-16 09:27:40', '59630', '2024-04-16 09:27:40');
+INSERT INTO `students` (`id`, `joining_reason`, `first_name`, `last_name`, `father_name`, `mother_name`, `phone`, `whatsapp_number`, `country_code`, `admission_year`, `email`, `password`, `image`, `address`, `country`, `state`, `city`, `postal_code`, `fb_link`, `about_me`, `gender`, `payment_method`, `payment_number`, `transaction_id`, `payment_amount`, `withdraw_option`, `account_number`, `status`, `bonus`, `profit`, `affiliate_balance`, `tranfer_balance`, `refer_code`, `activation_code`, `reference_activation_code`, `code_user_id`, `activation_code_generated_at`, `created_at`, `refered_code`, `updated_at`) VALUES
+(48, 0, 'sadek', 'sunny', NULL, NULL, '01799382933', '01799382933', NULL, NULL, 'admin@gmail.com', '$2y$10$mX7FTqxjObhN8UCzQdYF4.CGGbbX5EHsiqv1ESxTbVY75diB8RcDe', '2023-12-09-65747151a9b8d.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Male', '', '', '', '0.00', NULL, NULL, 1, 5002, NULL, NULL, NULL, '13307', NULL, NULL, NULL, NULL, '2023-12-09 12:46:55', NULL, '2024-01-27 17:32:43'),
+(49, 0, 'shuddho', 'istiak', NULL, NULL, '01478523698', '01478523698', NULL, NULL, 'shuddho@gmail.com', '$2y$10$/DyEgC25YXyNx9BH7gL1zei9EWRShqmifKXERcR44s6u9ym6p5I7G', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '32765', NULL, NULL, NULL, NULL, '2023-12-09 12:48:31', '13307', '2023-12-09 12:49:26'),
+(54, 0, 'nazmul', 'hossin', NULL, NULL, '01473652147', '01473652147', NULL, NULL, 'nazmul@gmail.com', '$2y$10$6Mxxy/e9WxYQyE6pKulBtOdRN61YgE4aHcUwCuQg.KGQxIaMUU852', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '74577', NULL, NULL, NULL, NULL, '2023-12-09 19:58:18', '13307', '2023-12-09 19:58:59'),
+(55, 0, 'Tanmoy', 'Biswas', NULL, NULL, '01303224030', '01783398398', NULL, NULL, 'tanmoybiswas2420@gmail.com', '$2y$10$vBB4JTUDeRjaw27PgRdzdeZP8lhWtoqjHzhVDuUWGs4d.6AqQlQRK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '53844', NULL, NULL, NULL, NULL, '2023-12-09 20:09:22', NULL, '2023-12-09 20:11:23'),
+(56, 0, 'Jahid', 'Hasan', NULL, NULL, '01745457430', '01745457430', NULL, NULL, 'jahid1523@gmail.com', '$2y$10$8M3VaUEyqMZe01A5fS7oxOL/xD3cG3TrcixaQ1PMRtAnNRSP.D1q.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 3, NULL, NULL, NULL, '72460', NULL, NULL, NULL, NULL, '2023-12-09 20:09:43', NULL, '2023-12-12 02:26:51'),
+(57, 0, 'rasel', 'khan', NULL, NULL, '01788987434', NULL, NULL, NULL, 'rjrasel7430@gmail.com', '$2y$10$49GczBhOu/hZ7kEfHPIIr.2S7qOpkG6hdPRfKRiQryxBpYDVrJkFW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 4, NULL, NULL, NULL, '39700', NULL, NULL, NULL, NULL, '2023-12-09 23:26:47', '72460', '2023-12-10 09:15:38'),
+(58, 0, 'Jahid', 'Hasan', NULL, NULL, '01743587272', '01743587272', '+88', NULL, 'gurudigitalit@gmail.com', '$2y$10$PzQysgGIMvBcVIA0liSIT.GGeAN5ZapNnBwfG5CoWPVB27lvtTm5a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 0, 0, NULL, NULL, NULL, '82788', NULL, NULL, NULL, NULL, '2023-12-09 23:33:38', '72460', '2023-12-09 23:33:38'),
+(59, 0, 'hasan', 'ali', NULL, NULL, '0888880528484584', '0127827848', '+88', NULL, 'rakhirasel7272@gmail.com', '$2y$10$A3If3YLh4tH9ofRPXYmO2.pgnzsnY1TlMXkatPq8U02.hU3wg..qG', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 0, 0, NULL, NULL, NULL, '91319', NULL, NULL, NULL, NULL, '2023-12-09 23:35:53', '39700', '2023-12-09 23:35:53'),
+(60, 0, 'Jahid', 'khan', NULL, NULL, '01745678635', NULL, '+88', NULL, 'rd@mail.com', '$2y$10$myQZmp/WSNH5cxrST0G5jertHtQweqateu3Vyr52kUZwzkzeGrmT6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 0, 0, NULL, NULL, NULL, '13715', NULL, NULL, NULL, NULL, '2023-12-10 07:45:51', '39700', '2023-12-10 07:45:51'),
+(61, 0, 'Sumon', 'Bangladesh', NULL, NULL, '01768660094', '01768660094', NULL, NULL, 'essumon7@gmail.com', '$2y$10$eWqeqt.9HhxZ33iCQY/RWeRgNRaxtvk5dtOrt8RsBF0d0J/cK0qaS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '21785', NULL, NULL, NULL, NULL, '2023-12-10 08:06:24', '39700', '2023-12-22 09:59:51'),
+(62, 0, 'Sumon', 'Bangladesh', NULL, NULL, '01780130905', '01768660094', NULL, NULL, 'sumon7@gmail.com', '$2y$10$bLBWl6v0IfFnguNiG6KSZutI0hMOyHTfKY4t.dLuk.Sby5pEMrpu2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '26488', NULL, NULL, NULL, NULL, '2023-12-10 09:15:38', '39700', '2023-12-10 09:19:01'),
+(63, 0, 'Rakhi', 'Khatun', NULL, NULL, '01724984459', '01724984459', NULL, NULL, 'rakhirasel@gmail.com', '$2y$10$Ya.DxVLFzniU1jrhtBhKJuulPFGmrWgvadgYfgALhMCIyIFsnZPke', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '43103', NULL, NULL, NULL, NULL, '2023-12-12 02:26:51', '72460', '2023-12-12 02:28:52'),
+(64, 0, 'Nawshad', 'Pervage', NULL, NULL, '01755352842', '01755352842', NULL, NULL, 'tushar@gmail.com', '$2y$10$Yg72LE9sgmlksGYCetqvoufwUmfIoazgiWf875uYBz4SC80FCbSEO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '45206', NULL, NULL, NULL, NULL, '2023-12-17 21:44:22', '1234', '2023-12-17 21:45:20'),
+(65, 0, 'Nawshad', 'Pervage', NULL, NULL, '01755352843', '01755352843', NULL, NULL, 'tushar1@gmail.com', '$2y$10$hHPS1/hvXdKvrBqq.41hgup5dT/EK2Rot9WPLRD7T4NqGKuZgw4dC', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '86902', NULL, NULL, NULL, NULL, '2023-12-18 00:15:34', NULL, '2023-12-18 22:57:16'),
+(66, 0, 'imran', 'kkk', NULL, NULL, '01799382950', '01799382950', NULL, NULL, '10imran@gmail.com', '$2y$10$oPJ34g4BqLVXH79ad9SUzeNzsQTTkbivmssLKtuKwEm3Utxp0hr16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', NULL, NULL, 1, 5000, NULL, NULL, NULL, '23204', NULL, NULL, NULL, NULL, '2024-01-27 17:32:43', '13307', '2024-01-27 17:46:57'),
+(67, 0, 'nondo', 'k', NULL, NULL, '01478546326', '01478546325', NULL, NULL, 'nondo21@gmail.com', '$2y$10$ZOYU6WKt2ZBEfGKOeFBPCuzgOjiQ.wsaYWVHtt/EBbAIYNxCML9Ke', '2024-04-15-661cd3001486c.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '0.00', 'Bkash', '01478523654', 1, 0, '0', '0', '0', '59630', '452369', NULL, NULL, '2024-04-14 15:26:47', '2024-01-27 17:46:57', '23204', '2024-04-20 12:23:33'),
+(68, 1, 'Maruf', 'Hossain', NULL, NULL, '1620132641', '1620132642', NULL, NULL, 'turjo@yahoo.com', '$2y$10$RmmrjFOnmjOlABgfdgYIGe/HrgS/C37j5ZVMvvW7F8GqySM8QGu8G', '2024-04-06-66110bcd8535d.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0122345467', 'dghj585', '10.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '22009', NULL, NULL, NULL, NULL, '2024-04-04 11:07:47', '1234', '2024-04-06 08:46:05'),
+(69, 1, 'Maruf', 'H', NULL, NULL, '1799382935', '1799382934', NULL, NULL, 'rony@gmail.com', '$2y$10$KSYFkMNsprmLFMXwUhrhGeaxWJWXY1RgPepXxrlsXVchjztVtjbM.', '2024-04-06-661105e9be136.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0122345467', 'dghj585', '10.00', NULL, NULL, 1, 0, NULL, NULL, NULL, '64109', NULL, NULL, NULL, NULL, '2024-04-06 08:20:57', '59630', '2024-04-15 06:28:51'),
+(70, 2, 'a', 'b', NULL, NULL, '1941440184', '1941440184', '+880', NULL, 'aaa23@gmail.com', '$2y$10$KwD1Uh8O9djwJ3nnioPfu.SUOHu3WJJTW.XOjUAXJMrbO4B7MP0wi', '2024-04-15-661d29d01f397.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, '35430', NULL, '17180', '67', NULL, '2024-04-15 13:21:20', '59630', '2024-04-15 13:21:20'),
+(71, 1, 'b', 'c', NULL, NULL, '1318993210', '1318993210', '+880', NULL, 'qwe123@gmail.com', '$2y$10$I2BaaYUcIPfo5aO4F7n1p.lLxs0JLPmoFYzKE/H6cC7XkJ4hODaCm', '2024-04-15-661d37526180f.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, '10295', NULL, '13189', '67', NULL, '2024-04-15 14:18:58', '59630', '2024-04-15 14:18:58'),
+(73, 1, 'aa', 'rr', NULL, NULL, '1458965412', '1458965412', '+880', NULL, 'sunny741258@gmail.com', '$2y$10$7W1uG.YlbG2mLQ4gLICLUOhhS3XX4LafTSWkHC7L64pG3ltH8vtxi', '2024-04-16-661e448cbd389.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, '13677', NULL, '80249', '67', NULL, '2024-04-16 09:27:40', '59630', '2024-04-16 09:27:40'),
+(74, 1, 'a', 'b', NULL, NULL, '1452369857', '1452369857', NULL, NULL, 'turjo7896@gmail.com', '$2y$10$1wvU83hygGNOff8NkMieY.Pcqj2BSP9zyqYaE4Zn9kOhixNM/Mbye', '2024-04-18-6620f948c7c84.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0186148190', 'kljfg4g', '1090.00', NULL, NULL, 1, 0, '0', '0', '140', '90908', NULL, NULL, NULL, NULL, '2024-04-18 10:43:20', '59630', '2024-04-18 13:38:17'),
+(75, 1, 'a', 'b', NULL, NULL, '0129865324', '0129865324', NULL, NULL, 'lki852@gmail.com', '$2y$10$FPBbPvJXH4KQhv8Skpp6GeKwKvFBzGGjUcvyVIpqU/AkUdc37nWzK', '2024-04-18-662121f8dd86a.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bkash', '0186148190', 'kljfg4g', '1090.00', NULL, NULL, 1, 350, '0', '0', '50', '98135', NULL, NULL, NULL, NULL, '2024-04-18 13:36:57', '59630', '2024-04-20 08:33:41');
 
 -- --------------------------------------------------------
 
@@ -1134,6 +1146,24 @@ INSERT INTO `teachers` (`id`, `name`, `username`, `department_id`, `designation`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `transfers`
+--
+
+CREATE TABLE `transfers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `transfer_type` varchar(255) DEFAULT NULL,
+  `profit` varchar(255) DEFAULT NULL,
+  `affiliate_balance` varchar(255) DEFAULT NULL,
+  `internal_transfer` varchar(255) DEFAULT NULL,
+  `member_id` varchar(255) DEFAULT NULL,
+  `amount` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -1204,6 +1234,26 @@ CREATE TABLE `user_infos` (
 
 CREATE TABLE `weeks` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `withdrawreqs`
+--
+
+CREATE TABLE `withdrawreqs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `member_id` varchar(255) DEFAULT NULL,
+  `package_id` varchar(255) DEFAULT NULL,
+  `withdraw_option` varchar(255) DEFAULT NULL,
+  `account_number` varchar(255) DEFAULT NULL,
+  `amount` varchar(255) DEFAULT NULL,
+  `package_name` varchar(255) DEFAULT NULL,
+  `admin_note` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1447,6 +1497,12 @@ ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `transfers`
+--
+ALTER TABLE `transfers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1466,6 +1522,12 @@ ALTER TABLE `user_infos`
 -- Indexes for table `weeks`
 --
 ALTER TABLE `weeks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `withdrawreqs`
+--
+ALTER TABLE `withdrawreqs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1542,7 +1604,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `deposits`
 --
 ALTER TABLE `deposits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `districts`
@@ -1566,7 +1628,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `mores`
@@ -1602,7 +1664,7 @@ ALTER TABLE `packages`
 -- AUTO_INCREMENT for table `passbooks`
 --
 ALTER TABLE `passbooks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -1656,7 +1718,7 @@ ALTER TABLE `studentregs`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `studentsignups`
@@ -1677,6 +1739,12 @@ ALTER TABLE `teachers`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
+-- AUTO_INCREMENT for table `transfers`
+--
+ALTER TABLE `transfers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -1692,6 +1760,12 @@ ALTER TABLE `user_infos`
 -- AUTO_INCREMENT for table `weeks`
 --
 ALTER TABLE `weeks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `withdrawreqs`
+--
+ALTER TABLE `withdrawreqs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
