@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Admin\Setting;
+use App\Models\Withdrawreq;
 
 function decimal2($num){
     return number_format((float)$num, 2, '.', '');
@@ -196,4 +197,9 @@ if (!function_exists('numberToText')) {
         }
         return "";
     }
+}
+function findWithdrawRequest($date){
+    // return $date;
+    $data = Withdrawreq::where('date', $date)->first();
+    return $data;
 }

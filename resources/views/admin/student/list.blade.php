@@ -19,6 +19,9 @@
         <div class="card">
           <!-- /.card-header -->
           <div class="card-body">
+                @php
+                    $route = Route::currentRouteName();
+                @endphp
             {{-- <form action="{{ route('admin.student.list') }}" method="get" class="form-inline mb-2">
               <div class="form-group mx-sm-3 mb-2">
                 <select name="department" id="department" class="form-control">
@@ -38,12 +41,22 @@
               <thead>
                 <tr>
                   <th>SL</th>
+                  @if ($route == 'admin.student.unactive')
+                  <th>First Name</th>
+                  <th>Payment Number</th>
+                  <th>Payment Option</th>
+                  <th>Transaction Number</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                  @else
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>Phone</th>
                   <th>Picture</th>
                   <th>Status</th>
                   <th>Action</th>
+                  @endif
+
                 </tr>
               </thead>
               <tbody>
@@ -51,13 +64,24 @@
                   @foreach ($students as $key => $student)
                     <tr>
                       <td>{{ $key+1 }}</td>
+
+                      @if ($route == 'admin.student.unactive')
+                      <td>{{ $student->first_name }}</td>
+                      <td>{{ $student->payment_number }}</td>
+                      <td>{{ $student->payment_method }}</td>
+                      <td>{{ $student->transaction_id }}</td>
+
+                      @else
                       <td>{{ $student->first_name }}</td>
                       <td>{{ $student->last_name }}</td>
-
                       <td>{{ $student->phone }}</td>
                       <td>
                         <img src="{{ asset('assets') }}/images/uploads/students/{{ $student->image }}" alt="student image" width="100px" height="100px">
                       </td>
+                      @endif
+
+
+
                       <td>
                         @if ($student->status == 1)
                           <span class="badge bg-success">Active</span>

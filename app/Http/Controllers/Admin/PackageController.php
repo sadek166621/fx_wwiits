@@ -37,13 +37,13 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request;
+    //    return $request;
         $request->validate([
             'package_name'  => 'required',
             'package_type'  => 'required',
             'usa_amount'    => 'required',
             'profit'        => 'required',
-            'bd_amount'     => 'required',
+            // 'bd_amount'     => 'required',
             'maturity_time' => 'required'
         ]);
 
@@ -53,15 +53,21 @@ class PackageController extends Controller
             $request->status = 1;
         }
 
-        Package::create([
+        $package = Package::create([
             'package_name'          => $request->package_name,
             'package_type'          => $request->package_type,
             'usa_amount'            => $request->usa_amount,
+            'profit_rate'           => $request->profit_rate,
             'profit'                => $request->profit,
             'bd_amount'             => $request->bd_amount,
             'status'                => $request->status,
             'maturity_time'         => $request->maturity_time,
-            'minimum_withdraw_time' => $request->minimum_withdraw_time
+            // 'minimum_withdraw_time' => $request->minimum_withdraw_time,
+            'terms'                 => $request->terms,
+        ]);
+
+        $package->update([
+        'minimum_withdraw_amount' => $request->usa_amount - ($request->usa_amount * $request->minimum_withdraw_amount /100) ,
         ]);
 
         return redirect()->route('admin.package.list');
@@ -104,7 +110,6 @@ class PackageController extends Controller
             'package_type'  => 'required',
             'usa_amount'    => 'required',
             'profit'        => 'required',
-            'bd_amount'     => 'required',
         ]);
 
         $package = Package::findOrFail($id);
@@ -119,9 +124,13 @@ class PackageController extends Controller
             'package_name'  => $request->package_name,
             'package_type'  => $request->package_type,
             'usa_amount'    => $request->usa_amount,
+            'profit_rate'   => $request->profit_rate,
             'profit'        => $request->profit,
             'bd_amount'     => $request->bd_amount,
+            'terms'         => $request->terms,
             'status'        => $request->status,
+            'minimum_withdraw_amount' => $request->usa_amount - ($request->usa_amount * $request->minimum_withdraw_amount /100) ,
+
         ]);
 
         return redirect()->route('admin.package.list');

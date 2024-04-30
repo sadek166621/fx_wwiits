@@ -42,60 +42,7 @@
                             <div class="row bg-white">
                                 <!-- Student Profile Left part -->
                                 <div class="col-lg-3 p-0">
-                                    <div class="student-profile-left-part">
-
-                                        <h6>{{ $student->first_name }} {{ $student->last_name }}</h6>
-                                        <p class="px-5 py-4">Joined as @if ($student->joining_reason == 1)
-                                            Forex Training and Affiliation
-                                            @else
-                                            Forex Training and Job
-                                        @endif</p>
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="{{route('deposit-packages')}}"
-                                                    class="font-medium font-15 text-decoration-none ">Package
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{route('deposit.list')}}"
-                                                    class="font-medium font-15 text-decoration-none ">Deposit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href=""
-                                                    class="font-medium font-15 text-decoration-none active">Profile
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Training
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Blog
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('used-activation-code') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Used Activation Code
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('balance-transfer') }}"
-                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
-                                                </a>
-                                            </li>
-                                            <li><a href="{{ route('reference') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Reference</a></li>
-                                            <li><a href="{{ route('passbook') }}"
-                                                    class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
-                                            <li><a href="{{ route('withdraw') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
-                                            <li><a href="{{ route('password-change') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
-                                        </ul>
-                                    </div>
+                                    @include('frontend.include.menu')
                                 </div>
                                 <!-- Student Profile Right part -->
                                 <div class="col-lg-9 p-0">
@@ -146,7 +93,7 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">My wallet</th>
+                                                            <th class="text-center">My Wallet</th>
                                                             <th class="text-center">Profit</th>
                                                             <th class="text-center">Affiliate Balance</th>
                                                             <th class="text-center">Internal Transfer</th>
@@ -296,9 +243,9 @@
                                                 </button>
 
                                         </form>
-                                        <br>
-                                        <a href="{{ route('activation-code') }}" class="theme-btn theme-button1 theme-button3 font-10 fw-bold fs-6"
-                                        style="font-size:0.8rem !important; text-decoration: none "> Activation Code</a>
+                                        <h6 class="mt-5">Genarate Activation Code To Activate Referred Account </h6>
+                                        <a href="{{ route('activation-code') }}" onclick="if(!confirm('Do You Want To Genarate An Activation Code?'))return false" class="theme-btn theme-button1 theme-button3 font-10 fw-bold fs-6"
+                                        style="font-size:0.8rem !important; text-decoration: none ">Genarate Activation Code</a>
                                         <h6 class="mt-5">Your Referral Code</h6>
                                         <h4><strong>{{ $student->refer_code }}</strong></h4>
                                         <script>
@@ -324,10 +271,10 @@
                                             @csrf
                                             <h3 class="theme-btn theme-button1 theme-button3 font-15 fw-bold mt-4"
                                             onclick="myFunction()">Copy Link</h3>
-                                        <p>http://127.0.0.1:8000/refer-code-sign-up/{{ $student->refer_code }}</p>
+                                        <p>https://fxwwiits.com/refer-code-sign-up/{{ $student->refer_code }}</p>
                                         <input type="hidden" class="referral_link"
                                             {{-- value="https://gurudigitalit.com/student-signup/{{ $student->refer_code }}"> --}}
-                                            value="http://127.0.0.1:8000/refer-code-sign-up/{{ $student->refer_code }}">
+                                            value="https://fxwwiits.com/refer-code-sign-up/{{ $student->refer_code }}">
                                            </form>
                                         </h4>
                                     </div>

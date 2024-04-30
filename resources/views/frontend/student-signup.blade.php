@@ -29,7 +29,7 @@
                     <div class="">
                         <a href="{{ route('home') }}"><img class="img-fluid p-5 " src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="logo" style="width: 60%!important"></a>
                     </div>
-                    <h3 class="text-light fw-medium p-4">There is an opportunity to earn <br> from the first day of learning the course</h3>
+                    <h3 class="text-light fw-medium p-4">Develop Your Trading Skills With FX WWIITS</h3>
                     <div class="">
                         <img src="{{ asset('frontend') }}/images/log.png" alt="hero" class="img-fluid w-75 m-5 ">
                     </div>
@@ -52,7 +52,7 @@
                     <form method="POST" action="{{ route('student-registration-form') }}" enctype="multipart/form-data">
                         @csrf
                         <h5 class="text-color fw-medium mb-1">Create an Account</h5>
-                        <p class="text-primary">Already have an account? <a class="text-danger" href="{{ route('student.signin') }}">Sign In</a></p>
+                        <p class="" style="color: #141435;">Already have an account? <a class=""style="color: #FFD700;" href="{{ route('student.signin') }}">Sign In</a></p>
 
                         <div class="row mt-2 mt-md-3 pt-2 pt-md-3">
                             <div class="col-md-8">
@@ -78,7 +78,7 @@
                                     <select class="form-control" name="country_code" required>
                                         <option value>Select Code</option>
                                         <option value="+1">Australia(+1)</option>
-                                        <option value="+880">Bangladesh(+880)</option>
+                                        <option value="+88">Bangladesh(+88)</option>
                                         <option value="+1">Canada(+1)</option>
                                         <option value="+91">India(+91)</option>
                                         <option value="+92">Pakistan(+92)</option>
@@ -176,8 +176,9 @@
                             </div>
                         </div>
                         <div class="row mt-2 mt-md-3 pt-2 pt-md-3">
-                            <div class="col-md-8">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Continue</button>
+                            <div class="col-md-8 mb-3">
+                                <button type="button" class="btn " style="background: #FFD700;" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Continue</button>
+                                <br>
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -240,7 +241,7 @@
                                             </div>
                                             <div class="modal-footer">
 {{--                                                <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>--}}
-                                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                                                <button type="submit" class="btn " style="background: #FFD700;">Sign Up</button>
                                             </div>
                                         </div>
                                     </div>

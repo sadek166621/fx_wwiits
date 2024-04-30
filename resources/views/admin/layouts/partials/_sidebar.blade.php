@@ -219,6 +219,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('admin.withdraw.list') }}" class="nav-link">
+              <i class="nav-icon fas fa-bell"></i>
+              <p>
+                Withdraw Request
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('admin.student.list') }}" class="nav-link">
               <i class="nav-icon fas fa-user-graduate"></i>
               <p>

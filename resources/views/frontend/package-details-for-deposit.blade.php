@@ -103,7 +103,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Deposit Amount (Dollars)</th>
+                                                    <th scope="row">Deposit Amount</th>
                                                     <td>
                                                         <span id="usa_amount">
                                                             ${{ $item->usa_amount }}
@@ -126,14 +126,14 @@
                                                         </span>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">Minimum Withdrawal Time (Days)</th>
+                                                {{-- <tr>
+                                                    <th scope="row">Minimum Time To Initiate Withdraw</th>
                                                     <td>
                                                         <span id="usa_amount">
                                                             {{ $item->minimum_withdraw_time }}
                                                         </span>
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
 
                                             </tbody>
                                         </table>

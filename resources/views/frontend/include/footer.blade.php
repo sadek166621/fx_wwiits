@@ -88,29 +88,30 @@
             <div class="col-sm-6 col-lg-4">
                 <div class="footer-widget info-link-widget">
                     <h4 class="title">
-                        Account
+                        Quick Links
                     </h4>
                     <ul class="link-list">
                         <li>
-                            <a href="#">
-                                <i class="fas fa-angle-double-right"></i>Profile
+                            <a href="{{route('home')}}">
+                                <i class="fas fa-angle-double-right"></i>Home
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fas fa-angle-double-right"></i>Settings
+                            <a href="{{route('about')}}">
+                                <i class="fas fa-angle-double-right"></i>About
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fas fa-angle-double-right"></i>Notifications
+                            <a href="{{route('deposit')}}">
+                                <i class="fas fa-angle-double-right"></i>Deposit
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fas fa-angle-double-right"></i>Belling
+                            <a href="{{route('training')}}">
+                                <i class="fas fa-angle-double-right"></i>Training
                             </a>
                         </li>
+                        
                         <li>
                             <a href="{{ route('contact') }}">
                                 <i class="fas fa-angle-double-right"></i>Contact

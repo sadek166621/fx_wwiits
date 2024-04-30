@@ -28,7 +28,7 @@
               @php $settings = getSetting() ;
               @endphp
               <input type="hidden" name="conversion_rate" id="conversion_rate" value="{{$settings->conversion_rate}}">
-              <input type="hidden" name="profit_rate" id="profit_rate" value="{{$settings->profit_rate}}">
+              {{-- <input type="hidden" name="profit_rate" id="profit_rate" value="{{$settings->profit_rate}}"> --}}
             <div class="card-body">
               <div class="form-group">
                 <label for="exampleInputEmail1">Package Name</label>
@@ -46,10 +46,14 @@
                 <label for="exampleInputEmail1">Deposit Amount (Dollars)</label>
                 <input type="text" name="usa_amount" class="form-control" id="usa_amount" placeholder="Enter Amount in Dollar" @isset($item) value="{{ $item->usa_amount }}" @else value="{{old('usa_amount')}}" @endisset>
               </div>
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label for="exampleInputEmail1">Deposit Amount (BD)</label>
                 <input type="text" name="bd_amount" class="form-control" id="bd_amount" placeholder="" @isset($item) value="{{ $item->bd_amount }}" @else value="{{old('bd_amount')}}" @endisset readonly>
-              </div>
+              </div> --}}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Profit Rate (%)</label>
+                    <input type="text" name="profit_rate" class="form-control" id="profit_rate" placeholder="" @isset($item) value="{{ $item->profit_rate }}" @else value="{{old('profit_rate')}}" @endisset >
+                </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Profit</label>
                     <input type="text" name="profit" class="form-control" id="profit" placeholder="" @isset($item) value="{{ $item->profit }}" @else value="{{old('profit')}}" @endisset readonly>
@@ -59,8 +63,12 @@
                     <input type="number" name="maturity_time" class="form-control" id="" placeholder="" @isset($item) value="{{ $item->maturity_time }}" @else value="{{old('maturity_time')}}" @endisset>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Minimum Withdrawal Time (Days)</label>
-                    <input type="number" name="minimum_withdraw_time" class="form-control" id="" placeholder="" @isset($item) value="{{ $item->minimum_withdraw_time }}" @else value="{{old('minimum_withdraw_time')}}" @endisset >
+                    <label for="exampleInputEmail1">Minimum Withdrawal Amount (%)</label>
+                    <input type="number" name="minimum_withdraw_amount" class="form-control" placeholder="" @isset($item) value="{{ $item->minimum_withdraw_amount }}" @else value="{{old('minimum_withdraw_time')}}" @endisset >
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Terms and Conditions</label>
+                    <textarea name="terms" class="form-control">@isset($item){{ $item->terms }}@endisset</textarea>
                 </div>
               <div class="form-check">
                 <input type="checkbox" name="status" class="form-check-input" id="exampleCheck1" @isset($item) @if($item->status == 1) checked @endif @else checked @endisset>
@@ -84,17 +92,17 @@
 @endsection
 @push('js')
     <script>
-        $('#usa_amount').keyup(function () {
+        $('#profit_rate').keyup(function () {
             var usa_amount = Number($('#usa_amount').val());
             if(usa_amount){
                 var convertion_rate = Number($('#conversion_rate').val());
                 var profit_rate = Number($('#profit_rate').val());
 
                 var bd_amount = usa_amount * convertion_rate;
-                bd_amount = bd_amount.toFixed(2);
+                bd_amount = bd_amount.toFixed(4);
 
-                var profit_amount = ((bd_amount * profit_rate)/100);
-                profit_amount = profit_amount.toFixed(2);
+                var profit_amount = ((usa_amount * profit_rate)/100);
+                profit_amount = profit_amount.toFixed(4);
 
                 $('#bd_amount').val(bd_amount);
                 $('#profit').val(profit_amount);
@@ -105,4 +113,27 @@
             }
         })
     </script>
+    <script>
+        $('#usa_amount').keyup(function () {
+            var usa_amount = Number($('#usa_amount').val());
+            if(usa_amount){
+                var convertion_rate = Number($('#conversion_rate').val());
+                var profit_rate = Number($('#profit_rate').val());
+
+                var bd_amount = usa_amount * convertion_rate;
+                bd_amount = bd_amount.toFixed(4);
+
+                var profit_amount = ((usa_amount * profit_rate)/100);
+                profit_amount = profit_amount.toFixed(4);
+
+                $('#bd_amount').val(bd_amount);
+                $('#profit').val(profit_amount);
+            }
+            else{
+                $('#bd_amount').val(0);
+                $('#profit').val(0);
+            }
+        })
+    </script>
+
 @endpush

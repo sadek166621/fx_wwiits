@@ -3,6 +3,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 //ADMIN CONTROLLERS
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\WithdrawalController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LocationController;
@@ -64,6 +65,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/delete/{id}', [DepartmentController::class, 'destroy'])->name('delete');
         });
 
+        Route::group(['as' => 'withdraw.', 'prefix' => 'withdraw'], function () {
+            Route::get('/list', [WithdrawalController::class, 'index'])->name('list');
+            Route::get('/add', [WithdrawalController::class, 'create'])->name('add');
+            Route::post('/submit', [WithdrawalController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [WithdrawalController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [WithdrawalController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [WithdrawalController::class, 'destroy'])->name('delete');
+        });
+
         Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function () {
             Route::get('/list', [TeacherController::class, 'index'])->name('list');
             Route::get('/add', [TeacherController::class, 'create'])->name('add');
@@ -76,7 +86,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::group(['as' => 'student.', 'prefix' => 'student'], function () {
             Route::get('/list', [StudentController::class, 'index'])->name('list');
             Route::get('/add', [StudentController::class, 'create'])->name('add');
-            Route::get('/unactive', [StudentController::class, 'unactive'])->name('unactive');
+            Route::get('/inactive', [StudentController::class, 'unactive'])->name('unactive');
             Route::post('/submit', [StudentController::class, 'store'])->name('store');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [StudentController::class, 'update'])->name('update');
@@ -133,6 +143,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/edit', [DashboardController::class, 'site_edit'])->name('edit');
             Route::post('/update/{id}', [DashboardController::class, 'site_update'])->name('update');
         });
+
         Route::group(['as' => 'about.', 'prefix' => 'about'], function () {
             Route::get('/edit', [AboutController::class, 'site_edit'])->name('edit');
             Route::post('/update/{id}', [AboutController::class, 'site_update'])->name('update');
@@ -239,6 +250,9 @@ Route::get('/app/get-gateway/{id}', [DashboardController::class, 'getGateway'])-
 
 //Front END
 Route::get('/', [PagesController::class, 'index'])->name('home');
+
+Route::get('sms-test', [PagesController::class, 'sms'])->name('sms-test');
+
 Route::get('/vice-principal-message', [PagesController::class, 'vicePrincipalMessage'])->name('vicePrincipalMessage');
 Route::get('/principal-message', [PagesController::class, 'principalMessage'])->name('principalMessage');
 Route::get('/faculties', [PagesController::class, 'teacher'])->name('teacher.list');
@@ -301,10 +315,10 @@ Route::get('/logout', [PagesController::class, 'logout'])->name('logout');
 // Route::get('/division-district/ajax/{division_id}',[PagesController::class,'getdivision'])->name('division.ajax');
 
 
-Route::get('/student-signin', [PagesController::class,'studentsignin'])->name('student.signin');
+Route::get('/member-signin', [PagesController::class,'studentsignin'])->name('student.signin');
 Route::get('/admin-signin', [PagesController::class,'adminsignin'])->name('admin.signin');
 Route::get('/sub-admin-signin', [PagesController::class,'subadminsignin'])->name('sub.admin.signin');
-Route::get('/student-signup', [PagesController::class,'studentsignup'])->name('student.signup');
+Route::get('/member-signup', [PagesController::class,'studentsignup'])->name('student.signup');
 Route::get('/student-dashboard', [PagesController::class,'studentdashboard'])->name('student.dashboard');
 Route::Post('/student-submit-form', [PagesController::class,'studentsubmitform'])->name('student.submit.form');
 Route::get('/course', [PagesController::class,'course'])->name('course');
@@ -325,16 +339,20 @@ Route::Post('/submit-balance-tranfer', [PagesController::class,'submitbalancetra
 Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
 Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
 Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
+// Route::get('/training', [PagesController::class,'training'])->name('training');
 Route::post('/submit-package-withdraw-request', [PagesController::class,'submitpackagewithdrawrequest'])->name('submit-package-withdraw-request');
 Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
 Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
 Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
 Route::get('/package-details/{id}', [PagesController::class,'depositdetails'])->name('package.details');
 Route::get('/activation-code', [PagesController::class,'activationcode'])->name('activation-code');
+Route::get('/genarate-activation-code', [PagesController::class,'genarateactivationcode'])->name('genarate-activation-code');
+Route::get('/delete-activation-code/{id}', [PagesController::class,'deleteactivationcode'])->name('delete-activation-code');
 
 
 Route::post('/deposit/add', [DepositController::class,'store'])->name('deposit.add');
 Route::get('/deposit/list', [DepositController::class,'index'])->name('deposit.list');
+Route::get('/deposit/profit/history/{id}', [DepositController::class,'profithistory'])->name('deposit.profit.history');
 
 
 Route::post('/add-schedule', [PagesController::class,'addschedule'])->name('add.schedule');

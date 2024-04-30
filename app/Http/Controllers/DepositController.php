@@ -30,6 +30,15 @@ class DepositController extends Controller
         }
     }
 
+    public function profithistory($id){
+        $member = Student::where('id', Session::get('StudentId'))->first();
+        $data['deposit'] = Deposit::findOrFail($id);
+        $data['student'] = $member;
+        // dd($data);
+
+        return view('frontend.deposit-profit-history',$data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

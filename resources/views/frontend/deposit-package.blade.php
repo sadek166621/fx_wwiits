@@ -21,7 +21,7 @@
                                         <ol class="breadcrumb justify-content-center">
                                             <li class="breadcrumb-item font-14"><a
                                                   class="text-decoration-none"  href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item font-14 active" aria-current="page">Deposit Package
+                                            <li class="breadcrumb-item font-14 active" aria-current="page">Package
                                             </li>
                                         </ol>
                                     </nav>
@@ -44,62 +44,13 @@
                             <div class="row bg-white">
                                 <!-- Student Profile Left part -->
                                 <div class="col-lg-3 p-0">
-                                    <div class="student-profile-left-part">
-                                        <input type="hidden" name="" id="balance" value="{{$student->bonus}}">
-                                        <h6>{{ $student->first_name }} {{ $student->last_name }}</h6>
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="{{route('deposit-packages')}}"
-                                                    class="font-medium font-15 text-decoration-none active ">Package
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{route('deposit.list')}}"
-                                                    class="font-medium font-15 text-decoration-none ">Deposit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('profile-settings') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Profile
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Training
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Blog
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('used-activation-code') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Used Activation Code
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('balance-transfer') }}"
-                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
-                                                </a>
-                                            </li>
-                                            <li><a href="{{ route('reference') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Reference</a></li>
-                                            <li><a href="{{ route('passbook') }}"
-                                                    class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
-                                            <li><a href="{{ route('withdraw') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
-                                            <li><a href="{{ route('password-change') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
-                                        </ul>
-
-                                    </div>
+                                    @include('frontend.include.menu')
                                 </div>
                                 <!-- Student Profile Right part -->
                                 <div class="col-lg-9 p-0">
                                     <div class="student-profile-right-part">
                                         <h6>My Packages</h6>
-                                        <table class="table">
+                                        <table class="table table-responsive">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">SL</th>
@@ -123,8 +74,28 @@
                                                                     @csrf
                                                                     <input type="hidden" name="package_id" value="{{$item->id}}">
                                                                     <input type="hidden" name="amount" value="{{$item->usa_amount}}">
+                                                                    <input type="hidden" name="" id="balance" value="{{$student->bonus}}">
                                                                     <input type="hidden" name="profit_amount" value="{{$item->profit}}">
-                                                                    <button type="submit" class="btn btn-primary">Deposit</button>
+                                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{$item->id}}">Deposit</button>
+
+                                                                    <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                          <div class="modal-content" style="position: relative;top: 84px;">
+                                                                            <div class="">
+                                                                              {{-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> --}}
+                                                                              <button type="button" class="close mx-3" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                              </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="checkbox" required > Lorem ipsum dolor sit, amet consectetur adipisicing elit. In harum nihil blanditiis eum corrupti, sunt cupiditate beatae odio tempora doloremque laborum ullam autem, consequatur dicta, vero minima reprehenderit quis! Nobis.
+                                                                            </div>
+                                                                            <div class="">
+                                                                              <button type="submit" class="btn btn-primary mb-3 mx-4 float-right">Submit</button>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
                                                                 </form>
 
                                                             </td>
@@ -159,7 +130,7 @@
 
             var balance = Number($('#balance').val());
             var deposit_amount = Number($('#usa_amount'+rowId).text());
-                if(balance > deposit_amount){
+                if(balance >= deposit_amount){
                     return true;
                 }
                 else{

@@ -32,7 +32,7 @@
 
 
   <!--<title>Guru Digital It - Home</title>-->
-  <title>Guru Digital It - Home</title>
+  <title>FXWWIITS - Home</title>
 
   <!--=======================================
           All Css Style link

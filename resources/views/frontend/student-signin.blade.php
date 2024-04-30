@@ -29,7 +29,7 @@
                     <div class="">
                         <a href="{{ route('home') }}"><img class="img-fluid p-5 " src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="logo" style="width: 60%!important"></a>
                     </div>
-                    <h3 class="text-light fw-medium p-4">There is an opportunity to earn <br> from the first day of learning the course</h3>
+                    <h3 class="text-light fw-medium p-4">Made $70,000 in 1 year after FX WWIITS training.</h3>
                     <div class="">
                         <img src="{{ asset('frontend') }}/images/log.png" alt="hero" class="img-fluid w-75 m-5 ">
                     </div>
@@ -38,7 +38,7 @@
             <div class="col-12 col-md-7 p-5 p-md-0 p-lg-5">
                 <div class="col-md-8 mt-3 mt-md-4 pt-3 pt-md-4">
                     <h3 class="text-color fw-medium">Sign In</h3>
-                    <p class="text-primary">New User ? <a class="text-danger" href="{{ route('student.signup') }}">Create an Account</a></p>
+                    <p class="" style="color: #141435;">New User ? <a class="" style="color: #FFD700;" href="{{ route('student.signup') }}">Create an Account</a></p>
                 </div>
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -67,7 +67,7 @@
 
                 <div class="row mt-2 mt-md-3 pt-2 pt-md-3">
                     <div class="col-md-8">
-                        <button type="submit" class="btn btn-danger fw-bold w-100 my-2 p-2 bg-opacity-50">Sign In</button>
+                        <button type="submit" class="btn fw-bold w-100 my-2 p-2 bg-opacity-50" style="background: #FFD700;">Sign In</button>
                     </div>
                     {{-- <div class="col-md-8">
                         <button type="submit" class="btn bg-danger bg-opacity-75 text-light fw-bold w-100 my-2 p-2 ">Sign in with Google</button>

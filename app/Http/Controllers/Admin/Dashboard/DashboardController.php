@@ -183,6 +183,9 @@ class DashboardController extends Controller
                 'contact' => $request->contact,
                 'message_from_1' =>$request->message_from_1,
                 'message_from_2' =>$request->message_from_2,
+                'reg_charge' =>$request->reg_charge,
+                'reg_charge_tk' =>$request->reg_charge_tk,
+                'conversion_rate' =>$request->conversion_rate,
             ]);
 
             $logo = $setting->site_logo;

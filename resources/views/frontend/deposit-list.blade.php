@@ -21,7 +21,7 @@
                                         <ol class="breadcrumb justify-content-center">
                                             <li class="breadcrumb-item font-14"><a
                                                   class="text-decoration-none"  href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item font-14 active" aria-current="page">PassBook
+                                            <li class="breadcrumb-item font-14 active" aria-current="page">Deposit
                                             </li>
                                         </ol>
                                     </nav>
@@ -44,62 +44,13 @@
                             <div class="row bg-white">
                                 <!-- Student Profile Left part -->
                                 <div class="col-lg-3 p-0">
-                                    <div class="student-profile-left-part">
-                                        <input type="hidden" name="" id="balance" value="{{$student->bonus}}">
-                                        <h6>{{ $student->first_name }} {{ $student->last_name }}</h6>
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="{{route('deposit-packages')}}"
-                                                    class="font-medium font-15 text-decoration-none ">Package
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{route('deposit.list')}}"
-                                                    class="font-medium font-15 text-decoration-none active ">Deposit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('profile-settings') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Profile
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Training
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="font-medium font-15 text-decoration-none ">Blog
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('used-activation-code') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Used Activation Code
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('balance-transfer') }}"
-                                                    class="font-medium font-15 text-decoration-none "> Balance Transfer
-                                                </a>
-                                            </li>
-                                            <li><a href="{{ route('reference') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Reference</a></li>
-                                            <li><a href="{{ route('passbook') }}"
-                                                    class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
-                                            <li><a href="{{ route('withdraw') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
-                                            <li><a href="{{ route('password-change') }}"
-                                                    class="font-medium font-15 text-decoration-none ">Change Password</a></li>
-                                        </ul>
-
-                                    </div>
+                                    @include('frontend.include.menu')
                                 </div>
                                 <!-- Student Profile Right part -->
                                 <div class="col-lg-9 p-0">
                                     <div class="student-profile-right-part">
                                         <h6>My Deposits</h6>
-                                        <table class="table">
+                                        <table class="table table-responsive">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">SL</th>
@@ -107,6 +58,7 @@
                                                     <th scope="col">Package</th>
                                                     <th scope="col">Amount</th>
                                                     <th scope="col">Profit</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -122,12 +74,15 @@
                                                                 $target = date_create(date('Y-m-d'));
                                                                 $interval = date_diff($origin, $target);
                                                             @endphp
-                                                            <td><span id="usa_amount{{$key}}">{{ $item->amount }}</span>$</td>
+                                                            <td><span id="usa_amount{{$key}}">${{ $item->amount }}</span></td>
                                                             {{-- <td>
                                                                 {{$interval->format('%a')*$item->package->profit}}
                                                             </td> --}}
                                                             <td>
-                                                                {{ $item->profit_amount }}
+                                                                ${{ $item->profit_amount }}
+                                                            </td>
+                                                            <td>
+                                                                <a class="btn btn-primary mx-2" style="border-radius: 7px;" href="{{ route('deposit.profit.history',$item->id) }}">Profit History</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach
