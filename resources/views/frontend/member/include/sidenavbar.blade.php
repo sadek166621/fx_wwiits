@@ -84,6 +84,12 @@
                             <span>Balance Transfer</span>
                         </a>
                     </li>
+                    <li class="{{$route == 'balance.transfer.list' ? 'active':''}}">
+                        <a href="{{ route('balance.transfer.list') }}">
+                            <i data-feather="dollar-sign"></i>
+                            <span>Balance Transfer History</span>
+                        </a>
+                    </li>
                     <li class="{{$route == 'reference' ? 'active':''}}">
                         <a href="{{ route('reference') }}">
                             <i data-feather="file-text"></i>

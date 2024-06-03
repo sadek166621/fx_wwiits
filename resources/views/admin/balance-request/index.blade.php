@@ -26,6 +26,15 @@
             </div>
             <div class="col-sm-6">
                 <h1>Fund Requests</h1>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
 {{--            <div class="col-sm-6">--}}
 {{--                <a href="{{ route('admin.package.add') }}" class="btn btn-info float-right">Add New</a>--}}
@@ -79,12 +88,44 @@
                                 @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.fund.request.change-status')))
                                 <td>
                                     <a class="btn btn-primary" onclick="setStatus(1)"><i class="fas fa-check-circle"></i> Approve</a>
-                                    <a class="btn btn-danger" onclick="setStatus(2)"><i class="fas fa-trash"></i> Reject</a>
-                                    <form action="{{route('admin.fund.request.change-status')}}" id="changeStatusForm" method="post">
-                                        @csrf
-                                        <input type="hidden" name="id" id="" value="{{$item->id}}">
-                                        <input type="hidden" name="status" id="status" value="">
-                                    </form>
+                                    <a class="btn btn-danger" onclick="setStatus(2)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-trash"></i> Reject</a>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Reason For Rejection</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="{{route('admin.fund.request.change-status')}}" id="changeStatusForm" method="post">
+                                                    @csrf
+                                                <div class="modal-body">
+                                                    <!-- /.container-fluid -->
+
+                                                        <input type="hidden" name="id" id="" value="{{$item->id}}">
+                                                        <input type="hidden" name="rejection_reason" id="rejection_reason" value="{{$item->id}}">
+                                                        <input type="hidden" name="status" id="status" value="">
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-12 form-group">
+                                                                <label for="" class="form-control-label">Reason</label>
+                                                                <textarea
+                                                                    name="comment" id="reason" cols="30" rows="10" class="form-control" required></textarea>
+                                                            </div>
+                                                        </div>
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" id="rejectBtn" class="btn btn-primary">Submit</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </td>
                                 @endif
                             </tr>
@@ -103,14 +144,17 @@
         </div>
         <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
+
 </section>
 @endsection
 @push('js')
     <script>
         function setStatus(val) {
             $('#status').val(val);
-            $('#changeStatusForm').submit();
+            if(val == 1){
+                $('#changeStatusForm').submit();
+            }
         }
+
     </script>
 @endpush

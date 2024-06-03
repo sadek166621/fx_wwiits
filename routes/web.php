@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\Admin\DepositReferralBonusController;
+use App\Http\Controllers\BalanceTransferController;
 
 //Front END
 Route::get('/', [PagesController::class, 'index'])->name('home');
@@ -295,9 +296,10 @@ Route::middleware('member')->group(function () {
     Route::get('/balance/add', [BalanceController::class,'create'])->name('money.add');
     Route::post('/balance/add/submit', [BalanceController::class,'store'])->name('money.add.submit');
     Route::get('balance/history', [BalanceController::class, 'history'])->name('money.add.list');
+    Route::get('balance/transfer/history', [BalanceTransferController::class, 'index'])->name('balance.transfer.list');
     Route::get('/reference', [PagesController::class,'reference'])->name('reference');
     Route::get('/balance-transfer', [PagesController::class,'balancetransfer'])->name('balance-transfer');
-    Route::Post('/submit-balance-tranfer', [PagesController::class,'submitbalancetranfer'])->name('submit-balance-tranfer');
+    Route::Post('/submit-balance-transfer', [PagesController::class,'submitbalancetranfer'])->name('submit-balance-tranfer');
     Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
     Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
     Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');

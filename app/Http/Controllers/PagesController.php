@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin\Bonus;
 use App\Models\Admin\DepostReturn;
 use App\Models\Admin\Package;
+use App\Models\BalanceTransfer;
 use App\Models\DepositProfit;
 use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
@@ -556,7 +557,7 @@ class PagesController extends Controller
 
 
       public function submitbalancetranfer(Request $request){
-        // dd($request);
+
         $member = Student::where('id', Session::get('StudentId'))->first();
 
         if (!$request->affiliate_balance || $request->affiliate_balance == NULL) {
@@ -576,113 +577,91 @@ class PagesController extends Controller
         } else {
             $request->internal_transfer = 1;
         }
-        // dd($request);
-        if($request->profit == 1 && $request->internal_transfer == 1){
-            //  dd($request);
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance) ,
-                'tranfer_balance'=>'0',
-                'profit'=>'0',
-            ]);
-        }
-        elseif($request->profit == 1 && $request->affiliate_balance == 1){
-            // dd('ok');
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + $member->profit + $member->affiliate_balance ,
-                'affiliate_balance'=>'0',
-                'profit'=>'0',
-            ]);
-        }
 
-        elseif($request->internal_transfer == 1 && $request->affiliate_balance == 1){
-            $member->update([
-                'bonus'=>$member->bonus + ($member->tranfer_balance + $member->affiliate_balance) ,
-                'affiliate_balance'=>'0',
-                'tranfer_balance'=>'0',
-            ]);
-        }
-        elseif($request->profit == 1 && $request->internal_transfer == 1 && $request->affiliate_balance == 1){
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance + $member->affiliate_balance) ,
-                'affiliate_balance'=>0,
-                'tranfer_balance'=>0,
-                'profit'=> 0,
-            ]);
-        }
-        elseif($request->profit == 1){
-            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
-            foreach( $dates as $date){
-                $date->update([
-                    'created_at'=> Carbon::now(),
-                ]);
-            }
-            $member->update([
-                'bonus'=>$member->bonus + $member->profit,
-                'profit'=>'0',
-            ]);
-        }
-        elseif($request->affiliate_balance == 1){
-            // dd($request);
-            $member->update([
-                'bonus'=>$member->bonus + $member->affiliate_balance,
-                'affiliate_balance'=>'0',
-            ]);
-        }
+      if($request->profit == 1 || $request->affiliate_balance == 1 || $request->internal_transfer == 1){
+          if($request->profit == 1 || $request->affiliate_balance == 1){
+              $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+              foreach( $dates as $date){
+                  $date->update([
+                      'created_at'=> Carbon::now(),
+                  ]);
+              }
+          }
 
-        elseif($request->internal_transfer == 1){
-            //  dd($request);
-            $member->update([
-                'bonus'=>$member->bonus + $member->tranfer_balance,
-                'tranfer_balance'=>'0',
-            ]);
-        }
-
-        else{
-
-            if($request->member_id && $request->member_id != Null ){
-
-                $updt = Student::where('id', Session::get('StudentId'))->first();
-                $find = Student::where('refer_code', $request->member_id)->first();
-                    if($find){
-                       if($updt->bonus >= $request->amount ){
-                            $find->update([
-                                'tranfer_balance'=>$find->tranfer_balance + $request->amount,
-                            ]);
-
-                            $updt->update([
-                                'bonus'=>$updt->bonus - $request->amount,
-                            ]);
-                       }
-                       else{
-                        return back()->with('error', 'Check Your Wallet Amount');
-                       }
-                    }
-                    else{
-                        return back()->with('error', 'No Member ID Found');
-                    }
-
-            }
+          if($request->internal_transfer == 1){
+              BalanceTransfer::create([
+                  'member_id'       => $member->id,
+                  'transfer_type'   => 1,
+                  'amount'          => $member->tranfer_balance,
+                  'transfer_from'   => 3
+              ]);
+              $member->update([
+                  'bonus'=>$member->bonus + $member->tranfer_balance ,
+                  'tranfer_balance'=>'0',
+              ]);
 
 
-        }
+          }
+          if($request->affiliate_balance == 1 ){
+              BalanceTransfer::create([
+                  'member_id'       => $member->id,
+                  'transfer_type'   => 1,
+                  'amount'          => $member->affiliate_balance,
+                  'transfer_from'   => 2
+              ]);
+              $member->update([
+                  'bonus'=>$member->bonus + $member->affiliate_balance  ,
+                  'affiliate_balance'=>0,
+              ]);
+
+
+          }
+          if($request->profit == 1){
+              BalanceTransfer::create([
+                  'member_id'       => $member->id,
+                  'transfer_type'   => 1,
+                  'amount'          => $member->profit,
+                  'transfer_from'   => 1
+              ]);
+              $member->update([
+                  'bonus'=>$member->bonus + $member->profit,
+                  'profit'=>'0',
+              ]);
+
+          }
+      }
+
+      elseif($request->member_id && $request->member_id != Null ){
+
+          $updt = Student::where('id', Session::get('StudentId'))->first();
+          $find = Student::where('refer_code', $request->member_id)->first();
+          if($find){
+              if($updt->bonus >= $request->amount ){
+                  $find->update([
+                      'tranfer_balance'=>$find->tranfer_balance + $request->amount,
+                  ]);
+
+                  $updt->update([
+                      'bonus'=>$updt->bonus - $request->amount,
+                  ]);
+
+                  BalanceTransfer::create([
+                      'member_id' => $member->id,
+                      'transfer_type' => 2,
+                      'amount' => $request->amount,
+                      'transferred_to' => $find->id,
+                      'transfer_from' => 0
+                  ]);
+              }
+              else{
+                  return back()->with('error', 'Check Your Wallet Amount');
+              }
+          }
+          else{
+              return back()->with('error', 'No Member ID Found');
+          }
+
+      }
 
         return back()->with('success','Successfully Transfer');
 

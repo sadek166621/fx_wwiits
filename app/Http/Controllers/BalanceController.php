@@ -46,7 +46,7 @@ class BalanceController extends Controller
         }
         else{
             $data['student'] = Student::where('id',Session::get('StudentId'))->first();
-            $data['items'] = Balance::where('member_id', Session::get('StudentId'))->where('status', 1)->latest()->get();
+            $data['items'] = Balance::where('member_id', Session::get('StudentId'))->where('status', '!=', 0)->latest()->get();
             // return $data;
             return view('frontend.balance-add-history', $data);
         }
@@ -100,17 +100,21 @@ class BalanceController extends Controller
 
     public function changeStatus(Request $request)
     {
-//        return $request;
+        $comment = null;
         $balance_request = Balance::findOrFail($request->id);
-//        return $balance_request;
-
         $member = Student::find($balance_request->member_id);
-        $new_amount = $member->bonus + $balance_request->amount;
-//        return $member;
+        if($request->status == 2){
+            $request->validate([
+                'comment'=> ['required']
+            ]);
+            $comment = $request->comment;
+        }
         $balance_request->update([
             'status' => $request->status,
+            'comment' => $comment,
         ]);
         if($request->status == 1){
+            $new_amount = $member->bonus + $balance_request->amount;
             $member->update([
                 'bonus' => $new_amount,
             ]);
