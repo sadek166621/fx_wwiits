@@ -17,7 +17,7 @@ class ReferalbonusController extends Controller
      */
     public function index()
     {
-        $data['bonus'] = Bonus::latest()->get();
+        $data['bonus'] = Bonus::where('bonus_type', 'instant_bonus')->first();
 
         return view('admin.referal-bonus.list', $data);
     }
@@ -98,21 +98,28 @@ class ReferalbonusController extends Controller
     public function update(Request $request, $id)
     {
         $Bonus = Bonus::findOrFail($id);
+//        return $Bonus;
 
         if($Bonus){
             $validated = $request->validate([
-                'amount' => 'required',
+                'first_gen' => 'required',
+                'second_gen' => 'required',
+                'third_gen' => 'required',
+                'fourth_gen' => 'required',
             ]);
 
-            if (!$request->status || $request->status == NULL) {
-                $request->status = 0;
-            } else {
-                $request->status = 1;
-            }
+//            if (!$request->status || $request->status == NULL) {
+//                $request->status = 0;
+//            } else {
+//                $request->status = 1;
+//            }
 
             $Bonus->update([
-                'amount' => $request->amount,
-                'status' => $request->status
+                'first_gen' => $request->first_gen,
+                'second_gen' => $request->second_gen,
+                'third_gen' => $request->third_gen,
+                'fourth_gen' => $request->fourth_gen,
+                'status' => 1
             ]);
 
             Toastr::success('Referal Bonus added successfully!', 'Success', ["positionClass" => "toast-top-right"]);

@@ -6,6 +6,15 @@
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1>Add New Staff</h1>
+          @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
       </div>
 
     </div>
@@ -30,36 +39,42 @@
                 <label for="exampleInputEmail1">Name</label>
                 <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter title" @isset($staff) value="{{ $staff->name }}" @endisset required>
               </div>
-              <div class="col-sm-12">
-                <div class="col-sm-6" style="float: left">
-                  <div class="form-group">
-                    <label for="location_id">Location</label>
-                    <select class="form-control" name="location_id" id="location_id" required>
-                      <option value="">--Select Location--</option>
-                      @foreach ($locations as $location)
-                        @isset($staff)
-                          <option value="{{ $location->id }}" @if($staff->location_id == $location->id) selected @endif>{{ $location->name }}</option>
-                        @else
-                          <option value="{{ $location->id }}">{{ $location->name }}</option>
-                        @endisset
-                      @endforeach
-                    </select>
+{{--              <div class="col-sm-12">--}}
+{{--                <div class="col-sm-6" style="float: left">--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="location_id">Location</label>--}}
+{{--                    <select class="form-control" name="location_id" id="location_id" required>--}}
+{{--                      <option value="">--Select Location--</option>--}}
+{{--                      @foreach ($locations as $location)--}}
+{{--                        @isset($staff)--}}
+{{--                          <option value="{{ $location->id }}" @if($staff->location_id == $location->id) selected @endif>{{ $location->name }}</option>--}}
+{{--                        @else--}}
+{{--                          <option value="{{ $location->id }}">{{ $location->name }}</option>--}}
+{{--                        @endisset--}}
+{{--                      @endforeach--}}
+{{--                    </select>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-sm-6" style="float: left">--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">Desigantion</label>--}}
+{{--                    <input type="text" name="designation" class="form-control" id="exampleInputEmail1" placeholder="Enter designation" @isset($staff) value="{{ $staff->designation }}" @endisset required>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+              <div class="row">
+{{--                <div class="col-sm-6" style="float: left">--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">Join Date</label>--}}
+{{--                    <input type="date" name="join_date" class="form-control" id="exampleInputEmail1" placeholder="Enter join date" @isset($staff) value="{{ $staff->join_date }}" @endisset required>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+                  <div class="col-sm-6" style="float: left">
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">Email</label>
+                          <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email address" @isset($staff) value="{{ $staff->email }}" @endisset required>
+                      </div>
                   </div>
-                </div>
-                <div class="col-sm-6" style="float: left">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Desigantion</label>
-                    <input type="text" name="designation" class="form-control" id="exampleInputEmail1" placeholder="Enter designation" @isset($staff) value="{{ $staff->designation }}" @endisset required>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12">
-                <div class="col-sm-6" style="float: left">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Join Date</label>
-                    <input type="date" name="join_date" class="form-control" id="exampleInputEmail1" placeholder="Enter join date" @isset($staff) value="{{ $staff->join_date }}" @endisset required>
-                  </div>
-                </div>
                 <div class="col-sm-6" style="float: left">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Phone</label>
@@ -67,33 +82,51 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <div class="col-sm-6" style="float: left">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email address" @isset($staff) value="{{ $staff->email }}" @endisset required>
+              <div class="row">
+{{--                <div class="col-sm-6" style="float: left">--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">Join Date</label>--}}
+{{--                    <input type="date" name="join_date" class="form-control" id="exampleInputEmail1" placeholder="Enter join date" @isset($staff) value="{{ $staff->join_date }}" @endisset required>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+                  <div class="col-sm-6" style="float: left">
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">Password</label>
+                          <div class="input-group">
+                              <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" @isset($staff) value="{{ $staff->password }}" @endisset required>
+
+                          </div>
+                      </div>
                   </div>
-                </div>
                 <div class="col-sm-6" style="float: left">
                   <div class="form-group">
-                    <label for="class">Staff Class</label>
-                    <select class="form-control" name="class" id="class" required>
-                      <option value="">--Select Class--</option>
-                        @isset($staff)
-                          <option value="1" @if($staff->location_id == 1) selected @endif>প্রথম শ্রেণী</option>
-                          <option value="2" @if($staff->location_id == 2) selected @endif>দ্বিতীয় শ্রেণী</option>
-                          <option value="3" @if($staff->location_id == 3) selected @endif>তৃতীয় শ্রেণী</option>
-                          <option value="4" @if($staff->location_id == 4) selected @endif>চতুর্থ শ্রেণী</option>
-                        @else
-                          <option value="1">প্রথম শ্রেণী</option>
-                          <option value="2">দ্বিতীয় শ্রেণী</option>
-                          <option value="3">তৃতীয় শ্রেণী</option>
-                          <option value="4">চতুর্থ শ্রেণী</option>
-                        @endisset
-                    </select>
+                    <label for="exampleInputEmail1">Confirm Password</label>
+                    <input type="text" name="password_confirmation" class="form-control" id="exampleInputEmail1" placeholder="Re-enter password" @isset($staff) value="{{ $staff->password }}" @endisset required>
                   </div>
                 </div>
               </div>
+{{--              <div class="col-sm-12">--}}
+
+{{--                <div class="col-sm-6" style="float: left">--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="class">Staff Class</label>--}}
+{{--                    <select class="form-control" name="class" id="class" required>--}}
+{{--                      <option value="">--Select Class--</option>--}}
+{{--                        @isset($staff)--}}
+{{--                          <option value="1" @if($staff->location_id == 1) selected @endif>প্রথম শ্রেণী</option>--}}
+{{--                          <option value="2" @if($staff->location_id == 2) selected @endif>দ্বিতীয় শ্রেণী</option>--}}
+{{--                          <option value="3" @if($staff->location_id == 3) selected @endif>তৃতীয় শ্রেণী</option>--}}
+{{--                          <option value="4" @if($staff->location_id == 4) selected @endif>চতুর্থ শ্রেণী</option>--}}
+{{--                        @else--}}
+{{--                          <option value="1">প্রথম শ্রেণী</option>--}}
+{{--                          <option value="2">দ্বিতীয় শ্রেণী</option>--}}
+{{--                          <option value="3">তৃতীয় শ্রেণী</option>--}}
+{{--                          <option value="4">চতুর্থ শ্রেণী</option>--}}
+{{--                        @endisset--}}
+{{--                    </select>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+{{--              </div>--}}
               <div class="form-group">
                 @isset($staff) <img src="{{ asset('assets') }}/images/uploads/staffs/{{ $staff->image }}" alt="Staff image" width="100px" height="100px"><br/> @endisset
                 <label for="exampleInputFile">@isset($staff) Change Staff Image @else Choose Staff Image @endisset</label>

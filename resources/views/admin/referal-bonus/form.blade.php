@@ -26,9 +26,10 @@
             method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
+                <h3>@isset($bonus){{$bonus->key}}@endisset</h3>
               <div class="form-group">
                 <label for="exampleInputEmail1">Amount</label>
-                <input type="number" name="amount" class="form-control" id="exampleInputEmail1" placeholder="Enter Amount name" @isset($bonus) value="{{ $bonus->amount }}" @endisset required>
+                <input type="text" name="amount" class="form-control" id="exampleInputEmail1" placeholder="Enter Amount name" @isset($bonus) value="{{ $bonus->amount }}" @endisset required>
               </div>
               <div class="form-check">
                 <input type="checkbox" name="status" class="form-check-input" id="exampleCheck1" @isset($bonus) @if($bonus->status == 1) checked @endif @else checked @endisset>

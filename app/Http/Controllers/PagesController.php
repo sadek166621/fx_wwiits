@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Bonus;
+use App\Models\Admin\DepostReturn;
 use App\Models\Admin\Package;
+use App\Models\DepositProfit;
 use App\Utility\SmsUtility;
 use Illuminate\Http\Request;
 use App\Models\Admin\Setting;
@@ -26,12 +29,16 @@ use App\Models\Schedule;
 use App\Models\Division;
 use App\Models\District;
 use App\Models\Admin\Becomeins;
+use App\Models\Deposit;
+use App\Models\ActivationCode;
+use App\Models\Withdrawreq;
 use Session;
 use DB;
 use Toastr;
 use Carbon\Carbon;
 use Illuminate\Validation\Rules\File;
 use Hash;
+use Mail;
 
 
 class PagesController extends Controller
@@ -59,364 +66,142 @@ class PagesController extends Controller
         $data['news'] = News::where('status', 1)->limit(5)->get();
         return view('frontend.index', $data);
     }
+    public function training(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
 
-    // public function vicePrincipalMessage()
-    // {
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['setting'] = Setting::first();
-    //     return view('frontend.vice_principal_message', $data);
-    // }
+        return view('frontend.training',$data);
+    }
+    public function trainingSession(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
 
-    // public function principalMessage()
-    // {
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['setting'] = Setting::first();
-    //     return view('frontend.principal_message', $data);
-    // }
+        return view('frontend.training-session',$data);
+    }
+    public function faq(){
+        return view('frontend.faq');
+    }
 
-    // public function teacher()
-    // {
-    //     if(isset($_GET['department']) && $_GET['department']>0){
-    //         $data['teachers'] = Teacher::where('department_id', $_GET['department'])->where('gender',1)->latest()->get();
-    //     }else{
-    //         $data['teachers'] = Teacher::where('status', 1)->where('gender',1)->get();
-    //     }
-    //     $data['departments'] = Department::where('status',1)->latest()->get();
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.teachers', $data);
-    // }
-    // public function femaleteacher()
-    // {
-    //     if(isset($_GET['department']) && $_GET['department']>0){
-    //         $data['teachers'] = Teacher::where('department_id', $_GET['department'])->where('gender',2)->latest()->get();
-    //     }else{
-    //         $data['teachers'] = Teacher::where('status', 1)->where('gender',2)->get();
-    //     }
-    //     $data['departments'] = Department::where('status',1)->latest()->get();
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.femaleteachers', $data);
-    // }
-    // public function staff()
-    // {
-    //     if(isset($_GET['location']) && $_GET['location']>0){
-    //         $data['staffs1st'] = Staff::where('location_id', $_GET['location'])->where('class', 1)->latest()->get();
-    //         $data['staffs2nd'] = Staff::where('location_id', $_GET['location'])->where('class', 2)->latest()->get();
-    //         $data['staffs3rd'] = Staff::where('location_id', $_GET['location'])->where('class', 3)->latest()->get();
-    //         $data['staffs4th'] = Staff::where('location_id', $_GET['location'])->where('class', 4)->latest()->get();
-    //     }else{
-    //         $data['staffs1st'] = Staff::where('status', 1)->where('class', 1)->get();
-    //         $data['staffs2nd'] = Staff::where('status', 1)->where('class', 2)->get();
-    //         $data['staffs3rd'] = Staff::where('status', 1)->where('class', 3)->get();
-    //         $data['staffs4th'] = Staff::where('status', 1)->where('class', 4)->get();
-    //     }
-    //     $data['locations'] = Location::where('status',1)->latest()->get();
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.staffs', $data);
-    // }
-    // public function teacherShow($username)
-    // {
-    //     $data['teacher'] = Teacher::where('username', $username)->first();
-    //     if($data['teacher']){
-    //         $data['setting'] = Setting::first();
-    //         $data['sliders'] = Slider::where('status', 1)->get();
-    //         $data['locations'] = Department::where('status',1)->latest()->get();
-    //         return view('frontend.teacher_profile', $data);
-    //     }
-    //     return redirect()->route('teacher.list');
-    // }
+    public function sms(){
 
-    // public function staffShow($username){
-    //     $data['staff'] = Staff::where('username', $username)->first();
-    //     if($data['staff']){
-    //         $data['setting'] = Setting::first();
-    //         $data['sliders'] = Slider::where('status', 1)->get();
-    //         $data['locations'] = Department::where('status',1)->latest()->get();
-    //         return view('frontend.staff_profile', $data);
-    //     }
-    //     return redirect()->route('staff.list');
-    // }
+        $phone = '+8801799382934';
+        $message = 'Dear a, Your request has been submitted for Admin approval. Your referral code is a. Please wait for the confirmation.' .'%0a Regards - FX WWIITS.';
 
-    // public function notice()
-    // {
-    //     if(isset($_GET['type']) && $_GET['nottypeice']>0){
-    //         $data['notices'] = Notice::where('notice_id', $_GET['notice'])->latest()->get();
-    //     }else{
-    //         $data['notices'] = Notice::where('status', 1)->get();
-    //     }
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.notices', $data);
-    // }
+        SmsUtility::sendSMS($phone, $message);
+    }
 
-    // public function noticeGeneral()
-    // {
-    //     $data['notices'] = Notice::where('status', 1)->where('type', 1)->get();
+    public function updateMember()
+    {
+        $currentDate = Carbon::now();
 
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.notices', $data);
-    // }
+        $members = Student::where('status',1)->get();
 
-    // public function noticeOther()
-    // {
-    //     $data['notices'] = Notice::where('status', 1)->where('type', 2)->get();
+        foreach ($members as $member){
+            $deposit_member = Deposit::where('member_id', $member->id)->where('status', 1)->get();
+            $total_profit = 0;
+            if($deposit_member != null){
+                if(count($deposit_member) > 0){
+                    foreach($deposit_member as $deposit){
+                        $lastEntryDate = $deposit->approved_at;
+                        $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+                        // if($deposit->id == 79){
+                        //     dd($differenceInDays);
+                        // }
 
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.notices', $data);
-    // }
+                        if($differenceInDays > 0 && $deposit->amount != 0 && $differenceInDays < $deposit->package->maturity_time){
 
-    // public function noticeShow($id)
-    // {
-    //     $data['notice'] = Notice::findOrFail($id);
+                            DepositProfit::create([
+                                'member_id' => $member->id,
+                                'deposit_id' => $deposit->id,
+                                'package_id' => $deposit->package_id,
+                                'profit' => $deposit->profit_amount
+                            ]);
+                            $total_profit += $deposit->profit_amount * $differenceInDays;
 
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.notice_single', $data);
-    // }
+                            //deposit return calculation
+                            $deposit_returns = DepostReturn::where('package_id', $deposit->package_id)->get();
+//                            dd($deposit_returns);
+                            $deposit_days = 0;
+                            foreach ($deposit_returns as $deposit_return){
+                                $deposit_days += $deposit_return->day;
+                                if ($differenceInDays == $deposit_days){
+//                                    dd($differenceInDays, $deposit_days );
 
-    // public function news()
-    // {
-    //     $data['news'] = News::where('status', 1)->get();
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.news', $data);
-    // }
+                                    $returning_amount = $deposit->amount*$deposit_return->return/100;
+                                    $member->update([
+                                        'bonus' => $member->bonus + $returning_amount
+                                    ]);
+                                    $deposit->update([
+                                        'remaining_balance' => $deposit->remaining_balance - $returning_amount
+                                    ]);
+                                }
+                            }
+                            if($deposit->amount != 0){
+                                $member->update([
+                                    'profit'=> $total_profit,
+                                ]);
+                                $referal_code = Student::where('refer_code', $member->refered_code)->first();
+                                $bonus = Bonus::where('bonus_type', 'affiliate_bonus')->where('package_id', $deposit->package_id)->first();
+                                if($referal_code != null){
+                                    $referred_code=null;
+                                    for($i=0; $i <5; $i++){
+                                        if($i == 0 ){
+                                            $referal_code->update([
+                                                'affiliate_balance'=> $referal_code->affiliate_balance + $deposit->amount * $bonus->first_gen/100,
+                                            ]);
 
-    // public function newsShow($id)
-    // {
-    //     $data['news'] = News::findOrFail($id);
+                                            $referred_code = $referal_code->refered_code;
+                                        }
+                                        else{
+                                            $referal_code = Student::where('refer_code', $referred_code)->first();
+                                            if($referal_code != null){
+                                                if($i== 1){
+                                                    $bonus_amount = $deposit->amount * $bonus->second_gen/100;
+                                                }
+                                                if($i== 2){
+                                                    $bonus_amount = $deposit->amount * $bonus->third_gen/100;
+                                                }
+                                                if($i== 3){
+                                                    $bonus_amount = $deposit->amount * $bonus->fourth_gen/100;
+                                                }
+                                                if($i== 4){
+                                                    $bonus_amount = $deposit->amount * $bonus->fifth_gen/100;
+                                                }
 
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.news_single', $data);
-    // }
+                                                $referal_code->update([
+                                                    'affiliate_balance'=> $referal_code->affiliate_balance + $bonus_amount,
+                                                ]);
+                                                $referred_code = $referal_code->refered_code;
 
-    // public function importantlinks(){
+                                            }
+                                            else{
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
 
-    // }
-    // public function quranreadingcourse(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_reading_course', $data);
-    // }
+                            }
+                        }
+                        // maturity gift on deposit maturity
+                        else if($differenceInDays == $deposit->package->maturity_time){
+                            $gift = $deposit->amount * $deposit->package->maturity_gift/100;
+                            $member->update([
+                                'bonus' => $member->bonus + $gift
+                            ]);
+                            $deposit->delete();
+                        }
+                    }
 
-    // public function quranicarabiccourse(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_icarabic_course', $data);
-    // }
-    // public function quranmemorizationcourse(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_memorization_course', $data);
-    // }
-    // public function quranreadingcoursea(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_reading_course_a', $data);
-    // }
-    // public function quranicarabiccoursea(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_icarabic_course_a', $data);
-    // }
-    // public function quranmemorizationcoursea(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusmale'] = campusmale::first();
-    //     return view('frontend.quran_memorization_course_a', $data);
-    // }
-    // public function forwhom(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['about'] = about::first();
-    //     return view('frontend.for-whom', $data);
-    // }
-    // public function sfp(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['about'] = about::first();
-    //     return view('frontend.sfp', $data);
-    // }
-    // public function ilq(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['about'] = about::first();
-    //     return view('frontend.ilq', $data);
-    // }
-    // public function quranreadingcoursef(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view('frontend.quran_reading_course_f', $data);
-    // }
-    // public function quranicarabiccoursef(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view ('frontend.quran_icarabic_course_f', $data);
-    // }
-    // public function quranmemorizationcoursef(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view ('frontend.quran_memorization_course_f', $data);
-    // }
-    // public function quranreadingcoursefa(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view('frontend.quran_reading_course_f_a', $data);
-    // }
-    // public function quranicarabiccoursefa(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view('frontend.quran_icarabic_course_f_a', $data);
-    // }
-    // public function quranmemorizationcoursefa(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['campusfemale'] = campusfemale::first();
-    //     return view('frontend.quran_memorization_course_f_a', $data);
-    // }
-    // public function contact(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     return view('frontend.contact', $data);
-    // }
-    // public function BasicsofIslamCampus(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['more'] = more::first();
-    //     return view('frontend.basic-of-islam-campus', $data);
-    // }
-    // public function BePartofUs(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['more'] = more::first();
-    //     return view('frontend.Be-Part-of-Us', $data);
-    // }
-    // public function DonateUs(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['more'] = more::first();
-    //     return view('frontend.Donate-Us', $data);
-    // }
-    // public function studentadmission(){
-    //     $data['divisions'] = Division::all();
-    //     return view('frontend.student-register',$data);
-    // }
-    // public function beateacher(){
-    //     $data['setting'] = Setting::first();
-    //     return view('frontend.be-a-teacher', $data);
-    // }
-    // public function onlineclass(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['onlineclass'] = onlineclass::get();
-    //     return view('frontend.onlineclass', $data);
-    // }
-    // public function teacherjobapply(Request $request){
-    //     $validated = $request->validate([
-    //         'number' => 'required|min:11|max:14',
-    //         'cv' => 'required|mimes:pdf,jpg,png|max:10000',
-    //         'document' => 'required|mimes:pdf,jpg,png|max:10000',
-    //     ]);
-
-    //     $beteacher = beteacher::create([
-    //         'first_name'=>$request->first_name,
-    //         'middle_name'=>$request->middle_name,
-    //         'last_name'=>$request->last_name,
-    //         'full_address'=>$request->full_address,
-    //         'upazilla'=>$request->upazilla,
-    //         'district'=>$request->district,
-    //         'zip_code'=>$request->zip_code,
-    //         'email'=>$request->email,
-    //         'number'=>$request->number,
-    //         'day'=>$request->day,
-    //         'month'=>$request->month,
-    //         'year'=>$request->year,
-    //         'apply_for_position'=>$request->apply_for_position,
-    //         'desired'=>$request->desired,
-    //         'training_experience'=>$request->training_experience,
-    //         'online_work'=>$request->online_work,
-    //     ]);
-
-    //      $filename = $beteacher->cv;
-    //         $file = $request->file('cv');
-    //         if($file){
-    //             $currentDate = Carbon::now()->toDateString();
-    //             //dd($file->getClientOriginalExtension());
-
-    //             $filename = $currentDate . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-    //             if (!file_exists('assets/files/uploads/cv')) {
-    //                 mkdir('assets/files/uploads/cv', 0777, true);
-    //             }
-
-    //             $file->move(public_path('assets/files/uploads/cv'), $filename);
-    //             //$file->move(base_path().'/assets/files/uploads/notices', $filename);
-    //         }
-
-    //     $beteacher->cv = $filename;
-
-    //     $filename2 = $beteacher->document;
-    //         $file2 = $request->file('document');
-    //         if($file2){
-    //             $currentDate = Carbon::now()->toDateString();
-    //             //dd($file->getClientOriginalExtension());
-
-    //             $filename2 = $currentDate . '-' . uniqid() . '.' . $file2->getClientOriginalExtension();
-
-    //             if (!file_exists('assets/files/uploads/document')) {
-    //                 mkdir('assets/files/uploads/document', 0777, true);
-    //             }
-
-    //             $file2->move(public_path('assets/files/uploads/document'), $filename2);
-    //             //$file2->move(base_path().'/assets/files/uploads/notices', $filename2);
-    //         }
-
-    //         $beteacher->document = $filename2;
-
-    //         $beteacher->save();
-
-    //         Toastr::success('Apply successfully!', 'Success', ["positionClass" => "toast-top-right"]);
-
-    //         return redirect()->route('home');
-
-    // }
-
-    // public function studentdashboard(){
-    //     $data['setting'] = Setting::first();
-    //     $data['sliders'] = Slider::where('status', 1)->get();
-    //     $data['dashboard'] = DB::table('studentregs')->where('studentId', Session::get('studentId'))->first();
-
-    //     return view('frontend.student-dashboard', $data);
-    // }
-
-    // public function logout(){
-    //     Session::forget('studentId');
-    //     Session::forget('studentName');
-    //     Session::forget('studentEmail');
-    //     Toastr::success('Logout Successfully', 'Logout', ["positionClass" => "toast-top-right"]);
-    //     return redirect()->route('home');
-    // }
-
-    // public function getdivision($division_id){
-    //     $division = District::where('division_id', $division_id)->orderBy('district_name_en','ASC')->get();
-
-    //         return json_encode($division);
-    //     }
+                }
+                $data['email'] = $member->email;
+                $data['title'] = 'Daily Account Update';
+                $profit = $total_profit;
+                // Mail::send('frontend.email.daily-update', ['member'=>$member, 'profit'=>$profit], function ($message) use ($data) {
+                //     $message->to($data["email"])
+                //         ->subject($data["title"]);
+                // });
+            }
+        }
+    }
 
 
         public function studentsignin(){
@@ -435,19 +220,15 @@ class PagesController extends Controller
             return view('frontend.student-signup', compact('referal_bonus'));
         }
 
-
-
         public function refercodesignup($refer_code){
             $data['referal_bonus'] = DB::table('bonuses')->latest()->first();
             $data['refercode'] = Student::where('refer_code', $refer_code)->first();
-            return view('frontend.student-refer-code-signup',$data);
+            return view('frontend.student-signup',$data);
         }
 
         public function studentregistrationform(Request $request){
-            // dd($request);
-//            return $request;
-            // $amount =
 
+//            return $request;
             $validated = $request->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
@@ -456,14 +237,28 @@ class PagesController extends Controller
                 'refered_code' => 'required',
                  'image' => 'required',
                 'whatsapp_number' => 'required|unique:students',
-                 'email' => 'required|unique:students',
-                'password' => 'required|min:6',
-                'payment_method' => 'required',
-                'payment_number' => 'required',
-                'transaction_id' => 'required',
-                'payment_amount' => 'required',
+                  'email' => 'required|unique:students',
+                'password' => 'required|min:6 | confirmed',
+
                 // 'password_confirmation' => 'required|same:password'
             ]);
+            if($request->select_option == 'payment'){
+                $request->validate([
+                    'payment_number' => 'required',
+                ]);
+            }
+            if($request->select_option == 'activation_code'){
+                $request->validate([
+                    'reference_activation_code' => 'required'
+                ]);
+
+            }
+
+            if($request->payment_method == 'bkash' || $request->payment_method == 'rocket' || $request->payment_method == 'nagad'){
+                $request->validate([
+                    'transaction_id' => 'required'
+                ]);
+            }
 
             $image = $request->file('image');
             if($image){
@@ -484,41 +279,146 @@ class PagesController extends Controller
 
             $referal_code = Student::where('refer_code', $request->refered_code)->first();
             if($referal_code){
-                $referal_code->update([
-                    'bonus'=> $referal_code->bonus + $request->bonus_amount,
-                ]);
+                $referral_code_member = $referal_code;
+                $this->sendReferralBonusEmail($referral_code_member);
             }
             else{
                 Toastr::error('error', 'Invalid Referred Code!', ["positionClass" => "toast-top-right"]);
                 return back();
             }
+            // $currentTime = now();
+            // $activationCodeLifetime = 24 * 60 * 60; // 24 hours in seconds
 
-            $student = Student::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'father_name' => $request->father_name,
-                'mother_name' => $request->mother_name,
-                'phone' => $request->whatsapp_number,
-                'whatsapp_number' => $request->whatsapp_number,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'refer_code'=>rand(10000,99999),
-                'refered_code'=>$request->refered_code,
-                'country_code'=>$request->country_code,
-                'address' => $request->address,
-                'status'=> 0,
-                'joining_reason'=>$request->joining_reason,
-                'payment_method'=>$request->payment_method,
-                'payment_amount'=>$request->payment_amount,
-                'payment_number'=>$request->payment_number,
-                'transaction_id'=>$request->transaction_id,
-                'image' => $target_image
-            ]);
+            //dd($request);
+            $member = ActivationCode::where('activation_code', '=' , $request->reference_activation_code )->first();
+
+            // dd($member);
+
+            if($member ){
+                // $activationCodeGeneratedTime = $member->activation_code_generated_at;
+                // $timeDifference = $currentTime->diffInSeconds($activationCodeGeneratedTime);
+                // if ($timeDifference <= $activationCodeLifetime) {
+                    $members = Student::create([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'father_name' => $request->father_name,
+                        'mother_name' => $request->mother_name,
+                        'phone' => $request->whatsapp_number,
+                        'whatsapp_number' => $request->whatsapp_number,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                        'refer_code'=>rand(10000,99999),
+                        'refered_code'=>$request->refered_code,
+                        'country_code'=>$request->country_code,
+                        'address' => $request->address,
+                        'status'=> 1,
+                        'has_approved'=> 1,
+                        'reference_activation_code'=> $request->reference_activation_code,
+                        'joining_reason'=>$request->joining_reason,
+                        'code_user_id'=>$member->member_id,
+                        'payment_method'=>$request->payment_method,
+                        'payment_amount'=>$request->payment_amount,
+                        'payment_number'=>$request->payment_number,
+                        'transaction_id'=>$request->transaction_id,
+                        'image' => $target_image
+                    ]);
+
+                $referal_code = Student::where('refer_code', $members->refered_code)->where('status', 1)->first();
+                $bonus = Bonus::where('bonus_type', 'instant_bonus')->first();
+                if($referal_code){
+
+                    for($i=0; $i <=3; $i++){
+                        if($i == 0){
+
+                            $referal_code->update([
+                                'affiliate_balance'=> $referal_code->affiliate_balance + $bonus->first_gen,
+                            ]);
+
+                            $referred_code = $referal_code->refered_code;
+                        }
+                        else{
+                            $referal_code = Student::where('refer_code', $referred_code)->where('status', 1)->first();
+                            if($referal_code){
+                                if($i== 1){
+                                    $bonus_amount = $bonus->second_gen;
+                                }
+                                if($i== 2){
+                                    $bonus_amount = $bonus->third_gen;
+                                }
+                                if($i== 3){
+                                    $bonus_amount = $bonus->fourth_gen;
+                                }
+
+                                $referal_code->update([
+                                    'affiliate_balance'=> $referal_code->affiliate_balance + $bonus_amount,
+                                ]);
+                                $referred_code = $referal_code->refered_code;
+
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                    $data['email'] = $members->email;
+                    $data['title'] = 'Member Sign Up';
+
+                    Mail::send('frontend.email.status-change', ['member'=>$members], function ($message) use ($data) {
+                        $message->to($data["email"])
+                            ->subject($data["title"]);
+                    });
+
+                    $member->delete();
 
 
 
-            session::put('Rcomment', $student->refer_code);
-            session::put('thankyouId', $student->id);
+                // } else {
+
+                //     Toastr::error('error', 'Activation code has expired!', ["positionClass" => "toast-top-right"]);
+                //     return redirect()->back()->with('error', 'Activation code has expired.');
+                // }
+
+            }
+             if($request->reference_activation_code == Null){
+//                 dd('pk');
+                    $members = Student::create([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'father_name' => $request->father_name,
+                        'mother_name' => $request->mother_name,
+                        'phone' => $request->whatsapp_number,
+                        'whatsapp_number' => $request->whatsapp_number,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                        'refer_code'=>rand(10000,99999),
+                        'refered_code'=>$request->refered_code,
+                        'country_code'=>$request->country_code,
+                        'address' => $request->address,
+                        'status'=> 0,
+                        'joining_reason'=>$request->joining_reason,
+                        'payment_method'=>$request->payment_method,
+                        'payment_amount'=>$request->payment_amount,
+                        'payment_number'=>$request->payment_number,
+                        'transaction_id'=>$request->transaction_id,
+                        'image' => $target_image
+                    ]);
+
+                 $data['email'] = $members->email;
+                 $data['title'] = 'Member Sign Up';
+//                    return view('frontend.email.signup', ['member'=>$members]);
+                 Mail::send('frontend.email.signup', ['member'=>$members], function ($message) use ($data) {
+                     $message->to($data["email"])
+                         ->subject($data["title"]);
+                 });
+
+
+             }
+
+            session::put('Rcomment', $members->refer_code);
+            session::put('thankyouId', $members->id);
+
             $register_bonus = Student::where('refer_code', $request->refered_code)->first();
             if($register_bonus){
                 $passbook = Passbook::create([
@@ -529,46 +429,101 @@ class PagesController extends Controller
             }
 
 
-
-            $phone = $student->country_code.$student->phone;
-            $message = 'Dear '.$student->first_name.', Your request has been submitted for Admin approval. Your referral code is '.$student->refer_code.'. Please wait for the confirmation.' .'%0a Regards - FX WWIITS.';
+            $phone = $members->country_code.$members->phone;
+            $message = 'Dear '.$members->first_name.', Your request has been submitted . Your referral code is '.$members->refer_code.'.'. '%0a Regards - FX WWIITS.';
             SmsUtility::sendSMS($phone, $message);
 
-            Toastr::success('student Registration successfully!', 'Please Wait For Admin Approval', ["positionClass" => "toast-top-right"]);
-
+            Toastr::success('Success!', 'student Registration successfully!', ["positionClass" => "toast-top-right"]);
             return redirect()->route('thankyou-for-reg');
+
         }
+
+        public function sendReferralBonusEmail($referal_code)
+        {
+            $data['email'] = $referal_code->email;
+            $data['title'] = 'Member Sign Up Via Referral Code';
+            $reference_count= count(Student::where('refered_code' , '=', $referal_code->refer_code )->get());
+
+            Mail::send('frontend.email.referral-bonus', ['member'=>$referal_code, 'reference_count' => $reference_count], function ($message) use ($data) {
+                $message->to($data["email"])
+                    ->subject($data["title"]);
+            });
+        }
+
 
         public function studentsubmitform(Request $request){
             $customerInfo = Student::where('email', $request->name)
-        ->orWhere('phone', $request->name)
-        ->first();
-        if( $customerInfo !==null && $customerInfo->status == '1'){
-            if($customerInfo) {
-                $existingPassword = $customerInfo->password;
-                if (password_verify($request->password, $existingPassword)) {
-                    Session::put('StudentId', $customerInfo->id);
-                    Session::put('StudentName', $customerInfo->first_name);
+                ->orWhere('phone', $request->name)
+                    ->first();
+            if( $customerInfo !==null && $customerInfo->status == '1'){
+                if($customerInfo) {
+                    $existingPassword = $customerInfo->password;
+                    if (password_verify($request->password, $existingPassword)) {
+                        Session::put('StudentId', $customerInfo->id);
+                        Session::put('StudentName', $customerInfo->first_name);
 
-                    Toastr::success('Login Successfully', 'Login', ["positionClass" => "toast-top-right"]);
-                    //return redirect('student-enroll-courses');
-                    return redirect()->route('profile-settings');
+                        Toastr::success('Login Successfully', 'Login', ["positionClass" => "toast-top-right"]);
+                        //return redirect('student-enroll-courses');
+//                        return redirect()->route('profile-settings');
+                        return redirect()->route('member.dashboard');
+                    } else {
+                        Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
+                        return back()->with('message', 'Please use valid password');
+                    }
                 } else {
                     Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
-                    return back()->with('message', 'Please use valid password');
+                    return back()->with('message', 'Please use valid email address');
                 }
-            } else {
+            }
+
+            else{
                 Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
                 return back()->with('message', 'Please use valid email address');
             }
+
         }
 
+        public function genarateactivationcode(){
+            $student = Student::where('id', Session::get('StudentId'))->first();
+            $activation_codes = ActivationCode::where('member_id', Session::get('StudentId'))->orderBy('id','desc')->get();
+            return view('frontend.genarate-activation-code',compact('activation_codes','student'));
+        }
+
+        public function deleteactivationcode($id){
+           $activation = ActivationCode::find($id);
+           $activation->delete();
+           return back()->with('success','Your Genarate Activation Code Is Deleted');
+
+        }
+
+    public function activationcode(){
+
+        $member = Student::where('id', Session::get('StudentId'))->first();
+        $currentTime = now();
+        $setting = getSetting();
+        // dd($setting->reg_charge_tk);
+        if ($member  && $member->bonus >= $setting->reg_charge) {
+                $activationCode = rand(10000, 99999); // Generate the activation code
+                $member->update([
+                    'bonus' => $member->bonus - $setting->reg_charge,
+                ]);
+                ActivationCode::create([
+                    'member_id'=> Session::get('StudentId'),
+                    'activation_code'=> $activationCode,
+                    'activation_code_generated_at'=> $currentTime,
+                ]);
+                session()->flash('alert', 'Your activation code is: ' . $activationCode . '.');
+
+                // Session::put('activationCode',$activationCode );
+        }
         else{
-            Toastr::error('Please Check Again', 'Error', ["positionClass" => "toast-top-right"]);
-            return back()->with('message', 'Please use valid email address');
+            session()->flash('alert', 'Insufficient Balance to generate activation code.');
         }
 
-}
+        return redirect()->back();
+
+    }
+
 
     public function studentLogout(){
         Session::forget('StudentId');
@@ -589,8 +544,148 @@ class PagesController extends Controller
       }
 
       public function profilesettings(){
+        // dd($deposit_member);
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
         return view('frontend.profile-settings', $data);
+      }
+
+      public function balancetransfer(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        return view('frontend.balance-transfer',$data);
+      }
+
+
+      public function submitbalancetranfer(Request $request){
+        // dd($request);
+        $member = Student::where('id', Session::get('StudentId'))->first();
+
+        if (!$request->affiliate_balance || $request->affiliate_balance == NULL) {
+            $request->affiliate_balance = 0;
+        } else {
+            $request->affiliate_balance = 1;
+        }
+
+        if (!$request->profit || $request->profit == NULL) {
+            $request->profit = 0;
+        } else {
+            $request->profit = 1;
+        }
+
+        if (!$request->internal_transfer || $request->internal_transfer == NULL) {
+            $request->internal_transfer = 0;
+        } else {
+            $request->internal_transfer = 1;
+        }
+        // dd($request);
+        if($request->profit == 1 && $request->internal_transfer == 1){
+            //  dd($request);
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance) ,
+                'tranfer_balance'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->affiliate_balance == 1){
+            // dd('ok');
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + $member->profit + $member->affiliate_balance ,
+                'affiliate_balance'=>'0',
+                'profit'=>'0',
+            ]);
+        }
+
+        elseif($request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $member->update([
+                'bonus'=>$member->bonus + ($member->tranfer_balance + $member->affiliate_balance) ,
+                'affiliate_balance'=>'0',
+                'tranfer_balance'=>'0',
+            ]);
+        }
+        elseif($request->profit == 1 && $request->internal_transfer == 1 && $request->affiliate_balance == 1){
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + ($member->profit + $member->tranfer_balance + $member->affiliate_balance) ,
+                'affiliate_balance'=>0,
+                'tranfer_balance'=>0,
+                'profit'=> 0,
+            ]);
+        }
+        elseif($request->profit == 1){
+            $dates = Deposit::where('member_id', Session::get('StudentId'))->get();
+            foreach( $dates as $date){
+                $date->update([
+                    'created_at'=> Carbon::now(),
+                ]);
+            }
+            $member->update([
+                'bonus'=>$member->bonus + $member->profit,
+                'profit'=>'0',
+            ]);
+        }
+        elseif($request->affiliate_balance == 1){
+            // dd($request);
+            $member->update([
+                'bonus'=>$member->bonus + $member->affiliate_balance,
+                'affiliate_balance'=>'0',
+            ]);
+        }
+
+        elseif($request->internal_transfer == 1){
+            //  dd($request);
+            $member->update([
+                'bonus'=>$member->bonus + $member->tranfer_balance,
+                'tranfer_balance'=>'0',
+            ]);
+        }
+
+        else{
+
+            if($request->member_id && $request->member_id != Null ){
+
+                $updt = Student::where('id', Session::get('StudentId'))->first();
+                $find = Student::where('refer_code', $request->member_id)->first();
+                    if($find){
+                       if($updt->bonus >= $request->amount ){
+                            $find->update([
+                                'tranfer_balance'=>$find->tranfer_balance + $request->amount,
+                            ]);
+
+                            $updt->update([
+                                'bonus'=>$updt->bonus - $request->amount,
+                            ]);
+                       }
+                       else{
+                        return back()->with('error', 'Check Your Wallet Amount');
+                       }
+                    }
+                    else{
+                        return back()->with('error', 'No Member ID Found');
+                    }
+
+            }
+
+
+        }
+
+        return back()->with('success','Successfully Transfer');
+
       }
 
       public function subadminsignin(){
@@ -638,6 +733,8 @@ class PagesController extends Controller
             'about_me'=> $request->about_me,
             'gender'=> $request->gender,
             'country_code'=>$request->country_code,
+            'withdraw_option'=>$request->withdraw_option,
+            'account_number'=>$request->account_number,
             'image' => $target_image,
             // 'status' => $request->status,
             'address' => $request->address,
@@ -708,7 +805,7 @@ class PagesController extends Controller
             'department_id' => $request->department_id,
         ]);
 
-        Toastr::success('Schedule Add Successfully!', 'Success', ["positionClass" => "toast-top-right"]);
+        Toastr::success('Schedule Added Successfully!', 'Success', ["positionClass" => "toast-top-right"]);
         return Back();
       }
 
@@ -743,17 +840,124 @@ class PagesController extends Controller
 
         return view('frontend.reference', $data);
       }
+
+      public function usedactivationcode(){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['activations'] = Student::where( 'code_user_id', Session::get('StudentId'))->orderBy('id','desc')->get();
+        return view('frontend.used-activation-code',$data);
+      }
       public function passbook(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
 
         return view('frontend.passbook', $data);
       }
+
       public function withdraw(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['packages'] = Deposit::where('member_id', Session::get('StudentId'))->get();
+        $data['withdraws'] = Withdrawreq::where('member_id', Session::get('StudentId'))->get();
         return view('frontend.withdraw',$data);
       }
+
+    //   ================== A Member Submit Withdraw Request =====================
+
+      public function submitpackagewithdrawrequest(Request $request){
+//         dd($request);
+
+        // dd($differenceInDays);
+        if($request->withdraw_type ==1){
+
+            $amount = Deposit::find($request->packageId);
+            $package = Package::where('id', $amount->package_id )->first();
+
+            $currentDate = Carbon::now();
+            $lastEntryDate = $amount->created_at;
+            $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+
+            $withdraw_amount = $package->usa_amount;
+//            dd($package->minimum_withdraw_amount, $amount->amount);
+//            dd($withdraw_amount);
+
+            if($amount->amount >= $withdraw_amount && $withdraw_amount != Null ){
+                if($package->maturity_time < $differenceInDays)
+                {
+                    if($package->minimum_withdraw_amount >=  $withdraw_amount )
+                    {
+                            $withdraw = Withdrawreq::create([
+                                'member_id'=> $request->member_id,
+                                'withdraw_type'=> 1,
+                                'package_id'=> $amount->package_id,
+                                'withdraw_option'=> $request->withdraw_option,
+                                'account_number'=> $request->accounts_number,
+                                'amount'=> $withdraw_amount,
+                                'date'=> date('Y-m-d'),
+                                'package_name'=> $request->packageName,
+                            ]);
+
+                            $deposit = Deposit::where('id', $request->packageId)->delete();
+//                            $deposit = Deposit::where('package_id', $withdraw->package_id )->first();
+//                            $deposit->update([
+//                                'amount'=> $deposit->amount - $withdraw->amount,
+//                                'profit_amount'=>  ($deposit->amount - $withdraw->amount) * $package->profit_rate / 100,
+//                            ]);
+
+                            return back()->with('success', 'Withdraw Request Successfully');
+                    }
+                    else{
+                        return back()->with('error', 'Check Your Minimum Withdrawal Amount');
+                    }
+                }
+                else{
+                    return back()->with('error', 'Deposit Has Not Mature yet! ');
+                }
+
+            }
+            else{
+                return back()->with('error', 'Check Your Withdraw Request Amount');
+            }
+        }
+        if($request->withdraw_type ==2){
+           $member = Student::where('id', $request->member_id)->first();
+            if($member){
+                    if($member->bonus >= $request->amount){
+
+                        $withdraw = Withdrawreq::create([
+                            'withdraw_type'=> 2,
+                            'member_id'=> $request->member_id,
+                            'withdraw_option'=> $request->withdraw_option,
+                            'account_number'=> $request->accounts_number,
+                            'amount'=> $request->amount,
+                            'date'=> date('Y-m-d'),
+                        ]);
+
+                        $updatemember = Student::where('id', $withdraw->member_id)->first();
+
+                        $updatemember->update([
+                        'bonus'=>$updatemember->bonus - $withdraw->amount,
+                        ]);
+
+                        return back()->with('success', 'Withdraw Request Successfully');
+
+
+
+                    }
+                    else{
+                        return back()->with('error', 'Insufficient Balance ! ');
+                    }
+
+            }
+            else{
+                return back()->with('error','No Member Found !');
+            }
+
+        }
+
+
+// ==================================End =============================
+
+    }
       public function passwordchange(){
         $data['passbook'] = Passbook::where('student_id',Session::get('StudentId'))->get();
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
@@ -781,6 +985,9 @@ class PagesController extends Controller
       public function contact(){
         return view('frontend.contact');
       }
+    public function deposit(){
+        return view('frontend.deposit');
+    }
       public function support(){
         return view('frontend.support');
       }
@@ -886,5 +1093,54 @@ class PagesController extends Controller
           $data['items'] = Package::where('status', 1)->latest()->get();
           return view('frontend.deposit-package', $data);
       }
+
+      public function depositdetails($id){
+        $data['student'] = Student::where('id', Session::get('StudentId'))->first();
+        $data['item'] = Package::find($id);
+        return view('frontend.package-details-for-deposit',$data);
+      }
+
+      public function dashboard()
+      {
+          $currentDate = Carbon::now();
+
+          $members = Student::where('status',1)->get();
+
+          foreach ($members as $member){
+              $deposit_member = Deposit::where('member_id', $member->id)->where('status', 1)->get();
+              $total_profit = 0;
+              if(count($deposit_member)> 1){
+
+                  foreach($deposit_member as $deposit){
+                      $lastEntryDate = $deposit->created_at;
+                      $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+                      if($differenceInDays > 0 && $deposit->amount != 0){
+                          $total_profit += $deposit->profit_amount * $differenceInDays;
+                      }
+                  }
+                  if($deposit->amount != 0){
+                      $member->update([
+                          'profit'=> $total_profit,
+                      ]);
+                  }
+              }
+              elseif(count($deposit_member) == 1){
+                  $deposit_member = Deposit::where('member_id', $member->id)->first();
+                  $lastEntryDate = $deposit_member->created_at;
+                  $differenceInDays = $currentDate->diffInDays($lastEntryDate);
+
+                  if($differenceInDays > 0 && $deposit_member->amount != 0){
+                      $member->update([
+                          'profit'=> $deposit_member->profit_amount * $differenceInDays,
+                      ]);
+                  }
+              }
+          }
+          $data['student'] = Student::where('id',Session::get('StudentId'))->first();
+          $data['deposits'] = Deposit::select('package_id')->where('member_id', $data['student']->id)->where('status', 1)->distinct()->get();
+//          return $data ;
+          return view('frontend.member-dashboard', $data);
+      }
+
 
 }

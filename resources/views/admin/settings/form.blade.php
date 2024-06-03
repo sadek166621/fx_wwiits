@@ -79,6 +79,19 @@
                   </div>
                 </div>
               </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Reg Charge ($)</label>
+                <input type="text" name="reg_charge" class="form-control" id="exampleInputEmail1" placeholder="Enter button link" value="{{ $setting->reg_charge }}">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Reg Charge (TK)</label>
+                <input type="text" name="reg_charge_tk" class="form-control" id="exampleInputEmail1" placeholder="Enter button link" value="{{ $setting->reg_charge_tk }}">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Conversion Rate (Doller To BDT)</label>
+                <input type="text" name="conversion_rate" class="form-control" id="exampleInputEmail1" placeholder="Enter Conversion Rate" value="{{ $setting->conversion_rate }}">
+              </div>
+
               <p></p>
 
               <!-- ----------------Vice Pricipal-------------- -->
@@ -220,16 +233,18 @@
 
 
             <!-- /.card-body -->
-
+              @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.setting.update')))
             <div class="card-footer">
               <button type="submit" class="btn btn-primary float-right">Save Changes</button>
             </div>
+              @endif
           </form>
         </div>
         <!-- /.card -->
       <!--/.col (right) -->
     </div>
     <!-- /.row -->
+    </div>
   </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->

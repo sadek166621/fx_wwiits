@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Bonus;
 use Illuminate\Http\Request;
 use App\Models\Admin\Student;
 use App\Models\Admin\studentreg;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 use DB;
 use Hash;
 use Session;
+use Mail;
 
 class StudentController extends Controller
 {
@@ -25,7 +27,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data['students'] = Student::latest()->get();
+        $member= Student::latest();
+        $data['students'] = $member->get();
         return view('admin.student.list', $data);
     }
 
@@ -65,6 +68,12 @@ class StudentController extends Controller
             $request->status = 1;
         }
 
+        if (!$request->has_approved || $request->has_approved == NULL) {
+            $request->has_approved = 0;
+        } else {
+            $request->has_approved = 1;
+        }
+
         $image = $request->file('image');
         if($image){
             $currentDate = Carbon::now()->toDateString();
@@ -95,6 +104,7 @@ class StudentController extends Controller
             'refered_code'=>$request->refered_code,
             'country_code'=>$request->country_code,
             'image' => $image,
+            'has_approved' => $request->has_approved,
             'status' => $request->status,
             'address' => $request->address,
         ]);
@@ -147,6 +157,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        return $request;
         $student = Student::find($id);
 
         if($student){
@@ -155,6 +166,13 @@ class StudentController extends Controller
                 $request->status = 0;
             } else {
                 $request->status = 1;
+            }
+
+            if (!$request->has_approved || $request->has_approved == NULL) {
+                $request->has_approved = 0;
+            } else {
+//                dd('ok');
+                $request->has_approved = 1;
             }
 
             $target_image = $student->image;
@@ -175,6 +193,9 @@ class StudentController extends Controller
                 $target_image = $imageName;
             }
 
+            $prev_status = $student->status;
+            $prev_approval_status = $student->has_approved;
+
 
             $student->update([
                 'first_name' => $request->first_name,
@@ -186,6 +207,7 @@ class StudentController extends Controller
             'country_code'=>$request->country_code,
             'image' => $target_image,
             'status' => $request->status,
+            'has_approved' => $request->has_approved,
             'address' => $request->address,
             ]);
 
@@ -193,8 +215,59 @@ class StudentController extends Controller
                 $student->password = Hash::make($request->password);
                 $student->save();
             }
+            $bonus = Bonus::where('bonus_type', 'instant_bonus')->first();
+            if($student->has_approved != $prev_approval_status){
+                $referal_code = Student::where('refer_code', $student->refered_code)->first();
+                if($referal_code){
 
-            Toastr::success('student updated successfully!', 'Success', ["positionClass" => "toast-top-right"]);
+                    for($i=0; $i <=3; $i++){
+                        if($i == 0){
+
+                            $referal_code->update([
+                                'affiliate_balance'=> $referal_code->affiliate_balance + $bonus->first_gen,
+                            ]);
+
+                            $referred_code = $referal_code->refered_code;
+                        }
+                        else{
+                            $referal_code = Student::where('refer_code', $referred_code)->first();
+                            if($referal_code){
+                                if($i== 1){
+                                    $bonus_amount = $bonus->second_gen;
+                                }
+                                if($i== 2){
+                                    $bonus_amount = $bonus->third_gen;
+                                }
+                                if($i== 3){
+                                    $bonus_amount = $bonus->fourth_gen;
+                                }
+
+                                $referal_code->update([
+                                    'affiliate_balance'=> $referal_code->affiliate_balance + $bonus_amount,
+                                ]);
+                                $referred_code = $referal_code->refered_code;
+
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if($prev_status != $student->status){
+                $data['email'] = $student->email;
+                $data['title'] = 'Member Status Change';
+                if($student->status == 1){
+                    Mail::send('frontend.email.status-change', ['member'=>$student], function ($message) use ($data) {
+                        $message->to($data["email"])
+                            ->subject($data["title"]);
+                    });
+                }
+            }
+
+            Toastr::success('Member updated successfully!', 'Success', ["positionClass" => "toast-top-right"]);
 
             return redirect()->route('admin.student.list');
         }

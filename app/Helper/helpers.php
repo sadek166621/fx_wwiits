@@ -1,6 +1,15 @@
 <?php
 
 use App\Models\Admin\Setting;
+use App\Models\Withdrawreq;
+use App\Models\Deposit;
+use App\Models\Admin\Package;
+use Carbon\Carbon;
+use App\Models\Admin\Bonus;
+use App\Models\Admin\DepostReturn;
+use App\Models\Admin\RolePermission;
+use App\Models\Admin\Permission;
+
 
 function decimal2($num){
     return number_format((float)$num, 2, '.', '');
@@ -195,5 +204,66 @@ if (!function_exists('numberToText')) {
             return $dictionary[$n];
         }
         return "";
+    }
+}
+function findWithdrawRequest($date, $member_id, $package_id){
+    // return $date;
+    $data = Withdrawreq::where('date', $date)->where('member_id', $member_id)->where('package_id', $package_id)->first();
+    return $data;
+}
+function getDepositSummary($id, $student_id)
+{
+    $deposits = Deposit::where('package_id', $id)->where('member_id', $student_id)->get();
+    $currentDate = Carbon::now();
+    $profit = 0;
+    $data['current_deposit'] = Deposit::where('package_id', $id)->where('member_id', $student_id)->sum('amount');
+    $package = Package::find($id);
+    $data['total_deposit'] = $package->usa_amount * count($deposits);
+    $data['total_withdraw'] = Withdrawreq::where('package_id', $id)->where('member_id', $student_id)->sum('amount');
+    foreach ($deposits as $deposit){
+        $days = $currentDate->diffInDays($deposit->created_at);
+//        dd($days);
+        $profit += $deposit->profit_amount * $days;
+    }
+    $data['total_profit'] =$profit;
+    return $data;
+}
+
+function getLatestPackages()
+{
+    return Package::where('status', 1)->latest()->get()->take(3);
+}
+
+function getReferralBonus($id)
+{
+    return Bonus::where('package_id', $id)->where('bonus_type', 'referral_bonus')->first();
+}
+
+function getAffiliateBonus($id)
+{
+    return Bonus::where('package_id', $id)->where('bonus_type', 'affiliate_bonus')->first();
+}
+
+function getReturns($id)
+{
+    return DepostReturn::where('package_id', $id)->first();
+}
+function findPermission($id)
+{
+    return RolePermission::where('permission_id', $id)->first();
+}
+
+function findStaffPermission($route)
+{
+    $permission = Permission::where('guard_name', $route)->first();
+    if($permission != null){
+        $staff_permission = RolePermission::where('permission_id', $permission->id)->first();
+        if($staff_permission != null){
+//        dd('ok');
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

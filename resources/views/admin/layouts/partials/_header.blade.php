@@ -23,7 +23,7 @@
               <img src="{{ asset('assets') }}/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  {{ auth()->user()->name }}
+                  {{ Auth::user()->name }}
                 </h3>
               </div>
             </div>
@@ -38,9 +38,9 @@
           <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
               {{ csrf_field() }}
           </form>
-          
+
         </div>
       </li>
-      
+
     </ul>
   </nav>

@@ -7,7 +7,9 @@
         <h1>Slider List</h1>
       </div>
       <div class="col-sm-6">
-        <a href="{{ route('admin.slider.add') }}" class="btn btn-info float-right">Add New</a>
+          @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.slider.add')))
+          <a href="{{ route('admin.slider.add') }}" class="btn btn-info float-right">Add New</a>
+          @endif
       </div>
     </div>
   </div><!-- /.container-fluid -->
@@ -52,8 +54,14 @@
                         @endif
                       </td>
                       <td>
-                        <a href="{{ route('admin.slider.edit', $slider->id) }}" class="btn btn-info"><i class="fas fa-edit"></i> Edit</a>
-                        <a href="{{ route('admin.slider.delete', $slider->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                          @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.slider.edit')))
+
+                          <a href="{{ route('admin.slider.edit', $slider->id) }}" class="btn btn-info"><i class="fas fa-edit"></i> Edit</a>
+                          @endif
+                              @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.slider.delete')))
+
+                              <a href="{{ route('admin.slider.delete', $slider->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                              @endif
                       </td>
                     </tr>
                   @endforeach

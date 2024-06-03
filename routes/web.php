@@ -3,6 +3,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 //ADMIN CONTROLLERS
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\WithdrawalController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LocationController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\MoreController;
 use App\Http\Controllers\Admin\OnlineController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\ReferalbonusController;
+use App\Http\Controllers\Admin\ActivationController;
 use App\Http\Controllers\Admin\AssignedController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -27,11 +29,29 @@ use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\Admin\DepositReferralBonusController;
 
-// CUSTOMER PANEl ROUTES
-Route::get('/register', [AppAuthController::class, 'register'])->name('register');
-Route::POST('/registerAction', [AppAuthController::class, 'registerAction'])->name('registerAction');
+//Front END
+Route::get('/', [PagesController::class, 'index'])->name('home');
+Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+Route::get('/training', [PagesController::class, 'training'])->name('training');
+Route::get('/faq', [PagesController::class, 'faq'])->name('faq');
+Route::get('/blog', [PagesController::class,'blog'])->name('blog');
+Route::get('/about', [PagesController::class,'about'])->name('about');
+Route::get('/contact', [PagesController::class,'contact'])->name('contact');
+Route::get('/support', [PagesController::class,'support'])->name('support');
+Route::get('/privact-policy', [PagesController::class,'privactpolicy'])->name('privact-policy');
+Route::get('/cookie-policy', [PagesController::class,'cookiepolicy'])->name('cookie-policy');
+Route::get('/deposits', [PagesController::class, 'deposit'])->name('deposit');
 
+Route::get('/refer-code-sign-up/{refer_code}', [PagesController::class,'refercodesignup'])->name('refer-code-sign-up');
+Route::get('/member-signin', [PagesController::class,'studentsignin'])->name('student.signin');
+Route::get('/member-signup', [PagesController::class,'studentsignup'])->name('student.signup');
+Route::Post('/student-registration-form', [PagesController::class,'studentregistrationform'])->name('student-registration-form');
+Route::get('/thankyou-for-reg',[PagesController::class,'thankyouforreg'])->name('thankyou-for-reg');
+
+//frontend End
 
 //ADMIN PANEL
 Route::get('/admin', function () {
@@ -45,6 +65,14 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::middleware('admin')->group(function () {
+
+        Route::get('fund/requests', [BalanceController::class, 'index'])->name('fund.request.list');
+        Route::get('fund/add/history', [BalanceController::class, 'history'])->name('fund.request.history');
+        Route::post('fund/requests/change-status', [BalanceController::class, 'changeStatus'])->name('fund.request.change-status');
+
+        Route::get('deposit/list', [DepositController::class, 'depositRequest'])->name('deposit.request.list');
+        Route::post('deposit/change-status', [DepositController::class, 'changeStatus'])->name('deposit.request.change-status');
+
         Route::group(['as' => 'slider.', 'prefix' => 'slider'], function () {
             Route::get('/list', [SliderController::class, 'index'])->name('list');
             Route::get('/add', [SliderController::class, 'create'])->name('add');
@@ -63,6 +91,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/delete/{id}', [DepartmentController::class, 'destroy'])->name('delete');
         });
 
+        Route::group(['as' => 'withdraw.', 'prefix' => 'withdraw'], function () {
+            Route::get('/list', [WithdrawalController::class, 'index'])->name('list');
+            Route::get('/add', [WithdrawalController::class, 'create'])->name('add');
+            Route::post('/submit', [WithdrawalController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [WithdrawalController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [WithdrawalController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [WithdrawalController::class, 'destroy'])->name('delete');
+        });
+
         Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function () {
             Route::get('/list', [TeacherController::class, 'index'])->name('list');
             Route::get('/add', [TeacherController::class, 'create'])->name('add');
@@ -72,10 +109,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('delete');
         });
 
-        Route::group(['as' => 'student.', 'prefix' => 'student'], function () {
+        Route::group(['as' => 'student.', 'prefix' => 'member'], function () {
             Route::get('/list', [StudentController::class, 'index'])->name('list');
             Route::get('/add', [StudentController::class, 'create'])->name('add');
-            Route::get('/unactive', [StudentController::class, 'unactive'])->name('unactive');
+            Route::get('/inactive', [StudentController::class, 'unactive'])->name('unactive');
             Route::post('/submit', [StudentController::class, 'store'])->name('store');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [StudentController::class, 'update'])->name('update');
@@ -100,6 +137,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/edit/{id}', [StaffController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [StaffController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [StaffController::class, 'destroy'])->name('delete');
+            Route::get('/permission', [StaffController::class, 'permission'])->name('permission');
+            Route::post('/permission/update', [StaffController::class, 'permissionUpdate'])->name('permission.update');
         });
 
         Route::group(['as' => 'notice.', 'prefix' => 'notice'], function () {
@@ -132,6 +171,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/edit', [DashboardController::class, 'site_edit'])->name('edit');
             Route::post('/update/{id}', [DashboardController::class, 'site_update'])->name('update');
         });
+
         Route::group(['as' => 'about.', 'prefix' => 'about'], function () {
             Route::get('/edit', [AboutController::class, 'site_edit'])->name('edit');
             Route::post('/update/{id}', [AboutController::class, 'site_update'])->name('update');
@@ -178,6 +218,31 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/view/{id}',[ReferalbonusController::class, 'show'])->name('view');
 
         });
+
+        Route::group(['as' => 'deposit-bonus.', 'prefix' => 'deposit-bonus'], function () {
+            Route::get('/list',[DepositReferralBonusController::class, 'index'])->name('list');
+            Route::get('/add',[DepositReferralBonusController::class, 'create'])->name('add');
+            Route::post('/submit',[DepositReferralBonusController::class, 'store'])->name('store');
+            Route::get('/edit/{id}',[DepositReferralBonusController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[DepositReferralBonusController::class, 'update'])->name('update');
+            Route::get('/delete/{id}',[DepositReferralBonusController::class, 'destroy'])->name('delete');
+            Route::get('/view/{id}',[DepositReferralBonusController::class, 'show'])->name('view');
+
+        });
+
+        Route::group(['as' => 'activation.', 'prefix' => 'activation'], function () {
+            Route::get('/list',[ActivationController::class, 'index'])->name('list');
+            Route::get('/add',[ActivationController::class, 'create'])->name('add');
+            Route::post('/submit',[ActivationController::class, 'store'])->name('store');
+            Route::get('/edit/{id}',[ActivationController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[ActivationController::class, 'update'])->name('update');
+            Route::get('/delete/{id}',[ActivationController::class, 'destroy'])->name('delete');
+            Route::get('/view/{id}',[ActivationController::class, 'show'])->name('view');
+
+        });
+        Route::get('payment/options', [DashboardController::class, 'paymentOption'])->name('payment.list');
+        Route::post('payment/options/{id}', [DashboardController::class, 'updatePaymentOption'])->name('payment.update');
+
         Route::group(['as' => 'assigned.', 'prefix' => 'assigned'], function () {
             Route::get('/list',[AssignedController::class, 'index'])->name('list');
             Route::get('/add',[AssignedController::class, 'create'])->name('add');
@@ -221,12 +286,54 @@ Route::prefix('admin')->as('admin.')->group(function () {
         });
     });
 });
+//end Admin
 
+//member panel routes
+Route::middleware('member')->group(function () {
+
+    Route::get('/dashboard', [PagesController::class,'dashboard'])->name('member.dashboard');
+    Route::get('/balance/add', [BalanceController::class,'create'])->name('money.add');
+    Route::post('/balance/add/submit', [BalanceController::class,'store'])->name('money.add.submit');
+    Route::get('balance/history', [BalanceController::class, 'history'])->name('money.add.list');
+    Route::get('/reference', [PagesController::class,'reference'])->name('reference');
+    Route::get('/balance-transfer', [PagesController::class,'balancetransfer'])->name('balance-transfer');
+    Route::Post('/submit-balance-tranfer', [PagesController::class,'submitbalancetranfer'])->name('submit-balance-tranfer');
+    Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
+    Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
+    Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
+    Route::get('/training/session', [PagesController::class, 'trainingSession'])->name('training.session');
+    Route::post('/submit-package-withdraw-request', [PagesController::class,'submitpackagewithdrawrequest'])->name('submit-package-withdraw-request');
+    Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
+    Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
+    Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
+    Route::get('/package-details/{id}', [PagesController::class,'depositdetails'])->name('package.details');
+    Route::get('/activation-code', [PagesController::class,'activationcode'])->name('activation-code');
+    Route::get('/generate-activation-code', [PagesController::class,'genarateactivationcode'])->name('genarate-activation-code');
+    Route::get('/delete-activation-code/{id}', [PagesController::class,'deleteactivationcode'])->name('delete-activation-code');
+
+
+    Route::post('/deposit/add', [DepositController::class,'store'])->name('deposit.add');
+    Route::get('/deposit/list', [DepositController::class,'index'])->name('deposit.list');
+    Route::get('/deposit/profit/history/{id}', [DepositController::class,'profithistory'])->name('deposit.profit.history');
+    Route::get('/student-Logout', [PagesController::class,'studentLogout'])->name('student-logout');
+    Route::get('/profile-settings', [PagesController::class,'profilesettings'])->name('profile-settings');
+
+});
+
+//end member panel routes
+
+
+Route::get('sms-test', [PagesController::class, 'sms'])->name('sms-test');
+Route::get('daily-update', [PagesController::class, 'updateMember'])->name('daily-update');
+
+
+
+
+
+
+Route::get('/register', [AppAuthController::class, 'register'])->name('register');
+Route::POST('/registerAction', [AppAuthController::class, 'registerAction'])->name('registerAction');
 Route::get('/app/get-gateway/{id}', [DashboardController::class, 'getGateway'])->name('getGateway');
-
-
-//Front END
-Route::get('/', [PagesController::class, 'index'])->name('home');
 Route::get('/vice-principal-message', [PagesController::class, 'vicePrincipalMessage'])->name('vicePrincipalMessage');
 Route::get('/principal-message', [PagesController::class, 'principalMessage'])->name('principalMessage');
 Route::get('/faculties', [PagesController::class, 'teacher'])->name('teacher.list');
@@ -261,84 +368,35 @@ Route::get('/quran-memorization-course-f-', [PagesController::class, 'quranmemor
 Route::get('/quran-reading-course-f-a', [PagesController::class, 'quranreadingcoursefa'])->name('quran-reading-course-f-a');
 Route::get('/quranic-arabic-course-f-a', [PagesController::class, 'quranicarabiccoursefa'])->name('quranic-arabic-course-f-a');
 Route::get('/quran-memorization-course-f-a', [PagesController::class, 'quranmemorizationcoursefa'])->name('quran-memorization-course-f-a');
-Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+
 Route::get('/Basics-of-Islam-Campus', [PagesController::class, 'BasicsofIslamCampus'])->name('Basics-of-Islam-Campus');
 Route::get('/Be-Part-of-Us', [PagesController::class, 'BePartofUs'])->name('Be-Part-of-Us');
 Route::get('/Donate-Us', [PagesController::class, 'DonateUs'])->name('Donate-Us');
 Route::get('/be-a-teacher', [PagesController::class, 'beateacher'])->name('be-a-teacher');
-
 Route::get('/online-class', [PagesController::class, 'onlineclass'])->name('online-class');
-
 Route::post('/teacher-job-apply', [PagesController::class, 'teacherjobapply'])->name('teacher-job-apply');
-
-
 Route::get('/student-dashboard', [PagesController::class, 'studentdashboard'])->name('student.dashboard');
-Route::get('/logout', [PagesController::class, 'logout'])->name('logout');
-
-
-
-// Route::get('/student-admission', [PagesController::class, 'studentadmission'])->name('student-admission');
-// Route::post('/student-register-form', [StudentController::class, 'studentregisterform'])->name('student-register-form');
-// Route::post('/new-student-signup', [StudentController::class, 'newstudentsignup'])->name('new-student-signup');
-// Route::get('/how-to-register', [StudentController::class, 'howtoregister'])->name('how-to-register');
-// Route::get('/student-signup', [StudentController::class, 'studentsignup'])->name('student-signup');
-// Route::post('/student-login', [StudentController::class, 'studentlogin'])->name('student-login');
-// Route::get('/division-district/ajax/{division_id}',[PagesController::class,'getdivision'])->name('division.ajax');
-
-
-Route::get('/student-signin', [PagesController::class,'studentsignin'])->name('student.signin');
 Route::get('/admin-signin', [PagesController::class,'adminsignin'])->name('admin.signin');
 Route::get('/sub-admin-signin', [PagesController::class,'subadminsignin'])->name('sub.admin.signin');
-Route::get('/student-signup', [PagesController::class,'studentsignup'])->name('student.signup');
 Route::get('/student-dashboard', [PagesController::class,'studentdashboard'])->name('student.dashboard');
 Route::Post('/student-submit-form', [PagesController::class,'studentsubmitform'])->name('student.submit.form');
 Route::get('/course', [PagesController::class,'course'])->name('course');
-Route::get('/refer-code-sign-up/{refer_code}', [PagesController::class,'refercodesignup'])->name('refer-code-sign-up');
 Route::get('/course-details/{id}', [PagesController::class,'coursedetails'])->name('course-details');
-Route::get('/profile-settings', [PagesController::class,'profilesettings'])->name('profile-settings');
-
 Route::get('/sub-admin-dashboard', [PagesController::class,'subadmindashboard'])->name('sub-admin-dashboard');
 Route::get('/subadmin-schedule-delete/{id}', [PagesController::class,'subadminscheduledelete'])->name('subadmin-schedule-delete');
 Route::get('/subadmin-schedule-logout', [PagesController::class,'subadminschedulelogout'])->name('subadmin-schedule-logout');
-
-
 Route::get('/student-enroll-courses', [PagesController::class,'studentenrollcourses'])->name('student-enroll-courses');
-
-Route::get('/reference', [PagesController::class,'reference'])->name('reference');
-Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
-Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
-Route::get('/password-change', [PagesController::class,'passwordchange'])->name('password-change');
-Route::post('/password-change-submit', [PagesController::class,'passwordchangeSubmit'])->name('password.change.submit');
-Route::get('/deposit-packages', [PagesController::class,'depositPackage'])->name('deposit-packages');
-
-
-Route::post('/deposit/add', [DepositController::class,'store'])->name('deposit.add');
-Route::get('/deposit/list', [DepositController::class,'index'])->name('deposit.list');
-
-
 Route::post('/add-schedule', [PagesController::class,'addschedule'])->name('add.schedule');
 Route::post('/student-profile-update/{id}', [PagesController::class,'studentprofileupdate'])->name('student-profile-update');
-Route::Post('/student-registration-form', [PagesController::class,'studentregistrationform'])->name('student-registration-form');
 Route::Post('/sub-admin-login', [PagesController::class,'subadminlogin'])->name('sub-admin-login');
 Route::Post('/become-instractor-login', [PagesController::class,'becomeinstractorlogin'])->name('become-instractor-login');
-Route::get('/blog', [PagesController::class,'blog'])->name('blog');
-Route::get('/about', [PagesController::class,'about'])->name('about');
-Route::get('/contact', [PagesController::class,'contact'])->name('contact');
-Route::get('/support', [PagesController::class,'support'])->name('support');
-Route::get('/privact-policy', [PagesController::class,'privactpolicy'])->name('privact-policy');
-Route::get('/cookie-policy', [PagesController::class,'cookiepolicy'])->name('cookie-policy');
 Route::get('/instractor', [PagesController::class,'instractor'])->name('instractor');
 Route::get('/become-instractor', [PagesController::class,'becomeinstractor'])->name('become-instractor');
 Route::get('/verify-certificate', [PagesController::class,'verifycertificate'])->name('verify-certificate');
-Route::get('/student-Logout', [PagesController::class,'studentLogout'])->name('student-logout');
-
 Route::post('/b-instrustor',[PagesController::class,'bapplication'])->name('binstructor');
-Route::get('/thankyou-for-reg',[PagesController::class,'thankyouforreg'])->name('thankyou-for-reg');
 Route::get('/b-instrustor/list',[PagesController::class,'bapplicationlist'])->name('binstructor.list');
 Route::get('/b-instrustor/delete/{id}',[PagesController::class,'binstrustordelete'])->name('b-instrustor.delete');
-
-
-
+Route::get('/logout', [PagesController::class, 'logout'])->name('logout');
 
 
 

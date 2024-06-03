@@ -7,7 +7,9 @@
         <h1>Package List</h1>
       </div>
       <div class="col-sm-6">
-        <a href="{{ route('admin.package.add') }}" class="btn btn-info float-right">Add New</a>
+          @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.package.add')))
+          <a href="{{ route('admin.package.add') }}" class="btn btn-info float-right">Add New</a>
+          @endif
       </div>
     </div>
   </div><!-- /.container-fluid -->
@@ -41,8 +43,8 @@
                           @if($item->package_type == 1)
                               Forex Deposit
                           @endif</td>
-                      <td>{{ $item->usa_amount }}$ ({{$item->bd_amount}} TK)</td>
-                      <td>{{ $item->profit }} TK</td>
+                      <td>${{ $item->usa_amount }} </td>
+                      <td>${{ $item->profit }}</td>
                        <td>
                         @if ($item->status == 1)
                           <span class="badge bg-success">Active</span>
@@ -51,8 +53,12 @@
                         @endif
                       </td>
                       <td>
-                        <a href="{{ route('admin.package.edit', $item->id) }}" class="btn btn-info"><i class="fas fa-edit"></i> Edit</a>
-                        <a href="{{ route('admin.package.delete', $item->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                            @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.package.edit')))
+                                <a href="{{ route('admin.package.edit', $item->id) }}" class="btn btn-info"><i class="fas fa-edit"></i> Edit</a>
+                            @endif
+                            @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.package.delete')))
+                                <a href="{{ route('admin.package.delete', $item->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                          @endif
                       </td>
                     </tr>
                   @endforeach

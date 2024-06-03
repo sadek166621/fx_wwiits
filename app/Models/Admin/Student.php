@@ -9,4 +9,8 @@ class Student extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    // public function genarateBy(){
+    //     return $this->belongsTo(Student::class,'')
+    // }
 }

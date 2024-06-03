@@ -20,7 +20,7 @@ class AdminMiddleware
         if(Auth::guard()->check()) // this means that the admin was logged in.
         {
             if (Auth::user()) {
-                if (Auth::user()->role_type === 'admin') {
+                if (Auth::user()->role_type === 'admin' || Auth::user()->role_type === 'staff') {
                     return $next($request);
                 }
             }

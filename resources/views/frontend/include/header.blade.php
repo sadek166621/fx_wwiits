@@ -1,80 +1,82 @@
-<header class="nav-background">
-    <!-- Nav Bar Start -->
-    <section class="menu-section-area " >
-      <nav class="navbar sticky-header navbar-expand-lg nav-background fixed-top px-md-5" id="mainNav">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{{ route('home') }}"><img class="header-logo" src="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}" alt="Logo"
-              ></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="main-menu-collapse collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown">
-                <a class="text-decoration-none fw-semibold text-light m-3 hover" href="#" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false" style="text-shadow: 0 0 1px #000000, 0 0 4px #000000;">
-                  Pages <i class="fa-solid fa-angle-down"></i>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('blog') }}"style="
-    color: black!important;
-">Blogs</a></li>
-                  <li><a class="dropdown-item" href="{{ route('about') }}"style="
-    color: black!important;
-">About</a></li>
-                  <li><a class="dropdown-item" href="{{ route('contact') }}"style="
-    color: black!important;
-">Contact</a></li>
-                  <li><a class="dropdown-item" href="{{ route('support') }}"style="
-    color: black!important;
-">Support</a></li>
-                  <li><a class="dropdown-item" href="{{ route('privact-policy') }}"style="
-    color: black!important;
-">Privacy Policy</a></li>
-                  <li><a class="dropdown-item" href="{{ route('cookie-policy') }}"style="
-    color: black!important;
-">Cookie Policy</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="text-decoration-none fw-semibold text-light m-3" aria-current="page" href="#"style="text-shadow: 0 0 1px #000000, 0 0 4px #000000;">Fourm</a>
-              </li>
-              <li class="nav-item">
-                <a class="text-decoration-none fw-semibold text-light m-3" aria-current="page" href="{{ route('blog') }}"style="text-shadow: 0 0 1px #000000, 0 0 4px #000000;">Blogs</a>
-              </li>
-              <li class="nav-item">
-                <a class="text-decoration-none fw-semibold text-light m-3" aria-current="page" href="{{ route('contact') }}"style="text-shadow: 0 0 1px #000000, 0 0 4px #000000;">Contact</a>
-              </li>
-              <li class="nav-item menu-round-btn menu-cart-btn">
-                <a class="nav-link menu-cart-btn" aria-current="page"
-                    href="#">
-                    <i data-feather="shopping-bag"></i>
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cartQuantity">
-                        0
-                    </span>
-                </a>
-            </li>
-            </ul>
-            <form class="d-flex flex-column flex-md-row">
-                @if(session()->has('StudentId'))
-                <a class=" d-flex justify-content-center align-items-center fw-bold pri-btn m-2" aria-current="page"
-                href="{{ route('student.dashboard') }}">My Dashboard</a>
-                @else
-              <a class=" d-flex justify-content-center align-items-center fw-bold pri-btn m-2" aria-current="page"
-                href="{{ route('student.signin') }}">Sign In</a>
 
-              <a class=" d-flex justify-content-center align-items-center fw-bold pri-btn m-2" aria-current="page"
-                href="{{ route('admin.signin') }}">Admin Login</a>
-              <a class=" d-flex justify-content-center align-items-center fw-bold pri-btn m-2" aria-current="page"
-                href="{{ route('sub.admin.signin') }}">Subadmin Login</a>
-                @endif
-            </form>
-          </div>
+@php
+  $route = Route::current()->getName();
+@endphp
+  <header>
+    <div class="mainmenu-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="{{ route('home') }}">
+                            <img src="{{asset('new-assets')}}/assets/images/FX-logo.png" alt="">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_menu"
+                                aria-controls="main_menu" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse fixed-height" id="main_menu">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ ($route == 'home')? 'active':'' }}" href="{{route('home')}}">Home
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ ($route == 'about')? 'active':'' }} " href="{{route('about')}}">About
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                                <li class="nav-item d-none">
+                                    <a class="nav-link {{ ($route == 'deposit')? 'active':'' }}" href="{{route('deposit')}}">Deposit
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ ($route == 'training')? 'active':'' }}" href="{{route('training')}}">Training
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ ($route == 'faq')? 'active':'' }}" href="{{route('faq')}}">FAQ
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ ($route == 'contact')? 'active':'' }}" href="{{route('contact')}}">Contact
+                                        <div class="mr-hover-effect"></div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="nav-button">
+                                @if(session()->has('StudentId'))
+                                @if ($route == 'profile-settings')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'deposit-packages')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'deposit.list')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'reference')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'passbook')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'withdraw')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @elseif ($route == 'password-change')
+                                <a href="{{ route('student-logout') }}" style="text-decoration: none;" class="base-btn2"> Logout</a>
+                                @else
+                                <a href="{{ route('profile-settings') }}" class="base-btn2"> My Dashboard</a>
+                                @endif
+                                @else
+                                <a href="{{ route('student.signin') }}" style="width: 104px;text-align: center;" class="base-btn2"> Login</a>
+                                <a href="{{ route('student.signup') }}" class="base-btn2"> Register</a>
+                                @endif
+
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
-      </nav>
-    </section>
-    <!-- Nav Bar End -->
-  </header>
+    </div>
+</header>

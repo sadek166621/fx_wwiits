@@ -9,7 +9,7 @@
     <meta name="author" content="PIXINVENT">
     <title>Account Login - HealthX | Revolutionizing Healthcare with Blockchain Excellence</title>
     <link rel="apple-touch-icon" href="app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/images/uploads/settings/{{ getSetting()->site_icon }}">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i|Comfortaa:300,400,500,700" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="app-assets/css/vendors.css">
@@ -34,7 +34,7 @@
       <div class="content-wrapper">
         <div class="content-header row">
         </div>
-        <div class="content-body"><section id="account-login" class="flexbox-container">    
+        <div class="content-body"><section id="account-login" class="flexbox-container">
     <div class="col-12 d-flex align-items-center justify-content-center">
         <!-- image -->
         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-5 col-12 p-0 text-center d-none d-md-block">
@@ -44,12 +44,12 @@
         </div>
         <!-- login form -->
         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-5 col-12 p-0">
-            <div class="card border-grey border-lighten-3 m-0 box-shadow-0 card-account-right height-400">                
-                <div class="card-content">                    
+            <div class="card border-grey border-lighten-3 m-0 box-shadow-0 card-account-right height-400">
+                <div class="card-content">
                     <div class="card-body p-3">
                         <p class="text-center h5 text-capitalize">Welcome to HealthX!</p>
                         <p class="mb-3 text-center">Please enter your login details</p>
-                        <form class="form-horizontal form-signin" action="index.html">                            
+                        <form class="form-horizontal form-signin" action="index.html">
                             <fieldset class="form-label-group">
                                 <input type="text" class="form-control" id="user-name" placeholder="Your Username" value="john" required="" autofocus="">
                                 <label for="user-name">Username</label>
@@ -70,11 +70,11 @@
                             <button type="submit" class="btn-gradient-primary btn-block my-1">Log In</button>
                             <p class="text-center"><a href="account-register.html" class="card-link">Register</a></p>
                         </form>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </section>
 
         </div>

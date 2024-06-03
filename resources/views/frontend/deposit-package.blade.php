@@ -1,136 +1,99 @@
 @extends('frontend.master2')
 @section('content')
 
-    <!-- Main Content Start-->
-
-    <div class="bg-page">
-        <!-- Page Header Start -->
-        <header class="page-banner-header blank-page-banner-header gradient-bg position-relative">
-            <div class="section-overlay">
-                <div class="blank-page-banner-wrap">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 col-sm-12 col-md-12">
-                                <div class="page-banner-content text-center">
-                                    <h3 class="page-banner-heading color-heading pb-15">Hey, {{ $student->first_name }} {{ $student->last_name }} <img
-                                            src="{{ asset('frontend') }}/css/img/icons-svg/waving-hand.webp"
-                                            alt="student" class="me-2"></h3>
-
-                                    <!-- Breadcrumb Start-->
-                                    <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb justify-content-center">
-                                            <li class="breadcrumb-item font-14"><a
-                                                  class="text-decoration-none"  href="{{ route('home') }}">Home</a></li>
-                                            <li class="breadcrumb-item font-14 active" aria-current="page">Deposit Package
-                                            </li>
-                                        </ol>
-                                    </nav>
-                                    <!-- Breadcrumb End-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card table-responsive">
+                <div class="card-header">
+                    <h3>My Packages</h3>
                 </div>
-            </div>
-        </header>
-        <!-- Page Header End -->
+                <div class="card-body">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th scope="col">SL</th>
+                            <th scope="col">Deposit Package</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if(count($items) > 0)
+                            @foreach ( $items as $key=>$item )
+                                <tr>
 
-        <!-- Student Profile Page Area Start -->
-        <section class="student-profile-page">
-            <div class="container">
-                <div class="student-profile-page-content">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row bg-white">
-                                <!-- Student Profile Left part -->
-                                <div class="col-lg-3 p-0">
-                                    <div class="student-profile-left-part">
-                                        <input type="hidden" name="" id="balance" value="{{$student->bonus}}">
-                                        <h6>{{ $student->first_name }} {{ $student->last_name }}</h6>
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="{{route('deposit-packages')}}"
-                                                   class="font-medium font-15 text-decoration-none active">Package
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{route('deposit.list')}}"
-                                                   class="font-medium font-15 text-decoration-none">Deposit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('profile-settings') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Profile
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                   class="font-medium font-15 text-decoration-none ">Training
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                   class="font-medium font-15 text-decoration-none ">Blog
-                                                </a>
-                                            </li>
-                                            <li><a href="{{ route('reference') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Reference</a></li>
-                                            <li><a href="{{ route('passbook') }}"
-                                                   class="font-medium font-15 text-decoration-none ">My Passbook</a></li>
-                                            <li><a href="{{ route('withdraw') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Withdrawals</a></li>
-                                            <li><a href="{{ route('password-change') }}"
-                                                   class="font-medium font-15 text-decoration-none ">Change Password</a></li>
-                                        </ul>
+                                    <th scope="row">{{ $key+1 }}</th>
+                                    <th>{{ $item->package_name }}</th>
+                                    <td><span id="usa_amount{{$key}}">{{ $item->usa_amount }}</span>$</td>
+                                    <td class="btn-group">
+                                        <a class="btn btn-warning mx-2" style="border-radius: 7px;" href="{{ route('package.details',$item->id) }}">Details</a>
 
-                                    </div>
-                                </div>
-                                <!-- Student Profile Right part -->
-                                <div class="col-lg-9 p-0">
-                                    <div class="student-profile-right-part">
-                                        <h6>My Packages</h6>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">SL</th>
-                                                    <th scope="col">Deposit Package</th>
-                                                    <th scope="col">Amount</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ( $items as $key=>$item )
-                                                <tr>
+                                        <form action="{{route('deposit.add')}}" method="post" onsubmit="return checkBalance({{$key}})">
+                                            @csrf
+                                            <input type="hidden" name="package_id" value="{{$item->id}}">
+                                            <input type="hidden" name="amount" value="{{$item->usa_amount}}">
+                                            <input type="hidden" name="" id="balance" value="{{$student->bonus}}">
+                                            <input type="hidden" name="profit_amount" value="{{$item->profit}}">
+                                            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">Deposit</a>
+                                            <!-- Button trigger modal -->
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+{{--                                                            <h5 class="modal-title" id="exampleModalLabel">Confirmation Message</h5>--}}
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores aspernatur esse maiores molestiae necessitatibus odit officiis quasi quibusdam, sit.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Deposit Amount</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                    <th scope="row">{{ $key+1 }}</th>
-                                                    <th>{{ $item->package_name }}</th>
-                                                    <td><span id="usa_amount{{$key}}">{{ $item->usa_amount }}</span>$</td>
-                                                    <td>
-                                                        <form action="{{route('deposit.add')}}" method="post" onsubmit="return checkBalance({{$key}})">
-                                                            @csrf
-                                                            <input type="hidden" name="package_id" value="{{$item->id}}">
-                                                            <input type="hidden" name="amount" value="{{$item->usa_amount}}">
-                                                            <button type="submit" class="btn btn-primary">Deposit</button>
-                                                        </form>
+{{--                                            <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+{{--                                                <div class="modal-dialog" role="document">--}}
+{{--                                                    <div class="modal-content" style="position: relative;top: 84px;">--}}
+{{--                                                        <div class="modal header">--}}
+{{--                                                            --}}{{-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> --}}
+{{--                                                            <button type="button" class="btn-close mx-3" data-bs-dismiss="modal" aria-label="Close">--}}
 
-                                                    </td>
-                                                </tr>
-                                                @endforeach
+{{--                                                            </button>--}}
+{{--                                                        </div>--}}
+{{--                                                        <div class="modal-body">--}}
+{{--                                                            <input type="checkbox" required > Lorem ipsum dolor sit, amet consectetur adipisicing elit. In harum nihil blanditiis eum corrupti, sunt cupiditate beatae odio tempora doloremque laborum ullam autem, consequatur dicta, vero minima reprehenderit quis! Nobis.--}}
+{{--                                                        </div>--}}
+{{--                                                        <div class="modal-footer">--}}
+{{--                                                            <button type="submit" class="btn btn-primary mb-3 mx-4 float-right">Submit</button>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+                                        </form>
 
-                                            </tbody>
-                                        </table>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="4" class="text-center"> <strong class="text-danger">No Deposit Package Available</strong></td>
+                            </tr>
+                        @endif
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                        </tbody>
+                    </table>
                 </div>
+
+
+
             </div>
-        </section>
-        <!-- Student Profile Page Area End -->
+        </div>
     </div>
-    <!-- Main Content End-->
 
     @endsection
 @push('js')
@@ -138,8 +101,8 @@
         function checkBalance(rowId) {
 
             var balance = Number($('#balance').val());
-            var deposit_amount = Number($('#usa_amount'+rowId).val());
-                if(balance > deposit_amount){
+            var deposit_amount = Number($('#usa_amount'+rowId).text());
+                if(balance >= deposit_amount){
                     return true;
                 }
                 else{

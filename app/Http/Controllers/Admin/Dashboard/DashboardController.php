@@ -183,6 +183,9 @@ class DashboardController extends Controller
                 'contact' => $request->contact,
                 'message_from_1' =>$request->message_from_1,
                 'message_from_2' =>$request->message_from_2,
+                'reg_charge' =>$request->reg_charge,
+                'reg_charge_tk' =>$request->reg_charge_tk,
+                'conversion_rate' =>$request->conversion_rate,
             ]);
 
             $logo = $setting->site_logo;
@@ -266,5 +269,42 @@ class DashboardController extends Controller
         $studentregs = studentreg::find($id);
         return view('admin.applied-student.details', compact('studentregs'));
 
+    }
+
+    public function paymentOption()
+    {
+        $data['setting'] = Setting::first();
+        return view('admin.payment.form', $data);
+    }
+
+    public function updatePaymentOption(Request $request, $id)
+    {
+        $request->validate([
+            'bkash'         => ['required'],
+            'rocket'        => ['required'],
+            'nagad'         => ['required'],
+            'binance'       => ['required'],
+            'visa_card'     => ['required'],
+            'perfect_money' => ['required'],
+            'neteller'      => ['required'],
+            'skrill'        => ['required'],
+        ]);
+        $setting = Setting::findOrFail($id);
+        if($setting){
+            $setting->update([
+                'bkash'         => $request->bkash,
+                'rocket'        => $request->rocket,
+                'nagad'         => $request->nagad,
+                'binance'       => $request->binance,
+                'visa_card'     => $request->visa_card,
+                'perfect_money' => $request->perfect_money,
+                'neteller'      => $request->neteller,
+                'skrill'        => $request->skrill,
+            ]);
+
+            Toastr::success('Payment options updated successfully!', 'Success', ["positionClass" => "toast-top-right"]);
+        }
+
+        return back();
     }
 }

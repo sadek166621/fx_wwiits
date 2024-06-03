@@ -37,7 +37,7 @@ class AppAuthController
 //            'password' => 'required|min:6'
 //        ]);
         if (Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            if(Auth::user()->role_type == 'admin'){
+            if(Auth::user()->role_type == 'admin' ||Auth::user()->role_type == 'staff'){
                 return redirect()->intended('/admin/dashboard');
             }elseif(Auth::user()->role_type == 'user'){
                 return redirect()->intended('/admin/panel');
@@ -58,10 +58,10 @@ class AppAuthController
         }
     }
 
-    public function register()
-    {
-        return view('auth.register');
-    }
+//    public function register()
+//    {
+//        return view('auth.register');
+//    }
 
     public function registerAction(Request $request)
     {

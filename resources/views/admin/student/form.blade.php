@@ -5,7 +5,11 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Add New student</h1>
+        <h1>@isset($student)
+            Update Member
+            @else
+            Add New Member
+        @endisset</h1>
       </div>
 
     </div>
@@ -147,6 +151,10 @@
                     @isset($student) {{ $student->phone }} @endisset
                 </textarea>
               </div> --}}
+            <div class="form-check @if(isset($student) && $student->has_approved == 1) d-none @endif" >
+                <input type="checkbox" name="has_approved" class="form-check-input" id="exampleCheck2" @isset($student) @if($student->has_approved == 1) checked @endif @else checked @endisset>
+                <label class="form-check-label" for="exampleCheck1">Approve</label>
+            </div>
 
 
               <div class="form-check">
