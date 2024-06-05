@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Package;
 use App\Models\Admin\Student;
 use App\Models\Balance;
 use App\Models\BalanceTransfer;
@@ -25,9 +26,12 @@ class DashboardController extends Controller
     public function index()
     {
         $data['withdrawn'] = Withdrawreq::where('status', 1)->sum('amount');
-        $data['members'] = Student::all()->count();
+        $data['active_members'] = Student::where('status', 1)->count();
+        $data['package'] = Package::all()->count();
+        $data['inactive_members'] = Student::where('status', 0)->count();
         $data['internal_transfer'] = BalanceTransfer::where('transfer_from', 3)->sum('amount');
         $data['fund'] = Balance::where('status', 1)->sum('amount');
+        $data['fund_request'] = Balance::where('status', 0)->sum('amount');
         $data['deposit'] = Deposit::all()->sum('amount');
 
         return view('admin.dashboard.index', $data);
@@ -292,26 +296,49 @@ class DashboardController extends Controller
     public function updatePaymentOption(Request $request, $id)
     {
         $request->validate([
-            'bkash'         => ['required'],
-            'rocket'        => ['required'],
-            'nagad'         => ['required'],
-            'binance'       => ['required'],
-            'visa_card'     => ['required'],
-            'perfect_money' => ['required'],
-            'neteller'      => ['required'],
-            'skrill'        => ['required'],
+            'bkash'                 => ['required'],
+            'rocket'                => ['required'],
+            'nagad'                 => ['required'],
+            'binance'               => ['required'],
+            'binance_link'          => ['required'],
+            'binance_image'         => ['required'],
+            'visa_card'             => ['required'],
+            'perfect_money'         => ['required'],
+            'neteller'              => ['required'],
+            'skrill'                => ['required'],
         ]);
         $setting = Setting::findOrFail($id);
+
+        $target_image = $setting->binance_image;
+        $image = $request->file('binance_image');
+        if($image){
+            $currentDate = Carbon::now()->toDateString();
+            //dd($image->getClientOriginalExtension());
+
+            $imageName = $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            if (!file_exists('assets/images/uploads/')) {
+                mkdir('assets/images/uploads/', 0777, true);
+            }
+
+            $image->move(public_path('assets/images/uploads/'), $imageName);
+            // $image->move(base_path().'/assets/images/uploads/students', $imageName);
+
+            $target_image = $imageName;
+        }
+
         if($setting){
             $setting->update([
-                'bkash'         => $request->bkash,
-                'rocket'        => $request->rocket,
-                'nagad'         => $request->nagad,
-                'binance'       => $request->binance,
-                'visa_card'     => $request->visa_card,
-                'perfect_money' => $request->perfect_money,
-                'neteller'      => $request->neteller,
-                'skrill'        => $request->skrill,
+                'bkash'                 => $request->bkash,
+                'rocket'                => $request->rocket,
+                'nagad'                 => $request->nagad,
+                'binance'               => $request->binance,
+                'binance_link'          => $request->binance_link,
+                'binance_image'         => $target_image,
+                'visa_card'             => $request->visa_card,
+                'perfect_money'         => $request->perfect_money,
+                'neteller'              => $request->neteller,
+                'skrill'                => $request->skrill,
             ]);
 
             Toastr::success('Payment options updated successfully!', 'Success', ["positionClass" => "toast-top-right"]);

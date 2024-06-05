@@ -53,7 +53,7 @@
                                             </td>
                                             <td class="">
                                                 <a href="{{route('admin.bank.edit', $item->id)}}" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
-                                                <a href="" class="btn btn-danger" onclick="return confirm('Please Confirm Before Deleting it!!')"><i class="fa fa-trash"></i>Delete</a>
+                                                <a href="{{route('admin.bank.delete', $item->id)}}" class="btn btn-danger" onclick="return confirm('Please Confirm Before Deleting it!!')"><i class="fa fa-trash"></i>Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach

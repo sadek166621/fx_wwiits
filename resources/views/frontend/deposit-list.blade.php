@@ -46,13 +46,31 @@
                                                 @if($item->status == 1)
                                                     Approved
                                                 @else
-                                                    On Hold
+                                                    On Hold <br>
+
+                                                    <a class="text-warning" style="border-radius: 7px; font-size: 10px; cursor: pointer" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">Show Reason</a>
                                                 @endif
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center " >
+
                                                 <a class="btn btn-primary mx-2" style="border-radius: 7px;" href="{{ route('deposit.profit.history',$item->id) }}">Profit History</a>
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Reason For Holding Deposit</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{$item->comment}}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     @endforeach
                                 @else
                                     <tr>

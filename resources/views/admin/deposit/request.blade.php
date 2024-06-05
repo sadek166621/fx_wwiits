@@ -71,25 +71,71 @@
                                                 @if ($item->status == 1)
                                                     <span class="badge bg-success">Approved</span>
                                                 @elseif($item->status == 0)
-                                                    <span class="badge bg-warning">Pending</span>
+                                                    <span class="badge bg-warning">On Hold</span>
+                                                    <br>
+                                                    <a class="text-warning" data-toggle="modal" data-target="#reasonModal{{$item->id}}" style="font-size: 12px; cursor:pointer;">See Details</a>
                                                 @else
                                                     <span class="badge bg-danger">Rejected</span>
                                                 @endif
+
+                                                    <!-- Modal -->
                                             </td>
                                             <td class="text-center btn-group">
                                                 <a class="btn btn-primary mx-2" @if($item->status != 1 )onclick="setStatus(1, {{$item->id}})" @endif><i class="fa fa-check-circle" ></i>Activate</a>
-                                                <a class="btn btn-warning" @if($item->status == 1) onclick="setStatus(0, {{$item->id}}) @endif" {{$item->status == 1 ? '':'disabled'}}><i class="fa fa-pause"></i> Hold</a>
-                                                <form action="{{route('admin.deposit.request.change-status')}}" id="changeStatusForm_{{$item->id}}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="id" id="" value="{{$item->id}}">
-                                                    <input type="hidden" name="status" id="status{{$item->id}}" value="">
-                                                </form>
+                                                <a class="btn btn-warning" @if($item->status == 1) onclick="setStatus(0, {{$item->id}})" data-toggle="modal" data-target="#exampleModal{{$item->id}}" @endif {{$item->status == 1 ? '':'disabled'}}><i class="fa fa-pause"></i> Hold</a>
+
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Holding Reason</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="{{route('admin.deposit.request.change-status')}}" id="changeStatusForm_{{$item->id}}" method="post">
+
+                                                        <div class="modal-body">
+                                                                @csrf
+                                                                <input type="hidden" name="id" id="" value="{{$item->id}}">
+                                                                <input type="hidden" name="status" id="status{{$item->id}}" value="">
+                                                                <div class="row mb-3">
+                                                                    <label for="" class="form-control-label">Reason</label>
+                                                                    <input type="text" name="comment" class="form-control" id="comment" required>
+                                                                </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="reasonModal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="reasonModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Holding Reason</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{$item->comment}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div
+
+
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5" class="text-center"><strong class="text-danger">No Deposit Request Found</strong></td>
+                                        <td colspan="5" class="text-center"><strong class="text-danger">No Deposits Found</strong></td>
                                     </tr>
                                 @endif
 
@@ -132,8 +178,17 @@
 @push('js')
     <script>
         function setStatus(val, id) {
+            alert(val);
             $('#status'+id).val(val);
-            $('#changeStatusForm_'+id).submit();
+            if(val == 1){
+                $('#comment').prop('required', false);
+                $('#changeStatusForm_'+id).submit();
+            }
+            else if(val == 0) {
+                alert('fund');
+                $('#comment').prop('required', true);
+            }
+
         }
     </script>
 @endpush

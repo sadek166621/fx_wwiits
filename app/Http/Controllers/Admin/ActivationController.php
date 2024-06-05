@@ -16,13 +16,20 @@ class ActivationController extends Controller
      */
     public function index()
     {
-        $member = Student::whereNotNull('code_user_id');
+        $members = Student::whereNotNull('code_user_id');
         if (isset($_GET['member_id']) && $_GET['member_id'] > 0){
-            $member = null;
+            $member = Student::where('refer_code', $_GET['member_id'])->first();
+            if ($member != null){
+                $members = $members->where('code_user_id', $member->id);
+            }
+            else{
+                $members = $members->where('code_user_id', '');
+            }
+
         }
-        $member = $member->get();
+        $members = $members->get();
         return view('admin.activation.list',[
-            'members'=>$member,
+            'members'=>$members,
         ]);
     }
 

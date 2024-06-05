@@ -585,49 +585,65 @@ class PagesController extends Controller
               foreach( $dates as $date){
                   $date->update([
                       'created_at'=> Carbon::now(),
+                      'approved_at'=> Carbon::now(),
                   ]);
               }
           }
 
           if($request->internal_transfer == 1){
-              BalanceTransfer::create([
-                  'member_id'       => $member->id,
-                  'transfer_type'   => 1,
-                  'amount'          => $member->tranfer_balance,
-                  'transfer_from'   => 3
-              ]);
-              $member->update([
-                  'bonus'=>$member->bonus + $member->tranfer_balance ,
-                  'tranfer_balance'=>'0',
-              ]);
-
+              if($member->tranfer_balance > 0){
+                  BalanceTransfer::create([
+                      'member_id'       => $member->id,
+                      'transfer_type'   => 1,
+                      'amount'          => $member->tranfer_balance,
+                      'transfer_from'   => 3
+                  ]);
+                  $member->update([
+                      'bonus'=>$member->bonus + $member->tranfer_balance ,
+                      'tranfer_balance'=>'0',
+                  ]);
+              }
+              else{
+                  return back()->with('error', 'Wallet is Empty!!');
+              }
 
           }
           if($request->affiliate_balance == 1 ){
-              BalanceTransfer::create([
-                  'member_id'       => $member->id,
-                  'transfer_type'   => 1,
-                  'amount'          => $member->affiliate_balance,
-                  'transfer_from'   => 2
-              ]);
-              $member->update([
-                  'bonus'=>$member->bonus + $member->affiliate_balance  ,
-                  'affiliate_balance'=>0,
-              ]);
+              if($member->affiliate_balance > 0){
+                  BalanceTransfer::create([
+                      'member_id'       => $member->id,
+                      'transfer_type'   => 1,
+                      'amount'          => $member->affiliate_balance,
+                      'transfer_from'   => 2
+                  ]);
+                  $member->update([
+                      'bonus'=>$member->bonus + $member->affiliate_balance  ,
+                      'affiliate_balance'=>0,
+                  ]);
+              }
+              else{
+                  return back()->with('error', 'Wallet is Empty!!');
+              }
+
 
 
           }
           if($request->profit == 1){
-              BalanceTransfer::create([
-                  'member_id'       => $member->id,
-                  'transfer_type'   => 1,
-                  'amount'          => $member->profit,
-                  'transfer_from'   => 1
-              ]);
-              $member->update([
-                  'bonus'=>$member->bonus + $member->profit,
-                  'profit'=>'0',
-              ]);
+              if ($member->profit > 0){
+                  BalanceTransfer::create([
+                      'member_id'       => $member->id,
+                      'transfer_type'   => 1,
+                      'amount'          => $member->profit,
+                      'transfer_from'   => 1
+                  ]);
+                  $member->update([
+                      'bonus'=>$member->bonus + $member->profit,
+                      'profit'=>'0',
+                  ]);
+              }
+              else{
+                  return back()->with('error', 'Wallet is Empty!!');
+              }
 
           }
       }
@@ -702,7 +718,7 @@ class PagesController extends Controller
                 $target_image = $imageName;
             }
 
-            $voter_id = $student->voter_card_id;
+            $voter_id = $student->voter_id_card;
             $image = $request->file('voter_id_card');
             if($image){
                 $currentDate = Carbon::now()->toDateString();
@@ -832,7 +848,7 @@ class PagesController extends Controller
       public function reference(){
         $refer_code = Student::where('id',Session::get('StudentId'))->first();
         $data['references'] = Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->latest()->get();
-        $data['lead'] = Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->count();
+
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
         $today = Carbon::today();
         $data['todayLeadsCount'] = Student::where('refered_code' , '=', $refer_code->refer_code )->whereDate('created_at', $today)->where('status', 1)->count();
@@ -855,8 +871,8 @@ class PagesController extends Controller
             'Second Generation' => $second_gen,
             'Third Generation'  => $third_gen,
             'Fourth Generation' => $fourth_gen
-        ]
-        ;
+        ];
+          $data['lead'] = $first_gen+$second_gen+$third_gen+$fourth_gen;
         return view('frontend.reference', $data);
       }
 
@@ -898,7 +914,7 @@ class PagesController extends Controller
         // dd($differenceInDays);
         if($request->withdraw_type ==1){
             $request->validate([
-                'package_id' => 'required',
+                'packageId' => 'required',
 
             ]);
             $amount = Deposit::find($request->packageId);

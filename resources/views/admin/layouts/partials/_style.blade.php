@@ -21,7 +21,8 @@
 <!-- Toastr -->
 <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
-  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
 <style>
     .nav-pills .nav-link {
         color: #fff;

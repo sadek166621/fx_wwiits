@@ -52,7 +52,7 @@
 .show > .btn-default.dropdown-toggle {
   background-color: #e6e6e6 !important;
   border-color: #cccccc !important;
-  color: #172b4c; }
+  color: #fff; }
 
 .btn-outline.btn-default {
   color: #172b4c;
@@ -524,7 +524,7 @@ Theme Primary Color
   .theme-primary.light-skin .sidebar-menu > li.active.treeview > a:after {
     border-color: transparent #fafafa transparent transparent !important; }
 .theme-primary.light-skin .sidebar-menu > li.treeview .treeview-menu li a {
-  color: #625F6E; }
+  color: #fff; }
 .theme-primary.light-skin.sidebar-mini.sidebar-collapse .sidebar-menu > li.active > a > span {
   background: #40a2ed !important; }
 .theme-primary.dark-skin .sidebar-menu > li.active > a:after {

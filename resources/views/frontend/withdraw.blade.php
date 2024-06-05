@@ -4,6 +4,51 @@
         $setting = getSetting();
     //    dd($setting->rocket);
     @endphp
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-6">
+            <div class="box">
+                <div class="box-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-700 mt-0">${{ $student->bonus }}</h3>
+                    </div>
+                    <h5 class="text-primary" style="letter-spacing: 0.5px">My Wallet Balance</h5>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-6">
+            <div class="box">
+                <div class="box-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-700 mt-0">${{ $student->profit }}</h3>
+                    </div>
+                    <h5 class="text-primary" style="letter-spacing: 0.5px">Overall Profit</h5>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-6">
+            <div class="box">
+                <div class="box-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-700 mt-0">${{ $student->affiliate_balance }}</h3>
+                    </div>
+                    <h5 class="text-primary" style="letter-spacing: 0.5px">Affiliate Balance</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-6">
+            <div class="box">
+                <div class="box-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-700 mt-0">${{ $student->tranfer_balance }}</h3>
+                    </div>
+                    <h5 class="text-primary" style="letter-spacing: 0.5px">Internal Transfer</h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-body">
@@ -112,7 +157,7 @@
                                     <li class="m-3" id="neteller" onclick="setPayment('neteller')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/neteller.jpg" height="50px" width="110px" alt=""></li>
                                     <li class="m-3" id="bkash" onclick="setPayment('bkash')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/bkash.png" height="50px" width="110px" alt=""></li>
                                     <li class="m-3" id="nagad" onclick="setPayment('nagad')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/nagad.png" height="50px" width="110px" alt=""></li>
-                                    <li class="m-3" id="nagad" onclick="setPayment('nagad')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/rocket.png" height="50px" width="110px" alt=""></li>
+                                    <li class="m-3" id="nagad" onclick="setPayment('rocket')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/rocket.png" height="50px" width="110px" alt=""></li>
                                 </ul>
                             </div>
                             <div class="col-md-1">
@@ -264,12 +309,11 @@
 <script>
     function setPayment(value) {
         // alert(value);
-
+        var amount = $('#amount').val();
         $('#withdraw_option').val(value);
         if(value == 'bkash' || value == 'rocket' || value == 'nagad'){
             $("#bankSelect").prop('required',false);
             $('#bank_option').hide();
-            var amount = $('#amount').val();
             console.log('amount:' + amount);
 
             $('#transaction_id').show();
@@ -333,6 +377,10 @@
                 $('#payment_number').text('Payment Number: '+$('#binance_value').val());
             }
             else if(value == 'bank'){
+                if(amount){
+                    $('#withdrawal_text').show();
+                    $("#withdrawal_amount"). text({{$setting->withdraw_conversion_rate}}*amount);
+                }
                 $('#credential').empty();
                 $('#bank_option').show();
                 $("#bankSelect").prop('required',true);

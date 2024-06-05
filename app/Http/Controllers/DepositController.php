@@ -180,6 +180,11 @@ class DepositController extends Controller
     public function changeStatus(Request $request)
     {
 //        return $request;
+        if($request->status == 0){
+            $request->validate([
+                'comment' => ['required']
+            ]);
+        }
         $deposit = Deposit::find($request->id);
         $deposit->update([
             'status' => $request->status,
@@ -189,10 +194,9 @@ class DepositController extends Controller
             Toastr::success('Deposit Activated Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
         }
         else{
-//            $member = Student::find($deposit->member_id);
-//            $member->update([
-//                'bonus'=> $member->bonus + $deposit->amount,
-//            ]);
+            $deposit->update([
+                'comment' => $request->comment,
+            ]);
             Toastr::success('Deposit Set on Hold Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
         }
 

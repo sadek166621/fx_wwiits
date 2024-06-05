@@ -52,9 +52,20 @@
                 <input type="text" name="skrill" class="form-control" id="exampleInputEmail1" placeholder="Enter Credential" value="{{ $setting->skrill }}" required>
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail1">Binance</label>
+                <label for="exampleInputEmail1">Binance ID</label>
                 <input type="text" name="binance" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" value="{{ $setting->binance }}" required>
               </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Binance Link</label>
+                    <input type="text" name="binance_link" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" value="{{ $setting->binance_link }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Binance Image</label>
+                    <input type="file" name="binance_image" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" accept="image/*" required>
+                    @if($setting->binance_image != null)
+                        <img src="{{ asset('assets') }}/images/uploads/{{$setting->binance_image}}" class="mt-2" alt="" height="100px">
+                    @endif
+                </div>
               <div class="form-group">
                 <label for="address">Visa Card</label>
                   <input type="text" name="visa_card" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" value="{{ $setting->visa_card }}" required>
@@ -64,7 +75,7 @@
                 <input type="text" name="perfect_money" class="form-control" id="google_map_link" placeholder="Enter Credentials" value="{{ $setting->perfect_money }}" required>
               </div>
               <div class="form-group">
-                <label for="youtube_video_left_link">Netter</label>
+                <label for="youtube_video_left_link">Neteller</label>
                 <input type="text" name="neteller" class="form-control" id="youtube_video_left_link" placeholder="Enter Credentials" value="{{ $setting->neteller }}" required>
             </div>
 

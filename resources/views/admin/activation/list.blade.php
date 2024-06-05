@@ -3,6 +3,27 @@
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="card card-body">
+                <form action="" id="filterForm">
+
+                    <div class="row mb-3">
+                        <div class="col-md-11">
+                            <div class="form-group">
+                                <label for="member_id" class="form-control-label">Member ID</label>
+                                <input type="number" name="member_id" id="member_id" class="form-control" placeholder="Enter Member ID"
+                                       value="@isset($_GET['member_id']){{$_GET['member_id'] > 0  ? $_GET['member_id']:''}}@endisset">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button type="submit" onclick="$('#filterForm').submit()" class="btn btn-primary form-control" style="margin-top:31px"><i class="fa fa-filter"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
       <div class="col-sm-6">
         <h1>Activation List</h1>
       </div>
@@ -71,7 +92,7 @@
                    @endforeach
                   @endforeach
                 @else
-                    <td colspan="10" class="text-center">No teacher found</td>
+                    <td colspan="10" class="text-center">No Data found</td>
                 @endif
               </tbody>
             </table>

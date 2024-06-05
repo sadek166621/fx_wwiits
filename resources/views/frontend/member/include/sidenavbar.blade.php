@@ -36,18 +36,29 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="{{$route == 'money.add' ? 'active':''}}">
-                        <a href="{{route('money.add')}}">
+                    <li class="treeview">
+                        <a href="#" class="text-white">
                             <i data-feather="dollar-sign"></i>
                             <span>Fund History</span>
+                            <span class="pull-right-container">
+					            <i class="fa fa-angle-left pull-right"></i>
+					        </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="{{$route == 'money.add' ? 'active':''}}">
+                                <a href="{{route('money.add')}}">
+
+                                    <span>Add Fund</span>
+                                </a>
+                            </li>
+                            <li class="{{$route == 'money.add.list' ? 'active':''}}">
+                                <a href="{{route('money.add.list')}}">
+                                    <span> Fund Add History</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="{{$route == 'money.add' ? 'active':''}}">
-                        <a href="{{route('money.add.list')}}">
-                            <i data-feather="list"></i>
-                            <span> Fund Transfer History</span>
-                        </a>
-                    </li>
+
                     <li class="{{$route == 'deposit-packages' ? 'active':''}}">
                         <a href="{{route('deposit-packages')}}">
                             <i data-feather="grid"></i>
@@ -78,18 +89,29 @@
                             <span>Used Activation Code</span>
                         </a>
                     </li>
-                    <li class="{{$route == 'balance-transfer' ? 'active':''}}">
-                        <a href="{{ route('balance-transfer') }}">
+                    <li class="treeview">
+                        <a href="#" class="text-white">
                             <i data-feather="dollar-sign"></i>
                             <span>Balance Transfer</span>
+                            <span class="pull-right-container">
+					            <i class="fa fa-angle-left pull-right"></i>
+					        </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="{{$route == 'balance-transfer' ? 'active':''}}">
+                                <a href="{{ route('balance-transfer') }}">
+                                    <span>Transfer Balance</span>
+                                </a>
+                            </li>
+                            <li class="{{$route == 'balance.transfer.list' ? 'active':''}}">
+                                <a href="{{ route('balance.transfer.list') }}">
+                                    <span>Balance Transfer History</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="{{$route == 'balance.transfer.list' ? 'active':''}}">
-                        <a href="{{ route('balance.transfer.list') }}">
-                            <i data-feather="dollar-sign"></i>
-                            <span>Balance Transfer History</span>
-                        </a>
-                    </li>
+
+
                     <li class="{{$route == 'reference' ? 'active':''}}">
                         <a href="{{ route('reference') }}">
                             <i data-feather="file-text"></i>

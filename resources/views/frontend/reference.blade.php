@@ -8,10 +8,11 @@
                <h4 class="mb-5"><strong>{{ $student->refer_code }}</strong></h4>
                <div class="mt-2 mb-1">
                    <div class="my-4">
-{{--                       Total Leads: <span class="text-success">{{ $lead }}</span> <br>--}}
+
                        @foreach($generation_users as $key => $user_count)
                            {{$key}} Lead: <span class="text-success"> {{ $user_count }}</span> <br>
                        @endforeach
+                           Total Leads: <span class="text-success">{{ $lead }}</span> <br>
                        Today Leads: <span class="text-success"> {{ $todayLeadsCount }}</span> <br>
                    </div>
 
@@ -31,7 +32,7 @@
                        <tr>
                            <th scope="col">SL</th>
                            <th scope="col">Name</th>
-                           <th scope="col">Student ID</th>
+                           <th scope="col">Member ID</th>
                            <th scope="col">Joining Date</th>
                            {{-- <th scope="col">Whatsapp</th> --}}
                        </tr>

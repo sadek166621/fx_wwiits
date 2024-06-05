@@ -34,6 +34,12 @@
                    <input type="hidden" name="" id="conversion_rate" value="{{getSetting()->conversion_rate}}">
 
                    <form action="{{ route('money.add.submit') }}" method="POST" enctype="multipart/form-data">
+                       <input type="hidden" name="" id="visa_card_value" value="{{$setting->visa_card ?? ''}} ">
+                       <input type="hidden" name="" id="skrill_value" value="{{$setting->skrill ?? ''}} ">
+                       <input type="hidden" name="" id="neteller_value" value="{{$setting->neteller ?? ''}} ">
+                       <input type="hidden" name="" id="perfect_money_value" value="{{$setting->perfect_money ?? ''}} ">
+                       <input type="hidden" name="" id="binance_value" value="{{$setting->binance ?? ''}} ">
+                       <input type="hidden" name="binance_link" id="" value="{{$setting->binance_link ?? ''}} ">
                        @csrf
                        <div class="row">
                            <div class="col-md-12 mb-2">
@@ -49,9 +55,9 @@
                            <div class="col-md-2 col-sm-4 col-4 m-3" id="skrill" onclick="setPayment('skrill')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/skrill.png" height="50px" width="110px" alt=""></div>
                            <div class="col-md-2 col-sm-4 col-4 m-3" id="perfect_money" onclick="setPayment('perfect_money')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/perfectmoney.png" height="50px" width="110px" alt=""></div>
                            <div class="col-md-2 col-sm-4 col-4 m-3" id="neteller" onclick="setPayment('neteller')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/neteller.jpg" height="50px" width="110px" alt=""></div>
-                           <div class="col-md-2 col-sm-4 col-4 m-3" id="bkash" onclick="setPayment('bkash')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/bkash.png" height="50px" width="110px" alt=""></div>
-                           <div class="col-md-2 col-sm-4 col-4 m-3" id="nagad" onclick="setPayment('nagad')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/nagad.png" height="50px" width="110px" alt=""></div>
-                           <div class="col-md-2 col-sm-4 col-4 m-3" id="nagad" onclick="setPayment('rocket')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/rocket.png" height="50px" width="110px" alt=""></div>
+{{--                           <div class="col-md-2 col-sm-4 col-4 m-3" id="bkash" onclick="setPayment('bkash')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/bkash.png" height="50px" width="110px" alt=""></div>--}}
+{{--                           <div class="col-md-2 col-sm-4 col-4 m-3" id="nagad" onclick="setPayment('nagad')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/nagad.png" height="50px" width="110px" alt=""></div>--}}
+{{--                           <div class="col-md-2 col-sm-4 col-4 m-3" id="nagad" onclick="setPayment('rocket')" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{asset('frontend')}}/payment-method/rocket.png" height="50px" width="110px" alt=""></div>--}}
                        </div>
 
                        <div class="row mt-2 mt-md-3 pt-2 pt-md-3">
@@ -68,7 +74,7 @@
                                            </div>
                                            <div class="modal-body">
                                                <div class="payment-fields" >
-                                                   <h5 class="text-center" id="withdrawal_text" style="display: none">You Will Get  <span id="withdrawal_amount"></span>TK After Adding Fund</h5>
+                                                   <h5 class="text-center" id="payment_value" ></h5>
                                                    <input type="hidden" id="payment_method" name="payment_method" value="">
 {{--                                                   <div class="mb-3" id="bank_option" style="display: none">--}}
 {{--                                                       <label for="recipient-name" id="credential_title" class="col-form-label">Bank <span class="text-danger">*</span></label>--}}
@@ -81,8 +87,8 @@
 {{--                                                   </div>--}}
                                                    <div id="credential">
                                                        <div class="mb-3" >
-                                                           <label for="recipient-name" id="credential_title" class="col-form-label">Account Number <span class="text-danger">*</span></label>
-                                                           <input type="number" name="account_number" class="form-control">
+                                                           <label for="recipient-name" id="credential_title" class="col-form-label">Account value <span class="text-danger">*</span></label>
+                                                           <input type="value" name="account_number" class="form-control">
                                                        </div>
                                                    </div>
 
@@ -141,24 +147,24 @@
             if(value == 'bkash'){
                 $('#credential').empty();
 
-                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Bkash Number<span class="text-danger">*</span></label>
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Bkash value<span class="text-danger">*</span></label>
                                                             <input type="text" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#bkash_value').val());
+                $('#payment_value').text('Payment value: '+$('#bkash_value').val());
             }
             else if(value == 'rocket'){
                 $('#credential').empty();
-                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Rocket Number<span class="text-danger">*</span></label>
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Rocket value<span class="text-danger">*</span></label>
                                                             <input type="text" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#rocket_value').val());
+                $('#payment_value').text('Payment value: '+$('#rocket_value').val());
             }
             else{
                 $('#credential').empty();
-                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Nagad Number<span class="text-danger">*</span></label>
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Nagad value<span class="text-danger">*</span></label>
                                                             <input type="text" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#nagad_value').val());
+                $('#payment_value').text('Payment value: '+$('#nagad_value').val());
             }
         }
         else{
@@ -173,10 +179,10 @@
                                                             <input type="email" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
                 if(value == 'skrill'){
-                    $('#payment_number').text('Payment Credential: '+$('#skrill_value').val());
+                    $('#payment_value').text('Payment Credential: '+$('#skrill_value').val());
                 }
                 else{
-                    $('#payment_number').text('Payment Credential: '+$('#neteller_value').val());
+                    $('#payment_value').text('Payment Credential: '+$('#neteller_value').val());
                 }
             }
             else if(value == 'binance'){
@@ -186,16 +192,12 @@
                 var html = `
                         <label for="recipient-name" id="credential_title" class="col-form-label">ID
                             <span class="text-danger">*</span></label>
-                            <input type="text" name="account_number" class="form-control" required>
-                        <label for="recipient-name" id="credential_title" class="col-form-label">Link
-                            <span class="text-danger">*</span></label>
-                            <input type="text" name="binance_link" class="form-control" required>
-                        <label for="recipient-name" id="credential_title" class="col-form-label">Image
-                            <span class="text-danger">*</span></label>
-                            <input type="file" name="binance_image" class="form-control" accept="image/*" required>
-                        `;
+                            <input type="text" name="account_number" class="form-control" required>`;
+
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#binance_value').val());
+                var binance_id = $('#binance_value').val();
+                html = `<span>Binance ID: ${binance_id}</span><br><span>Binance Link: <a href="{{$setting->binance_link ?? '#'}}" target="_blank">{{$setting->binance_link ?? ''}}</a></span><br><img class="mt-2" src="{{ asset('assets') }}/images/uploads/{{$setting->binance_image}}" height="100px" alt=""/>`;
+                $('#payment_value').html(html);
             }
             else if(value == 'bank'){
                 $('#credential').empty();
@@ -211,21 +213,21 @@
                         <label for="recipient-name" id="credential_title" class="col-form-label">Account Name
                             <span class="text-danger">*</span></label>
                             <input type="text" name="bank_account_name" class="form-control" required>
-                        <label for="recipient-name" id="credential_title" class="col-form-label">Account Number
+                        <label for="recipient-name" id="credential_title" class="col-form-label">Account value
                             <span class="text-danger">*</span></label>
                             <input type="text" name="account_number" class="form-control" required>
                         `;
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#binance_value').val());
+                $('#payment_value').text('Payment value: '+$('#binance_value').val());
             }
             else if(value == 'visa_card'){
                 $('#credential').empty();
                 $("#bankSelect").prop('required',false);
                 $('#bank_option').hide();
-                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Visa Card Number<span class="text-danger">*</span></label>
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Visa Card value<span class="text-danger">*</span></label>
                                                             <input type="text" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
-                $('#payment_number').text('Payment Number: '+$('#visa_card_value').val());
+                $('#payment_value').text('Payment Number: '+$('#visa_card_value').val());
             }
             else if(value == 'perfect_money'){
                 $("#bankSelect").prop('required',false);
@@ -234,7 +236,7 @@
                 var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Memo (UXXXX..)<span class="text-danger">*</span></label>
                                                             <input type="text" name="account_number" class="form-control" required>`;
                 $('#credential').html(html);
-                $('#payment_number').text('Memo: '+$('#perfect_money_value').val());
+                $('#payment_value').text('Memo: '+$('#perfect_money_value').val());
             }
         }
 

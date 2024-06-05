@@ -1,4 +1,5 @@
 <!-- Vendors Style-->
+
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/perfect-scrollbar/css/perfect-scrollbar.css">
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/morris.js/morris.css">
@@ -42,7 +43,8 @@
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/fullcalendar/fullcalendar.min.css">
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/fullcalendar/fullcalendar.print.min.css">
 <link rel="stylesheet" href="{{asset('/')}}frontend/member/assets/vendor_components/weather-icons/weather-icons.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css" integrity="sha512-UuQ/zJlbMVAw/UU8vVBhnI4op+/tFOpQZVT+FormmIEhRSCnJWyHiBbEVgM4Uztsht41f3FzVWgLuwzUqOObKw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Style-->
 <link rel="stylesheet" href="{{asset('/')}}frontend//member/css/style.css">
 <link rel="stylesheet" href="{{asset('/')}}frontend//member/css/skin_color.css">
