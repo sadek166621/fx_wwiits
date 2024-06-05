@@ -88,9 +88,13 @@
                 <input type="text" name="reg_charge_tk" class="form-control" id="exampleInputEmail1" placeholder="Enter button link" value="{{ $setting->reg_charge_tk }}">
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail1">Conversion Rate (Doller To BDT)</label>
+                <label for="exampleInputEmail1">General Conversion Rate (Doller To BDT)</label>
                 <input type="text" name="conversion_rate" class="form-control" id="exampleInputEmail1" placeholder="Enter Conversion Rate" value="{{ $setting->conversion_rate }}">
               </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Withdraw Conversion Rate (Doller To BDT)</label>
+                    <input type="text" name="withdraw_conversion_rate" class="form-control" id="exampleInputEmail1" placeholder="Enter Withdraw Conversion Rate" value="{{ $setting->withdraw_conversion_rate }}">
+                </div>
 
               <p></p>
 

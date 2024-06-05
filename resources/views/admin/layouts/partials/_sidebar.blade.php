@@ -266,6 +266,16 @@
                             </a>
                         </li>
                     @endif
+                    @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.fund.request.history')))
+                        <li class="nav-item">
+                            <a href="{{ route('admin.balance.transfer.history') }}" class="nav-link">
+                                <i class="nav-icon fa fa-share"></i>
+                                <p>
+                                    Balance Transfer History
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                     @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.deposit.request.list')))
                     <li class="nav-item">
                         <a href="{{ route('admin.deposit.request.list') }}" class="nav-link">
@@ -275,6 +285,16 @@
                             </p>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.bank.list')))
+                        <li class="nav-item">
+                            <a href="{{ route('admin.bank.list') }}" class="nav-link">
+                                <i class="nav-icon fas fa-university"></i>
+                                <p>
+                                    Bank List
+                                </p>
+                            </a>
+                        </li>
                     @endif
                   {{-- <li class="nav-item">
                     <a href="{{ route('admin.assigned.list') }}" class="nav-link">

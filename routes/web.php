@@ -32,6 +32,7 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\Admin\DepositReferralBonusController;
 use App\Http\Controllers\BalanceTransferController;
+use App\Http\Controllers\Admin\BankController;
 
 //Front END
 Route::get('/', [PagesController::class, 'index'])->name('home');
@@ -68,7 +69,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::middleware('admin')->group(function () {
 
         Route::get('fund/requests', [BalanceController::class, 'index'])->name('fund.request.list');
+        Route::get('fund/requests', [BalanceController::class, 'index'])->name('fund.request.list');
         Route::get('fund/add/history', [BalanceController::class, 'history'])->name('fund.request.history');
+        Route::get('balance/transfer/history', [BalanceTransferController::class, 'index'])->name('balance.transfer.history');
         Route::post('fund/requests/change-status', [BalanceController::class, 'changeStatus'])->name('fund.request.change-status');
 
         Route::get('deposit/list', [DepositController::class, 'depositRequest'])->name('deposit.request.list');
@@ -99,6 +102,17 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/edit/{id}', [WithdrawalController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [WithdrawalController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [WithdrawalController::class, 'destroy'])->name('delete');
+        });
+
+        Route::group(['as' => 'bank.', 'prefix' => 'bank'], function () {
+            Route::get('/list',[BankController::class, 'index'])->name('list');
+            Route::get('/add',[BankController::class, 'create'])->name('add');
+            Route::post('/submit',[BankController::class, 'store'])->name('store');
+            Route::get('/edit/{id}',[BankController::class,'edit'])->name('edit');
+            Route::post('/update/{id}',[BankController::class, 'update'])->name('update');
+            Route::get('/delete/{id}',[BankController::class, 'destroy'])->name('delete');
+            Route::get('/view/{id}',[BankController::class, 'show'])->name('view');
+
         });
 
         Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function () {
@@ -319,6 +333,7 @@ Route::middleware('member')->group(function () {
     Route::get('/deposit/profit/history/{id}', [DepositController::class,'profithistory'])->name('deposit.profit.history');
     Route::get('/student-Logout', [PagesController::class,'studentLogout'])->name('student-logout');
     Route::get('/profile-settings', [PagesController::class,'profilesettings'])->name('profile-settings');
+    Route::get('/get-bank', [PagesController::class,'getBank'])->name('get-bank');
 
 });
 

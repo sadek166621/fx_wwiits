@@ -96,10 +96,6 @@
                                                onchange="previewFile(this)">
                                     </div>
                                 </div>
-{{--                                <div class="author-info">--}}
-{{--                                    <p class="font-medium font-15 color-heading">Member ID: {{ $student->refer_code }}--}}
-{{--                                    </p>--}}
-{{--                                </div>--}}
                             </div>
                         </div>
 
@@ -238,18 +234,38 @@
 
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 mb-30">
-                                <label class="font-medium font-15 color-heading">Withdrawal Option</label>
-                                <input  type="text" name="withdraw_option" value="{{ $student->withdraw_option }}"
-                                        class="form-control" placeholder="Type Your Withdrawal Option">
-                            </div>
-                            <div class="col-md-12 mb-30">
-                                <label class="font-medium font-15 color-heading">Accounts Number</label>
-                                <input  type="text" name="account_number" value="{{ $student->account_number }}"
-                                        class="form-control" placeholder="Type Your Accounts Number">
+                        <div class="profile-top mb-4">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-image radius-50">
+                                    <label for="fileuplode"
+                                           class="file-uplode-btn bg-hover text-dark radius-50">
+                                        Voter ID Card</label><br>
+                                    @if($student->voter_id_card)
+                                        <img class="avater-image mb-2" id="target1"
+                                             src="{{ asset('assets') }}/images/uploads/students/voter-id-card/{{ $student->voter_id_card }}" height="100px" width="100px"
+                                             alt="img">
+                                    @endif
+                                    <div class="custom-fileuplode">
+
+                                        <input type="file" id="fileuplode2" name="voter_id_card"
+                                               accept="image/*" class="putImage1"
+                                               onchange="previewFile(this)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-12 mb-30">--}}
+{{--                                <label class="font-medium font-15 color-heading">Withdrawal Option</label>--}}
+{{--                                <input  type="text" name="withdraw_option" value="{{ $student->withdraw_option }}"--}}
+{{--                                        class="form-control" placeholder="Type Your Withdrawal Option">--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-12 mb-30">--}}
+{{--                                <label class="font-medium font-15 color-heading">Accounts Number</label>--}}
+{{--                                <input  type="text" name="account_number" value="{{ $student->account_number }}"--}}
+{{--                                        class="form-control" placeholder="Type Your Accounts Number">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
 
                         <button type="submit"

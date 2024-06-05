@@ -15,4 +15,8 @@ class BalanceTransfer extends Model
     {
         return $this->belongsTo(Student::class, 'transferred_to', 'id');
     }
+    public function tranferredFrom()
+    {
+        return $this->belongsTo(Student::class, 'member_id', 'id');
+    }
 }

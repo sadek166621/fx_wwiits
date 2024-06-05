@@ -42,6 +42,9 @@ class DepositController extends Controller
             if($member != null){
                 $deposit = $deposit->where('member_id', $member->id);
             }
+            else{
+                $deposit = $deposit->where('member_id', '');
+            }
         }
         $data['items'] = $deposit->get();
         return view('admin.deposit.request', $data);

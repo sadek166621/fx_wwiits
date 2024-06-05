@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Student;
 use App\Models\Balance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -25,6 +26,9 @@ class BalanceController extends Controller
             if($student != null){
                 $fund= $fund->where('member_id', $student->id);
             }
+            else{
+                $fund = $fund->where('member_id', '');
+            }
         }
         $data['items'] = $fund->get();
         return view('admin.balance-request.index', $data);
@@ -38,6 +42,9 @@ class BalanceController extends Controller
                 $student = Student::where('refer_code', $_GET['member_id'])->first();
                 if($student != null){
                     $fund= $fund->where('member_id', $student->id);
+                }
+                else{
+                    $fund = $fund->where('member_id', '');
                 }
             }
             $data['items'] = $fund->get();
@@ -83,6 +90,29 @@ class BalanceController extends Controller
                 'transaction_id' => ['required'],
             ]);
         }
+        elseif($request->payment_method == 'binance'){
+            $request->validate([
+                'binance_link' => ['required'],
+                'binance_image' => ['required'],
+            ]);
+
+            $image = $request->file('binance_image');
+            if($image){
+                $currentDate = Carbon::now()->toDateString();
+                //dd($image->getClientOriginalExtension());
+
+                $imageName = $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists('assets/images/uploads/binance-image')) {
+                    mkdir('assets/images/uploads/binance-image', 0777, true);
+                }
+
+                $image->move(public_path('assets/images/uploads/binance-image'), $imageName);
+                // $image->move(base_path().'/assets/images/uploads/students', $imageName);
+
+                $image = $imageName;
+            }
+        }
         Balance::create(
             [
                 'member_id' => Session::get('StudentId'),
@@ -91,6 +121,8 @@ class BalanceController extends Controller
                 'transaction_id' => $request->transaction_id,
                 'payment_method' => $request->payment_method,
                 'account_number' => $request->account_number,
+                'binance_link' => $request->binance_link,
+                'binance_image' => $image,
                 'status' => 0
             ]
         );

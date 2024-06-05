@@ -23,8 +23,19 @@ class WithdrawalController extends Controller
      */
     public function index()
     {
-        $data['withdrawal'] = Withdrawreq::orderBy('id','desc')->get();
-       return view('admin.withdraw.list',$data);
+        $withdrawal = Withdrawreq::orderBy('id','desc');
+        if(isset($_GET['member_id']) && $_GET['member_id'] > 0){
+            $member = Student::where('refer_code', $_GET['member_id'])->first();
+//            dd($member);
+           if($member != null){
+               $withdrawal = $withdrawal->where('member_id', $member->id);
+           }
+           else{
+               $withdrawal = $withdrawal->where('member_id', '');
+           }
+        }
+        $data['withdrawal'] = $withdrawal->get();
+        return view('admin.withdraw.list',$data);
     }
 
     /**

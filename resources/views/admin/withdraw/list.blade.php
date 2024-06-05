@@ -3,6 +3,27 @@
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="card card-body">
+                <form action="" id="filterForm">
+
+                    <div class="row mb-3">
+                        <div class="col-md-11">
+                            <div class="form-group">
+                                <label for="member_id" class="form-control-label">Member ID</label>
+                                <input type="number" name="member_id" id="member_id" class="form-control" placeholder="Enter Member ID"
+                                       value="@isset($_GET['member_id']){{$_GET['member_id'] > 0  ? $_GET['member_id']:''}}@endisset">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button type="submit" onclick="$('#filterForm').submit()" class="btn btn-primary form-control" style="margin-top:31px"><i class="fa fa-filter"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
       <div class="col-sm-6">
         <h1>Withdraw Request List</h1>
       </div>
@@ -44,13 +65,22 @@
                       <td>
                         <img src="{{ asset('assets') }}/images/uploads/students/{{ $item->member->image }}" alt="student image" width="100px" height="100px">
                       </td>
-                      <td>{{ $item->member->first_name }}</td>
+                      <td>{{ $item->member->first_name }} {{ $item->member->last_name }} <br>{{ $item->member->refer_code }}</td>
                       @if ($item->withdraw_type == 1)
                       <th>Package :{{ $item->package->package_name }} </th>
                       @else
                       <th> My Wallet</th>
                       @endif
-                      <td>{{ $item->withdraw_option }}</td>
+                      <td>
+
+                          @if($item->withdraw_option == 'bank')
+                              {{ $item->bank->bank_name  ?? ''}}<br>
+                              Branch : {{$item->bank_branch_name}} ({{$item->bank_branch_code}}) <br>
+                              Account: {{$item->bank_account_name}}
+                          @else
+                              {{ Str::title($item->withdraw_option) }}
+                          @endif
+                      </td>
                       <td>{{ $item->account_number }}</td>
                       <td>${{ $item->amount }}</td>
                       <td>{{ $item->created_at }}</td>
@@ -78,7 +108,7 @@
                     </tr>
                   @endforeach
                 @else
-                    <td colspan="8" class="text-center">No item found</td>
+                    <td colspan="10" class="text-center">No item found</td>
                 @endif
               </tbody>
             </table>

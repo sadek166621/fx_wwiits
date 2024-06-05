@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Bank;
 use App\Models\Admin\Bonus;
 use App\Models\Admin\DepostReturn;
 use App\Models\Admin\Package;
@@ -701,6 +702,24 @@ class PagesController extends Controller
                 $target_image = $imageName;
             }
 
+            $voter_id = $student->voter_card_id;
+            $image = $request->file('voter_id_card');
+            if($image){
+                $currentDate = Carbon::now()->toDateString();
+                //dd($image->getClientOriginalExtension());
+
+                $imageName = $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists('assets/images/uploads/students/voter-id-card')) {
+                    mkdir('assets/images/uploads/students/voter-id-card', 0777, true);
+                }
+
+                $image->move(public_path('assets/images/uploads/students/voter-id-card'), $imageName);
+                // $image->move(base_path().'/assets/images/uploads/students', $imageName);
+
+                $voter_id = $imageName;
+            }
+
 
             $student->update([
             'phone' => $request->phone,
@@ -715,6 +734,7 @@ class PagesController extends Controller
             'withdraw_option'=>$request->withdraw_option,
             'account_number'=>$request->account_number,
             'image' => $target_image,
+            'voter_id_card' => $voter_id,
             // 'status' => $request->status,
             'address' => $request->address,
             ]);
@@ -811,12 +831,32 @@ class PagesController extends Controller
       }
       public function reference(){
         $refer_code = Student::where('id',Session::get('StudentId'))->first();
-        $data['references'] = Student::where('refered_code' , '=', $refer_code->refer_code )->latest()->get();
-        $data['lead'] = Student::where('refered_code' , '=', $refer_code->refer_code )->count();
+        $data['references'] = Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->latest()->get();
+        $data['lead'] = Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->count();
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
         $today = Carbon::today();
-        $data['todayLeadsCount'] = Student::where('refered_code' , '=', $refer_code->refer_code )->whereDate('created_at', $today)->count();
+        $data['todayLeadsCount'] = Student::where('refered_code' , '=', $refer_code->refer_code )->whereDate('created_at', $today)->where('status', 1)->count();
+        $first_gen = Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->count();
+        $second_gen = 0;
+        $third_gen = 0;
+        $fourth_gen = 0;
+        foreach (Student::where('refered_code' , '=', $refer_code->refer_code )->where('status', 1)->get() as  $gen2){
+            $second_gen += Student::where('refered_code', $gen2->refer_code )->where('status', 1)->count();
+            foreach (Student::where('refered_code', $gen2->refer_code )->where('status', 1)->get() as $gen3){
+                $third_gen += Student::where('refered_code', $gen3->refer_code )->where('status', 1)->count();
+                foreach (Student::where('refered_code', $gen3->refer_code )->where('status', 1)->get() as $gen4){
+                    $fourth_gen += Student::where('refered_code', $gen4->refer_code )->where('status', 1)->count();
+                }
+            }
+        }
 
+        $data['generation_users'] = [
+            'First Generation'  => $first_gen,
+            'Second Generation' => $second_gen,
+            'Third Generation'  => $third_gen,
+            'Fourth Generation' => $fourth_gen
+        ]
+        ;
         return view('frontend.reference', $data);
       }
 
@@ -837,17 +877,30 @@ class PagesController extends Controller
         $data['student'] = Student::where('id', Session::get('StudentId'))->first();
         $data['packages'] = Deposit::where('member_id', Session::get('StudentId'))->get();
         $data['withdraws'] = Withdrawreq::where('member_id', Session::get('StudentId'))->get();
+        $data['banks'] = Bank::where('status', 1)->get();
         return view('frontend.withdraw',$data);
       }
 
     //   ================== A Member Submit Withdraw Request =====================
 
       public function submitpackagewithdrawrequest(Request $request){
-//         dd($request);
+//        return $request;
+        if($request->withdraw_option == 'bank'){
+            $request->validate([
+                'bank_id' => ['required'],
+                'bank_branch_name' => 'required',
+                'bank_account_name' => 'required',
+                'bank_branch_code' => 'required',
+                'account_number' => 'required',
+            ]);
+        }
 
         // dd($differenceInDays);
         if($request->withdraw_type ==1){
+            $request->validate([
+                'package_id' => 'required',
 
+            ]);
             $amount = Deposit::find($request->packageId);
             $package = Package::where('id', $amount->package_id )->first();
 
@@ -873,6 +926,11 @@ class PagesController extends Controller
                                 'amount'=> $withdraw_amount,
                                 'date'=> date('Y-m-d'),
                                 'package_name'=> $request->packageName,
+                                'bank_id' => $request->bank_id,
+                                'bank_branch_name' => $request->bank_branch_name,
+                                'bank_account_name' => $request->bank_account_name,
+                                'bank_branch_code' => $request->bank_branch_code,
+
                             ]);
 
                             $deposit = Deposit::where('id', $request->packageId)->delete();
@@ -898,6 +956,10 @@ class PagesController extends Controller
             }
         }
         if($request->withdraw_type ==2){
+            $request->validate([
+                'amount' => 'required',
+
+            ]);
            $member = Student::where('id', $request->member_id)->first();
             if($member){
                     if($member->bonus >= $request->amount){
@@ -906,9 +968,13 @@ class PagesController extends Controller
                             'withdraw_type'=> 2,
                             'member_id'=> $request->member_id,
                             'withdraw_option'=> $request->withdraw_option,
-                            'account_number'=> $request->accounts_number,
+                            'account_number'=> $request->account_number,
                             'amount'=> $request->amount,
                             'date'=> date('Y-m-d'),
+                            'bank_id' => $request->bank_id,
+                            'bank_branch_name' => $request->bank_branch_name,
+                            'bank_account_name' => $request->bank_account_name,
+                            'bank_branch_code' => $request->bank_branch_code,
                         ]);
 
                         $updatemember = Student::where('id', $withdraw->member_id)->first();
@@ -1119,6 +1185,11 @@ class PagesController extends Controller
           $data['deposits'] = Deposit::select('package_id')->where('member_id', $data['student']->id)->where('status', 1)->distinct()->get();
 //          return $data ;
           return view('frontend.member-dashboard', $data);
+      }
+
+      public function getBank()
+      {
+          return response()->json(Bank::where('status', 1)->get());
       }
 
 

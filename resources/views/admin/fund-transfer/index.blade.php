@@ -25,7 +25,16 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <h1>Fund Requests</h1>
+                <h1>Balance Transfer History</h1>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
 {{--            <div class="col-sm-6">--}}
 {{--                <a href="{{ route('admin.package.add') }}" class="btn btn-info float-right">Add New</a>--}}
@@ -39,45 +48,31 @@
             <div class="col-12">
                 <div class="card">
                     <!-- /.card-header -->
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>SL</th>
-                                <th>Name</th>
-                                <th>Paid Amount</th>
-                                <th>Payment Method</th>
-                                <th>Account Number</th>
-                                <th>Transaction ID</th>
+                                <th>Transferred By/ Member ID</th>
+                                <th>Amount</th>
+                                <th>Transferred To</th>
                                 <th>Date</th>
-                                <th>Status</th>
+
                             </tr>
                             </thead>
                             <tbody>
                             @if (count($items) > 0)
-                                @foreach ($items as $key => $item)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->member->first_name }} {{ $item->member->last_name }} <br> ({{$item->member->refer_code}})
-                                    </td>
-                                    <td>{{$item->amount}}</td>
-                                    <td>{{Str::title(str_replace('_', ' ', $item->payment_method))}}</td>
-                                    <td>{{ $item->account_number }} </td>
-                                    <td>{{ $item->transaction_id ?? 'N/A' }}</td>
-                                    <td>{{ date('Y-m-d H:i:s', strtotime($item->updated_at)) }} </td>
-                                    <td>
-                                        @if ($item->status == 1)
-                                        <span class="badge bg-success">Approved</span>
-                                        @elseif($item->status == 0)
-                                        <span class="badge bg-warning">Pending</span>
-                                        @else
-                                            <span class="badge bg-danger">Rejected</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
+                            @foreach ($items as $key => $item)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->tranferredFrom->first_name ?? '' }} {{ $item->tranferredFrom->last_name ?? '' }} <br>{{ $item->tranferredFrom->refer_code ?? ''}}</td>
+                                <td>{{$item->amount}}</td>
+                                <td>{{ $item->member->first_name ?? '' }} {{ $item->member->last_name ?? '' }} <br>{{ $item->member->refer_code ?? ''}}</td>
+                                <td>{{ date('Y-m-d H:i:s', strtotime($item->created_at)) }} </td>
+                            </tr>
+                            @endforeach
                             @else
-                            <td colspan="10" class="text-center">No Fund Transferred</td>
+                            <td colspan="5" class="text-center">No Balance Transfer found</td>
                             @endif
                             </tbody>
                         </table>
@@ -90,14 +85,17 @@
         </div>
         <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
+
 </section>
 @endsection
 @push('js')
     <script>
         function setStatus(val) {
             $('#status').val(val);
-            $('#changeStatusForm').submit();
+            if(val == 1){
+                $('#changeStatusForm').submit();
+            }
         }
+
     </script>
 @endpush

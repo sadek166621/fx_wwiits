@@ -257,10 +257,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="mb-3">
-                                                    </div>
-
-
+                                                    <div class="mb-3"></div>
                                                     <div class="payment-fields" style="display: none;">
                                                         <h5 class="text-center">You Need to Pay {{$setting->reg_charge}}$ <span id="reg_charge_bd">({{$setting->reg_charge_tk}}TK)</span>
                                                             <br>to Confirm Your Registration</h5>

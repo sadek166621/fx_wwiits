@@ -1,6 +1,9 @@
 @extends('frontend.master2')
 @section('content')
-
+    @php
+        $setting = getSetting();
+    //    dd($setting->rocket);
+    @endphp
 <div class="row">
     <div class="col-lg-12">
         <div class="card card-body">
@@ -12,6 +15,15 @@
             @if(session()->has('error'))
                 <div class="alert alert-danger">
                     {{ session()->get('error') }}
+                </div>
+            @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
             {{-- <div class="my-4">
@@ -79,7 +91,7 @@
                     <input type="hidden" name="member_id" value="{{ $student->id }}">
                     <div class="col-md-6 withdraw_amount" style="display: none">
                         <label class="font-medium font-15 color-heading">amount</label>
-                        <input type="text" name="amount" class="form-control"
+                        <input type="text" name="amount" id="amount" class="form-control"
                                placeholder="Amount">
                     </div>
                 </div>
@@ -87,7 +99,7 @@
                     <div class="col-md-12 withdraw" style="display: none">
                         <label for=""  class="font-medium font-15 color-heading">Withdrawal Method</label>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <ul style="list-style: none; display: flex; padding-left: 0">
                                     <li class="m-3" id="visa_card" onclick="setPayment('visa_card')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/visa card.png" height="50px" width="110px" alt=""></li>
                                     <li class="m-3" id="binance" onclick="setPayment('binance')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/binance.png" height="50px" width="110px" alt=""></li>
@@ -103,6 +115,11 @@
                                     <li class="m-3" id="nagad" onclick="setPayment('nagad')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/rocket.png" height="50px" width="110px" alt=""></li>
                                 </ul>
                             </div>
+                            <div class="col-md-1">
+                                <ul style="list-style: none; display: flex; padding-left: 0">
+                                    <li class="m-3" id="visa_card" onclick="setPayment('bank')" data-bs-toggle="modal" data-bs-target="#withdrawModal"><img src="{{asset('frontend')}}/payment-method/bank.jpg" height="50px" width="70px" alt=""></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog"
@@ -116,16 +133,38 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="col-md-12">
-                                        <label class="font-medium font-15 color-heading">Account Number</label>
-                                        <input type="text" name="accounts_number" class="form-control" required
-                                               placeholder="Account Number">
+                                    <div class="mb-3"></div>
+                                    <div class="payment-fields" >
+                                        <h5 class="text-center" id="withdrawal_text" style="display: none">You Will Get  <span id="withdrawal_amount"></span>
+                                            TK After Withdrawal</h5>
+                                        <input type="hidden" id="payment_method" name="payment_method" value="">
+                                        <div class="mb-3" id="bank_option" style="display: none">
+                                            <label for="recipient-name" id="credential_title" class="col-form-label">Bank <span class="text-danger">*</span></label>
+                                            <select name="bank_id" id="bankSelect" class="form-control">
+                                                <option value="">Select Bank</option>
+                                                @foreach($banks as $bank)
+                                                    <option value="{{$bank->id}}">{{$bank->bank_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div id="credential">
+                                            <div class="mb-3" >
+                                                <label for="recipient-name" id="credential_title" class="col-form-label">Account Number <span class="text-danger">*</span></label>
+                                                <input type="number" name="account_number" class="form-control">
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-12" >
-                                        <label class="font-medium font-15 color-heading "
-                                               style="color: white">----</label>
-                                        <button class="form-control btn btn-primary ">Submit</button>
+
+
+                                    <div class="row mt-2 mt-md-3 pt-2 pt-md-3">
+                                        <div class="col-md-12" >
+                                            <label class="font-medium font-15 color-heading "
+                                                   style="color: white">----</label>
+                                            <button class="form-control btn btn-primary ">Submit</button>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -153,6 +192,7 @@
                             <th scope="col">Amount</th>
                             <th scope="col">Request Date</th>
                             <th scope="col">Status</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -209,6 +249,8 @@
             $('.withdraw1').show();
             $('.withdraw_amount').hide();
             $('.withdraw_amount input').prop('required', false);
+
+
         }
         if (selectedValue == '2') {
             $('.withdraw1').hide();
@@ -222,7 +264,114 @@
 <script>
     function setPayment(value) {
         // alert(value);
+
         $('#withdraw_option').val(value);
+        if(value == 'bkash' || value == 'rocket' || value == 'nagad'){
+            $("#bankSelect").prop('required',false);
+            $('#bank_option').hide();
+            var amount = $('#amount').val();
+            console.log('amount:' + amount);
+
+            $('#transaction_id').show();
+            $("#transaction_id input").prop('required',true);
+           if(amount){
+               $('#withdrawal_text').show();
+               $("#withdrawal_amount"). text({{$setting->withdraw_conversion_rate}}*amount);
+           }
+
+            if(value == 'bkash'){
+                $('#credential').empty();
+
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Bkash Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#bkash_value').val());
+            }
+            else if(value == 'rocket'){
+                $('#credential').empty();
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Rocket Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#rocket_value').val());
+            }
+            else{
+                $('#credential').empty();
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Nagad Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#nagad_value').val());
+            }
+        }
+        else{
+            $('#withdrawal_text').hide();
+            $('#transaction_id').hide();
+            $("#transaction_id input").prop('required',false);
+            if(value == 'skrill' || value== 'neteller'){
+                $('#credential').empty();
+                $("#bankSelect").prop('required',false);
+                $('#bank_option').hide();
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Email Address<span class="text-danger">*</span></label>
+                                                            <input type="email" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                if(value == 'skrill'){
+                    $('#payment_number').text('Payment Credential: '+$('#skrill_value').val());
+                }
+                else{
+                    $('#payment_number').text('Payment Credential: '+$('#neteller_value').val());
+                }
+            }
+            else if(value == 'binance'){
+                $('#credential').empty();
+                $('#bank_option').hide();
+                $("#bankSelect").prop('required',false);
+                var html = `
+                        <label for="recipient-name" id="credential_title" class="col-form-label">ID
+                            <span class="text-danger">*</span></label>
+                            <input type="text" name="account_number" class="form-control" required>
+                        `;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#binance_value').val());
+            }
+            else if(value == 'bank'){
+                $('#credential').empty();
+                $('#bank_option').show();
+                $("#bankSelect").prop('required',true);
+                var html = `
+                        <label for="recipient-name" id="credential_title" class="col-form-label">Branch Name
+                            <span class="text-danger">*</span></label>
+                            <input type="text" name="bank_branch_name" class="form-control" required>
+                        <label for="recipient-name" id="credential_title" class="col-form-label">Branch Code
+                            <span class="text-danger">*</span></label>
+                            <input type="text" name="bank_branch_code" class="form-control" required>
+                        <label for="recipient-name" id="credential_title" class="col-form-label">Account Name
+                            <span class="text-danger">*</span></label>
+                            <input type="text" name="bank_account_name" class="form-control" required>
+                        <label for="recipient-name" id="credential_title" class="col-form-label">Account Number
+                            <span class="text-danger">*</span></label>
+                            <input type="text" name="account_number" class="form-control" required>
+                        `;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#binance_value').val());
+            }
+            else if(value == 'visa_card'){
+                $('#credential').empty();
+                $("#bankSelect").prop('required',false);
+                $('#bank_option').hide();
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Visa Card Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                $('#payment_number').text('Payment Number: '+$('#visa_card_value').val());
+            }
+            else if(value == 'perfect_money'){
+                $("#bankSelect").prop('required',false);
+                $('#bank_option').hide();
+                $('#credential').empty();
+                var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Memo (UXXXX..)<span class="text-danger">*</span></label>
+                                                            <input type="text" name="account_number" class="form-control" required>`;
+                $('#credential').html(html);
+                $('#payment_number').text('Memo: '+$('#perfect_money_value').val());
+            }
+        }
     }
     function checkValue() {
         var selectedValue = $('#withdraw_type').val();

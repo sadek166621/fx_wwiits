@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Admin\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Student;
+use App\Models\Balance;
+use App\Models\BalanceTransfer;
+use App\Models\Withdrawreq;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\Setting;
 use App\Models\Admin\studentreg;
 use Carbon\Carbon;
+use App\Models\Deposit;
 
 class DashboardController extends Controller
 {
@@ -19,7 +24,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard.index');
+        $data['withdrawn'] = Withdrawreq::where('status', 1)->sum('amount');
+        $data['members'] = Student::all()->count();
+        $data['internal_transfer'] = BalanceTransfer::where('transfer_from', 3)->sum('amount');
+        $data['fund'] = Balance::where('status', 1)->sum('amount');
+        $data['deposit'] = Deposit::all()->sum('amount');
+
+        return view('admin.dashboard.index', $data);
     }
 
     /**
@@ -186,6 +197,7 @@ class DashboardController extends Controller
                 'reg_charge' =>$request->reg_charge,
                 'reg_charge_tk' =>$request->reg_charge_tk,
                 'conversion_rate' =>$request->conversion_rate,
+                'withdraw_conversion_rate' =>$request->withdraw_conversion_rate,
             ]);
 
             $logo = $setting->site_logo;
