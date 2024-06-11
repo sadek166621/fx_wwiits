@@ -216,9 +216,9 @@ function getDepositSummary($id, $student_id)
     $deposits = Deposit::where('package_id', $id)->where('member_id', $student_id)->get();
     $currentDate = Carbon::now();
     $profit = 0;
-    $data['current_deposit'] = Deposit::where('package_id', $id)->where('member_id', $student_id)->sum('amount');
+    $data['current_deposit'] = Deposit::where('package_id', $id)->where('member_id', $student_id)->sum('remaining_balance');
     $package = Package::find($id);
-    $data['total_deposit'] = $package->usa_amount * count($deposits);
+    $data['total_deposit'] = Deposit::where('package_id', $id)->where('member_id', $student_id)->sum('amount');
     $data['total_withdraw'] = Withdrawreq::where('package_id', $id)->where('member_id', $student_id)->sum('amount');
     foreach ($deposits as $deposit){
         $days = $currentDate->diffInDays($deposit->created_at);

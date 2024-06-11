@@ -253,7 +253,7 @@ class StaffController extends Controller
     public function permission()
     {
 
-        $data['items'] =  Permission::all();
+        $data['items'] =  Permission::orderBy('name', 'asc')->get();
         return view('admin.staff.permission-list', $data);
     }
 
@@ -267,11 +267,13 @@ class StaffController extends Controller
             }
         }
 
-            for ($i = 0; $i<count($request->permission);$i++){
-                RolePermission::create([
-                    'role' => 'staff',
-                    'permission_id' => $request->permission[$i]
-                ]);
+            if(isset($request->permission)){
+                for ($i = 0; $i<count($request->permission);$i++){
+                    RolePermission::create([
+                        'role' => 'staff',
+                        'permission_id' => $request->permission[$i]
+                    ]);
+                }
             }
         Toastr::success('Staff Permissions Updated successfully!', 'Success', ["positionClass" => "toast-top-right"]);
             return back();

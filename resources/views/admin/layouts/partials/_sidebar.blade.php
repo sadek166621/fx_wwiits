@@ -54,6 +54,15 @@
                                 </ul>
                             </li>
                         @endif
+                        @if(
+                            Auth::user()->role_type == 'admin' ||
+                            (
+                                Auth::user()->role_type == 'staff' &&
+                                (
+                                    findStaffPermission('admin.slider.list') || findStaffPermission('admin.setting.edit')
+                                )
+
+                            ))
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -81,6 +90,7 @@
                                 @endif
                             </ul>
                         </li>
+                        @endif
                         {{-- <li class="nav-item">
                           <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cogs"></i>
@@ -258,7 +268,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.fund.request.history')))
+                        @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.balance.transfer.history')))
                             <li class="nav-item">
                                 <a href="{{ route('admin.balance.transfer.history') }}" class="nav-link">
                                     <i class="nav-icon fa fa-share"></i>

@@ -61,7 +61,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Binance Image</label>
-                    <input type="file" name="binance_image" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" accept="image/*" required>
+                    <input type="file" name="binance_image" class="form-control" id="exampleInputEmail1" placeholder="Enter Credentials" accept="image/*">
                     @if($setting->binance_image != null)
                         <img src="{{ asset('assets') }}/images/uploads/{{$setting->binance_image}}" class="mt-2" alt="" height="100px">
                     @endif

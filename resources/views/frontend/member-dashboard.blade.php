@@ -62,7 +62,7 @@
                         <table class="table product-overview mb-0">
                             <thead>
                             <tr>
-                                <th>Sr No</th>
+                                <th>SL</th>
                                 <th>Package</th>
                                 <th>Deposit Amount</th>
                                 <th>Withdrawn Amount</th>

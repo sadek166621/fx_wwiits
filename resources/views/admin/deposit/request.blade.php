@@ -47,7 +47,9 @@
                                     <th scope="col">Amount</th>
                                     <th scope="col">Profit (Per Day)</th>
                                     <th scope="col">Status</th>
+                                    @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.deposit.request.change-status')))
                                     <th class="text-center" scope="col">Action</th>
+                                    @endif
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -74,17 +76,23 @@
                                                     <span class="badge bg-warning">On Hold</span>
                                                     <br>
                                                     <a class="text-warning" data-toggle="modal" data-target="#reasonModal{{$item->id}}" style="font-size: 12px; cursor:pointer;">See Details</a>
+                                                @elseif($item->status == 3)
+                                                    <span class="badge bg-secondary">Withdrawn</span>
+                                                @elseif($item->status == 4)
+                                                    <span class="badge bg-primary">Matured</span>
                                                 @else
                                                     <span class="badge bg-danger">Rejected</span>
                                                 @endif
 
                                                     <!-- Modal -->
                                             </td>
+                                            @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.deposit.request.change-status')))
                                             <td class="text-center btn-group">
-                                                <a class="btn btn-primary mx-2" @if($item->status != 1 )onclick="setStatus(1, {{$item->id}})" @endif><i class="fa fa-check-circle" ></i>Activate</a>
+                                                <a class="btn btn-primary mx-2" @if($item->status != 1 && $item->status != 3 && $item->status != 4)onclick="setStatus(1, {{$item->id}})" @endif><i class="fa fa-check-circle" ></i>Activate</a>
                                                 <a class="btn btn-warning" @if($item->status == 1) onclick="setStatus(0, {{$item->id}})" data-toggle="modal" data-target="#exampleModal{{$item->id}}" @endif {{$item->status == 1 ? '':'disabled'}}><i class="fa fa-pause"></i> Hold</a>
 
                                             </td>
+                                            @endif
                                         </tr>
                                         <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -178,14 +186,12 @@
 @push('js')
     <script>
         function setStatus(val, id) {
-            alert(val);
             $('#status'+id).val(val);
             if(val == 1){
                 $('#comment').prop('required', false);
                 $('#changeStatusForm_'+id).submit();
             }
             else if(val == 0) {
-                alert('fund');
                 $('#comment').prop('required', true);
             }
 

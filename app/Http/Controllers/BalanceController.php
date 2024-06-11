@@ -53,7 +53,7 @@ class BalanceController extends Controller
         }
         else{
             $data['student'] = Student::where('id',Session::get('StudentId'))->first();
-            $data['items'] = Balance::where('member_id', Session::get('StudentId'))->where('status', '!=', 0)->latest()->get();
+            $data['items'] = Balance::where('member_id', Session::get('StudentId'))->latest()->get();
             // return $data;
             return view('frontend.balance-add-history', $data);
         }

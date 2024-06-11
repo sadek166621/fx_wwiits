@@ -71,22 +71,54 @@
                             <span>Deposit</span>
                         </a>
                     </li>
-                    <li class="{{$route == 'training' ? 'active':''}}">
-                        <a href="{{ route('training.session') }}">
-                            <i data-feather="award"></i>
-                            <span>Training</span>
+                    <li class="treeview">
+                        <a href="#" class="text-white">
+                            <i data-feather="server"></i>
+                            <span>Deposit History</span>
+                            <span class="pull-right-container">
+					            <i class="fa fa-angle-left pull-right"></i>
+					        </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="{{$route == 'passbook' ? 'active':''}}">
+                                <a href="{{ route('passbook') }}">
+                                    <span>Deposit Returns</span>
+                                </a>
+                            </li>
+                            <li class="{{$route == 'deposit.gift' ? 'active':''}}">
+                                <a href="{{ route('deposit.gift') }}">
+                                    <span>Deposit Gits</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="{{$route == 'genarate-activation-code' ? 'active':''}}">
-                        <a href="{{ route('genarate-activation-code') }}">
+
+                    <li class="treeview">
+                        <a href="#" class="text-white">
                             <i data-feather="code"></i>
                             <span>Activation Code</span>
+                            <span class="pull-right-container">
+					            <i class="fa fa-angle-left pull-right"></i>
+					        </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="{{$route == 'genarate-activation-code' ? 'active':''}}">
+                                <a href="{{ route('genarate-activation-code') }}">
+                                    <span>Generated Codes</span>
+                                </a>
+                            </li>
+                            <li class="{{$route == 'used-activation-code' ? 'active':''}}">
+                                <a href="{{ route('used-activation-code') }}">
+                                    <span>Used Activation Code</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="{{$route == 'used-activation-code' ? 'active':''}}">
-                        <a href="{{ route('used-activation-code') }}">
-                            <i data-feather="code"></i>
-                            <span>Used Activation Code</span>
+
+                    <li class="{{$route == 'reference' ? 'active':''}}">
+                        <a href="{{ route('reference') }}">
+                            <i data-feather="file-text"></i>
+                            <span>Reference</span>
                         </a>
                     </li>
                     <li class="treeview">
@@ -111,23 +143,16 @@
                         </ul>
                     </li>
 
-
-                    <li class="{{$route == 'reference' ? 'active':''}}">
-                        <a href="{{ route('reference') }}">
-                            <i data-feather="file-text"></i>
-                            <span>Reference</span>
-                        </a>
-                    </li>
-                    <li class="{{$route == 'passbook' ? 'active':''}}">
-                        <a href="{{ route('passbook') }}">
-                            <i data-feather="book"></i>
-                            <span>My Passbook</span>
-                        </a>
-                    </li>
                     <li class="{{$route == 'withdraw' ? 'active':''}}">
                         <a href="{{ route('withdraw') }}">
                             <i data-feather="upload"></i>
                             <span>Withdrawal</span>
+                        </a>
+                    </li>
+                    <li class="{{$route == 'training' ? 'active':''}}">
+                        <a href="{{ route('training.session') }}">
+                            <i data-feather="award"></i>
+                            <span>Training</span>
                         </a>
                     </li>
                     <li class="{{$route == 'password-change' ? 'active':''}}">

@@ -16,9 +16,11 @@
                         </div>
                     @endif
                 </div>
+                @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.bank.add')))
                             <div class="col-sm-6">
                                 <a href="{{ route('admin.bank.add') }}" class="btn btn-info float-right">Add New</a>
                             </div>
+                @endif
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -35,7 +37,9 @@
                                     <th width="10%">#SL</th>
                                     <th>Name</th>
                                     <th>Status</th>
+                                    @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && (findStaffPermission('admin.bank.edit')|| (findStaffPermission('admin.bank.delete')))))
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,10 +55,16 @@
                                                     <span class="badge bg-danger">Inactive</span>
                                                 @endif
                                             </td>
+                                            @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && (findStaffPermission('admin.bank.edit')|| (findStaffPermission('admin.bank.delete')))))
                                             <td class="">
-                                                <a href="{{route('admin.bank.edit', $item->id)}}" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
-                                                <a href="{{route('admin.bank.delete', $item->id)}}" class="btn btn-danger" onclick="return confirm('Please Confirm Before Deleting it!!')"><i class="fa fa-trash"></i>Delete</a>
+                                                @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.bank.edit')))
+                                                    <a href="{{route('admin.bank.edit', $item->id)}}" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+                                                @endif
+                                                @if(Auth::user()->role_type == 'admin' || (Auth::user()->role_type == 'staff' && findStaffPermission('admin.bank.delete')))
+                                                    <a href="{{route('admin.bank.delete', $item->id)}}" class="btn btn-danger" onclick="return confirm('Please Confirm Before Deleting it!!')"><i class="fa fa-trash"></i>Delete</a>
+                                                @endif
                                             </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 @endif

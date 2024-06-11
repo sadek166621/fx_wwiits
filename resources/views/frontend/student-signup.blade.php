@@ -43,6 +43,7 @@
             <input type="hidden" name="" id="visa_card_value" value="{{$setting->visa_card}}">
             <input type="hidden" name="" id="neteller_value" value="{{$setting->neteller}}">
             <input type="hidden" name="" id="perfect_money_value" value="{{$setting->perfect_money}}">
+            <input type="hidden" name="binance_link" id="" value="{{$setting->binance_link ?? ''}} ">
 
                 <div class="col-12 col-md-5 flex-column flex-column-reverse">
                     <div class="nav-background h-100">
@@ -259,7 +260,7 @@
                                                 <div class="modal-body">
                                                     <div class="mb-3"></div>
                                                     <div class="payment-fields" style="display: none;">
-                                                        <h5 class="text-center">You Need to Pay {{$setting->reg_charge}}$ <span id="reg_charge_bd">({{$setting->reg_charge_tk}}TK)</span>
+                                                        <h5 class="text-center">You Need to Pay {{$setting->reg_charge}}$ <span id="reg_charge_bd">({{$setting->reg_charge*$setting->conversion_rate}}TK)</span>
                                                             <br>to Confirm Your Registration</h5>
                                                         <h6 class="text-center" id="payment_number"></h6>
 
@@ -410,11 +411,17 @@
                     }
                 }
                 else if(value == 'binance'){
+                    var binance_id = $('#binance_value').val();
                     $('#credential').empty();
-                    var html = `<label for="recipient-name" id="credential_title" class="col-form-label">Email/Phone Number<span class="text-danger">*</span></label>
+                    var html = `
+                    <div class="mb-3 text-center"><span>Binance ID: ${binance_id}</span><br>
+                    <span>Binance Link: <a href="{{$setting->binance_link ?? '#'}}"
+                    target="_blank">{{$setting->binance_link ?? ''}}</a></span><br>
+                    <img class="mt-2" src="{{ asset('assets') }}/images/uploads/{{$setting->binance_image}}" height="100px" alt=""/></div>`;
+                     html += `<label for="recipient-name" id="credential_title" class="col-form-label">ID<span class="text-danger">*</span></label>
                                                             <input type="text" name="payment_number" class="form-control">`;
                     $('#credential').html(html);
-                    $('#payment_number').text('Payment Number: '+$('#binance_value').val());
+                    // $('#payment_number').text('Payment Number: '+$('#binance_value').val());
                 }
                 else if(value == 'visa_card'){
                     $('#credential').empty();

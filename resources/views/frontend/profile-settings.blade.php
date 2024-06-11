@@ -239,7 +239,7 @@
                                 <div class="profile-image radius-50">
                                     <label for="fileuplode"
                                            class="file-uplode-btn bg-hover text-dark radius-50">
-                                        Voter ID Card</label><br>
+                                        Voter ID Card (Front Side)</label><br>
                                     @if($student->voter_id_card)
                                         <img class="avater-image mb-2" id="target1"
                                              src="{{ asset('assets') }}/images/uploads/students/voter-id-card/{{ $student->voter_id_card }}" height="100px" width="100px"
@@ -248,6 +248,26 @@
                                     <div class="custom-fileuplode">
 
                                         <input type="file" id="fileuplode2" name="voter_id_card"
+                                               accept="image/*" class="putImage1"
+                                               onchange="previewFile(this)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-top mb-4">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-image radius-50">
+                                    <label for="fileuplode"
+                                           class="file-uplode-btn bg-hover text-dark radius-50">
+                                        Voter ID Card (Back Side)</label><br>
+                                    @if($student->voter_id_card_back)
+                                        <img class="avater-image mb-2" id="target1"
+                                             src="{{ asset('assets') }}/images/uploads/students/voter-id-card/{{ $student->voter_id_card_back }}" height="100px" width="100px"
+                                             alt="img">
+                                    @endif
+                                    <div class="custom-fileuplode">
+
+                                        <input type="file" id="fileuplode2" name="voter_id_card_back"
                                                accept="image/*" class="putImage1"
                                                onchange="previewFile(this)">
                                     </div>

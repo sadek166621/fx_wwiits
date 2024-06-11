@@ -301,7 +301,7 @@ class DashboardController extends Controller
             'nagad'                 => ['required'],
             'binance'               => ['required'],
             'binance_link'          => ['required'],
-            'binance_image'         => ['required'],
+//            'binance_image'         => ['required'],
             'visa_card'             => ['required'],
             'perfect_money'         => ['required'],
             'neteller'              => ['required'],

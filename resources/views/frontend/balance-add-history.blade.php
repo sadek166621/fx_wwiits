@@ -5,7 +5,7 @@
        <div class="col-lg-12">
            <div class="card">
                <div class="card-header">
-                   <h3>Balance Transfer History</h3>
+                   <h3>Fund Add History</h3>
                </div>
                <div class="card-body table-responsive">
                    <table class="table ">

@@ -22,15 +22,15 @@
                        @foreach($deposit_profit as $key=>$profit)
                            <tr>
                                <td>{{$key+1}}</td>
-                               <td>{{date('Y-m-d', strtotime($profit->created_at))}}</td>
-                               <td>{{$totalProfit+=$profit->profit}}</td>
+                               <td>{{date('Y-m-d H:i:s', strtotime($profit->created_at))}}</td>
+                               <td>${{$totalProfit+=$profit->profit}}</td>
                            </tr>
                        @endforeach
 
                        <!-- Display the total profit amount after the loop -->
                        <tr>
                            <td colspan="2"><strong>Total Profit:</strong></td>
-                           <td><strong>{{ $totalProfit }}</strong></td>
+                           <td><strong>${{ $totalProfit }}</strong></td>
                        </tr>
 
                        </tbody>

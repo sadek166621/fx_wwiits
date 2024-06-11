@@ -16,9 +16,10 @@
                                     <th scope="col">SL</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Package</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col">Deposit Amount</th>
+                                    <th scope="col">Remaining Amount</th>
                                     <th scope="col">Profit (Per Day)</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col" class="text-center">Status</th>
                                     <th class="text-center" scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -28,7 +29,7 @@
                                         <tr>
 
                                             <th scope="row">{{ $key+1 }}</th>
-                                            <td>{{date('Y-m-d H:i:s', strtotime($item->created_at))}}</td>
+                                            <td>{{date('Y-m-d', strtotime($item->created_at))}} <br> {{date('H:i:s', strtotime($item->created_at))}}</td>
                                             <td>{{ $item->package->package_name ?? '' }}</td>
                                             @php
                                                 $origin = date_create($item->created_at);
@@ -36,19 +37,33 @@
                                                 $interval = date_diff($origin, $target);
                                             @endphp
                                             <td><span id="usa_amount{{$key}}">${{ $item->amount }}</span></td>
+                                            <td><span id="">${{ $item->remaining_balance }}</span></td>
                                             {{-- <td>
                                                 {{$interval->format('%a')*$item->package->profit}}
                                             </td> --}}
                                             <td>
                                                 ${{ $item->profit_amount }}
                                             </td>
-                                            <td class="{{$item->status == 1 ? 'text-success':'text-warning'}}">
+                                            <td class="
+                                            @if($item->status == 1)
+                                                    text-success
+                                                @elseif($item->status == 0)
+                                                   text-warning
+                                            @elseif($item->status == 3)
+                                                text-primary
+                                            @else
+                                                text-secondary
+                                            @endif
+                                            text-center">
                                                 @if($item->status == 1)
                                                     Approved
-                                                @else
+                                                @elseif($item->status == 0)
                                                     On Hold <br>
-
                                                     <a class="text-warning" style="border-radius: 7px; font-size: 10px; cursor: pointer" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">Show Reason</a>
+                                                @elseif($item->status == 3)
+                                                    Matured
+                                                @else
+                                                    Withdrawn
                                                 @endif
                                             </td>
                                             <td class="text-center " >
@@ -74,7 +89,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5" class="text-center"><strong class="text-danger">No Deposit Made</strong></td>
+                                        <td colspan="6" class="text-center"><strong class="text-danger">No Deposit Made</strong></td>
                                     </tr>
                                 @endif
 
@@ -90,20 +105,20 @@
         </div>
     </div>
 
-    @endsection
+@endsection
 @push('js')
     <script>
         function checkBalance(rowId) {
 
             var balance = Number($('#balance').val());
             var deposit_amount = Number($('#usa_amount'+rowId).val());
-                if(balance > deposit_amount){
-                    return true;
-                }
-                else{
-                    alert('You Do not Have Sufficient Balance To Deposit. Please Add Balance to Your Wallet!!'  );
-                    return false;
-                }
+            if(balance > deposit_amount){
+                return true;
+            }
+            else{
+                alert('You Do not Have Sufficient Balance To Deposit. Please Add Balance to Your Wallet!!'  );
+                return false;
+            }
         }
 
     </script>

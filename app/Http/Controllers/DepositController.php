@@ -86,6 +86,7 @@ class DepositController extends Controller
             'amount' => $request->amount,
             'remaining_balance' => $request->amount,
             'profit_amount' => $request->profit_amount,
+            'approved_at' => date('Y-m-d H:i:s'),
             'status' => 1
         ]);
         $member->update([
@@ -122,10 +123,10 @@ class DepositController extends Controller
         $data['email'] = $member->email;
         $data['title'] = 'Deposit Notification';
 //        return view('frontend.email.deposit', ['member'=>$member, 'deposit' => $deposit ]);
-        Mail::send('frontend.email.deposit', ['member'=>$member, 'deposit' => $deposit ], function ($message) use ($data) {
-            $message->to($data["email"])
-                ->subject($data["title"]);
-        });
+//        Mail::send('frontend.email.deposit', ['member'=>$member, 'deposit' => $deposit ], function ($message) use ($data) {
+//            $message->to($data["email"])
+//                ->subject($data["title"]);
+//        });
 
         Toastr::success('Package Has Been Deposit Successfully!!', 'success', ["positionClass" => "toast-top-right"]);
         return redirect()->route('deposit.list');

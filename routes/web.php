@@ -315,7 +315,8 @@ Route::middleware('member')->group(function () {
     Route::get('/balance-transfer', [PagesController::class,'balancetransfer'])->name('balance-transfer');
     Route::Post('/submit-balance-transfer', [PagesController::class,'submitbalancetranfer'])->name('submit-balance-tranfer');
     Route::get('/used-activation-code', [PagesController::class,'usedactivationcode'])->name('used-activation-code');
-    Route::get('/passbook', [PagesController::class,'passbook'])->name('passbook');
+    Route::get('/deposit/return/history', [PagesController::class,'DepositReturnHistory'])->name('passbook');
+    Route::get('/deposit/gift/history', [PagesController::class,'DepositGiftHistory'])->name('deposit.gift');
     Route::get('/withdraw', [PagesController::class,'withdraw'])->name('withdraw');
     Route::get('/training/session', [PagesController::class, 'trainingSession'])->name('training.session');
     Route::post('/submit-package-withdraw-request', [PagesController::class,'submitpackagewithdrawrequest'])->name('submit-package-withdraw-request');
