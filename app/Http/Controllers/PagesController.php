@@ -186,19 +186,21 @@ class PagesController extends Controller
                             }
                         }
                         // maturity gift on deposit maturity
-                        if($differenceInDays <= $deposit->package->maturity_time){
-                            $gift = $deposit->amount * $deposit->package->maturity_gift/100;
-                            DepositGift::create([
-                                'member_id' => $member->id,
-                                'deposit_id' => $deposit->id,
-                                'amount' => $gift,
-                            ]);
-                            $member->update([
-                                'bonus' => $member->bonus + $gift
-                            ]);
-                            $deposit->update([
-                                'status' => 4
-                            ]);
+                        if($differenceInDays >= $deposit->package->maturity_time){
+                            if($deposit->status != 4){
+                                $gift = $deposit->amount * $deposit->package->maturity_gift/100;
+                                DepositGift::create([
+                                    'member_id' => $member->id,
+                                    'deposit_id' => $deposit->id,
+                                    'amount' => $gift,
+                                ]);
+                                $member->update([
+                                    'bonus' => $member->bonus + $gift
+                                ]);
+                                $deposit->update([
+                                    'status' => 4
+                                ]);
+                            }
 //                            $deposit->delete();
                         }
                     }
@@ -1004,9 +1006,12 @@ class PagesController extends Controller
         }
         if($request->withdraw_type ==2){
             $request->validate([
-                'amount' => 'required',
+                'amount' => ['required', 'min:10'],
 
             ]);
+            if($request->amount < 10){
+                return back()->with('error', 'Minimum Withdrawal Amount is 10 USD');
+            }
             $member = Student::where('id', $request->member_id)->first();
             if($member){
                 if($member->bonus >= $request->amount){

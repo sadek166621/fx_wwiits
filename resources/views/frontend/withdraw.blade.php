@@ -103,9 +103,11 @@
                             <select name="packageId" class="form-control" id="packageSelect">
                                 <option value="">Select package</option>
                                 @foreach ($packages as $key => $item)
-                                    <option value="{{ $item->id }}"
-                                            data-terms="{{ $item->package->terms }}">
-                                        {{ $item->package->package_name }} - ${{$item->remaining_balance}}</option>
+                                    @if($item->package)
+                                        <option value="{{ $item->id }}"
+                                                data-terms="{{ $item->package->terms }}">
+                                            {{ $item->package->package_name }} - ${{$item->remaining_balance}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -136,9 +138,9 @@
                         {{--                           value="{{ $student->account_number }}">--}}
                         <input type="hidden" name="member_id" value="{{ $student->id }}">
                         <div class="col-md-6 withdraw_amount" style="display: none">
-                            <label class="font-medium font-15 color-heading">amount</label>
+                            <label class="font-medium font-15 color-heading">Amount</label>
                             <input type="text" name="amount" id="amount" class="form-control"
-                                   placeholder="Amount">
+                                   placeholder="Minimum Withdrawal Amount 10USD">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -246,7 +248,7 @@
                                 <tr>
                                     <th scope="row">{{ $key+1 }}</th>
                                     @if ($withdraw->withdraw_type == 1)
-                                        <th>Package :{{ $withdraw->package->package_name }} </th>
+                                        <th>Package :{{ $withdraw->package->package_name ?? '' }} </th>
                                     @else
                                         <th> My Wallet</th>
                                     @endif
@@ -430,7 +432,16 @@
                 return false;
             }
             else{
-                return true;
+                if(selectedValue == 2){
+                    var amount = parseFloat($('#amount').val()).toFixed(4);
+                    if(amount < 10){
+                        alert('Can not withdraw amount below 10 USD!!');
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
+                }
             }
         }
     </script>

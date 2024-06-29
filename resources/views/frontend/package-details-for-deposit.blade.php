@@ -21,11 +21,11 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                {{--                                                            <h5 class="modal-title" id="exampleModalLabel">Confirmation Message</h5>--}}
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation Message</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores aspernatur esse maiores molestiae necessitatibus odit officiis quasi quibusdam, sit.
+                                                I agree with the terms and conditions of {{ getSetting()->site_name ?? ''}}
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -77,18 +77,18 @@
                                                         </span>
                                     </td>
                                 </tr>
-{{--                                <tr>--}}
-{{--                                    <th>Deposit Return Policy</th>--}}
-{{--                                    <td><span id="usa_amount">--}}
-{{--                                                            {{ $item->deposit_return_policy }}--}}
-{{--                                                        </span></td>--}}
-{{--                                </tr>--}}
                                 <tr>
-                                    <th>Terms & Conditions</th>
-                                    <td><span id="">
-                                                            {{ $item->terms }}
+                                    <th>Deposit Return Policy</th>
+                                    <td><span id="usa_amount">
+                                                            {{ $item->deposit_return_policy }}
                                                         </span></td>
                                 </tr>
+{{--                                <tr>--}}
+{{--                                    <th>Terms & Conditions</th>--}}
+{{--                                    <td><span id="">--}}
+{{--                                                            {{ $item->terms }}--}}
+{{--                                                        </span></td>--}}
+{{--                                </tr>--}}
                                 {{-- <tr>
                                     <th scope="row">Minimum Time To Initiate Withdraw</th>
                                     <td>
